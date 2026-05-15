@@ -1,0 +1,1 @@
+/home/gilhad/GIT-ghub/Arduino/Video/MegaHomeFORTH/docs/graphic_card.rst

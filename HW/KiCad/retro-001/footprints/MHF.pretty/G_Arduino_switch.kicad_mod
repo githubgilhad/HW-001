@@ -1,0 +1,232 @@
+(footprint "G_Arduino_switch"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(descr "Arduino switch")
+	(property "Reference" "REF**"
+		(at 2.3 3.2 0)
+		(layer "F.SilkS")
+		(uuid "7fd67fe2-8602-4955-85ad-192319e097b0")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(property "Value" "Reset"
+		(at 2 -3.6 0)
+		(layer "F.SilkS")
+		(uuid "90606e8b-a921-472f-9485-9908d6f383c5")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" "http://www.apem.com/int/index.php?controller=attachment&id_attachment=1371"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "3d84a922-324b-4eb0-8b63-1633dee7823f")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "MEC 5E single pole normally-open tactile switch"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "21defc52-8a56-4926-b459-cf5e0da5ebe2")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "PARTREV" "1.0"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "3081b23f-b99e-48fa-a884-ee6593b5c31a")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "MANUFACTURER" "Cui Devices"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "42f8efe4-fea1-49e6-aa46-de5a14f42759")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "MAXIMUM_PACKAGE_HEIGHT" "2.6 mm"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "5417e1c8-11c5-466a-87b9-cf5a4dda685b")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "STANDARD" "Manufacturer Recommendations"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "c6620934-46c8-4a6f-99a3-6ddfe43cf415")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_line
+		(start -0.9 1.5)
+		(end -0.9 5)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "ba7a68fb-4bcc-4b00-97a5-5e6eb7bc4dc0")
+	)
+	(fp_line
+		(start -0.7 1.5)
+		(end -0.7 5)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "ca1b0b54-5afa-47f1-a54c-9bc1a7f946ab")
+	)
+	(fp_line
+		(start 1.2 0.2)
+		(end 3.3 0.2)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "e71eca8a-6e18-4785-9039-4adef32e0cc4")
+	)
+	(fp_line
+		(start 1.2 6.4)
+		(end 3.3 6.4)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "9d44d525-2fbb-418d-9be4-b65965adacd1")
+	)
+	(fp_line
+		(start 5.2 1.5)
+		(end 5.2 5)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "401d9f4f-9fde-40c8-8418-92af0db40dc1")
+	)
+	(fp_line
+		(start 5.4 1.5)
+		(end 5.4 5)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "b9d2fb18-6ab0-417b-845f-6af66d670b72")
+	)
+	(fp_circle
+		(center 2.3 3.2)
+		(end 2.3 5.4)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.SilkS")
+		(uuid "56a99bef-ace6-4760-816b-d965477a0f31")
+	)
+	(fp_rect
+		(start -1.1 -1.6)
+		(end 5.6 8.1)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "c29b7442-96b3-4f5d-b7ba-1e966ff2fcf4")
+	)
+	(pad "1" thru_hole oval
+		(at 4.5 0)
+		(size 2 3)
+		(drill 1.016)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "d2f6e832-bfc4-4e25-9af2-9dd69d2b5fc5")
+	)
+	(pad "2" thru_hole oval
+		(at 4.5 6.5)
+		(size 2 3)
+		(drill 1.016)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "8c889135-92cf-4248-9028-6e8c3e4bee5f")
+	)
+	(pad "3" thru_hole oval
+		(at 0 0)
+		(size 2 3)
+		(drill 1.016)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "72a772c4-3be9-49ae-acb1-e369188d7633")
+	)
+	(pad "4" thru_hole oval
+		(at 0 6.5)
+		(size 2 3)
+		(drill 1.016)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "89a73587-9c57-4876-b3c9-eb9f69b5460e")
+	)
+	(embedded_fonts no)
+	(model "${KIPRJMOD}/3dmodels/G_Arduino_switch.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)
