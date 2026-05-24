@@ -1,0 +1,2 @@
+prvni navrh desky CPU s HD6309 + ATF1504 + 128 kB RAM + SysBus
+

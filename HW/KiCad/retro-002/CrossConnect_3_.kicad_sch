@@ -1,0 +1,136 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "030740ca-a749-4237-a2fa-eb042d41b61b")
+	(paper "A4")
+	(lib_symbols)
+	(wire
+		(pts
+			(xy 87.63 60.96) (xy 80.01 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "44c3259e-5801-4786-8a52-0657418be70f")
+	)
+	(wire
+		(pts
+			(xy 87.63 66.04) (xy 80.01 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5e320b76-2b83-48d2-8afa-ceeaeb125cd5")
+	)
+	(wire
+		(pts
+			(xy 87.63 63.5) (xy 80.01 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "78136c45-f74e-4bf3-a7ad-ef76bddc405f")
+	)
+	(wire
+		(pts
+			(xy 87.63 68.58) (xy 80.01 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d030d98b-2faf-4cc0-8562-f7a7c24b2bb2")
+	)
+	(hierarchical_label "kb0"
+		(shape input)
+		(at 87.63 60.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "0345daf4-49d6-427b-bde3-7bf9238824b0")
+	)
+	(hierarchical_label "ka2"
+		(shape input)
+		(at 80.01 66.04 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "0c744924-ffe6-4254-89a9-182cb648fa61")
+	)
+	(hierarchical_label "kb1"
+		(shape input)
+		(at 87.63 63.5 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "1ea67dff-ef64-48d1-acb3-1c90c47e7da8")
+	)
+	(hierarchical_label "ka0"
+		(shape input)
+		(at 80.01 60.96 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "5504f7ee-a260-4fcd-95ea-b32e00acf0a6")
+	)
+	(hierarchical_label "kb3"
+		(shape input)
+		(at 87.63 68.58 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "581b7ce0-1c90-453e-b950-d9f10f559352")
+	)
+	(hierarchical_label "kb2"
+		(shape input)
+		(at 87.63 66.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "c578b37f-6bae-42b2-a30e-f2157978baf9")
+	)
+	(hierarchical_label "ka1"
+		(shape input)
+		(at 80.01 63.5 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "d7c26d21-9512-4715-91b5-7bb5f2f47cf6")
+	)
+	(hierarchical_label "ka3"
+		(shape input)
+		(at 80.01 68.58 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "fb3ac1f3-f2fc-4958-a778-6e85d1f35a88")
+	)
+)

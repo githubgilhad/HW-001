@@ -1,0 +1,168 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "030740ca-a749-4237-a2fa-eb042d41b61b")
+	(paper "A4")
+	(lib_symbols)
+	(wire
+		(pts
+			(xy 87.63 60.96) (xy 80.01 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "44c3259e-5801-4786-8a52-0657418be70f")
+	)
+	(wire
+		(pts
+			(xy 87.63 66.04) (xy 80.01 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5e320b76-2b83-48d2-8afa-ceeaeb125cd5")
+	)
+	(wire
+		(pts
+			(xy 87.63 63.5) (xy 80.01 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "78136c45-f74e-4bf3-a7ad-ef76bddc405f")
+	)
+	(wire
+		(pts
+			(xy 87.63 71.12) (xy 80.01 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9c872b02-6a33-44d5-9328-05ef7c8e8063")
+	)
+	(wire
+		(pts
+			(xy 87.63 68.58) (xy 80.01 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d030d98b-2faf-4cc0-8562-f7a7c24b2bb2")
+	)
+	(hierarchical_label "ka1"
+		(shape input)
+		(at 80.01 63.5 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "092e66a9-1ea4-4d75-a20b-7a1be94882af")
+	)
+	(hierarchical_label "kb2"
+		(shape input)
+		(at 87.63 66.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "1732b6bb-4d36-44b4-9349-ee15900ee5c6")
+	)
+	(hierarchical_label "ka0"
+		(shape input)
+		(at 80.01 60.96 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "3e39a4b4-637c-491d-894d-b169d56bb6fa")
+	)
+	(hierarchical_label "kb1"
+		(shape input)
+		(at 87.63 63.5 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "407a9ba0-e543-4a10-9d7e-193f861552e7")
+	)
+	(hierarchical_label "ka3"
+		(shape input)
+		(at 80.01 68.58 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "57658c5f-fe35-440d-b155-2ed9a1f80959")
+	)
+	(hierarchical_label "kb0"
+		(shape input)
+		(at 87.63 60.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "83d15a22-3748-427f-bee7-675d3ef2c5d2")
+	)
+	(hierarchical_label "ka4"
+		(shape input)
+		(at 80.01 71.12 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "e0944a33-c821-4b3c-9bf2-740915530060")
+	)
+	(hierarchical_label "ka2"
+		(shape input)
+		(at 80.01 66.04 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "e10cf974-2bde-488c-8b14-e83268e44c76")
+	)
+	(hierarchical_label "kb4"
+		(shape input)
+		(at 87.63 71.12 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "e4599e53-2b94-47ad-aec0-295aeaef3773")
+	)
+	(hierarchical_label "kb3"
+		(shape input)
+		(at 87.63 68.58 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "ed986dd6-99fa-47bc-a8d9-0bb309e2395c")
+	)
+)

@@ -1,0 +1,163 @@
+(footprint "G_Rework_Jumper_Bridged_2.54mm"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(descr "Rework Jumper - pin+hole")
+	(property "Reference" "REF**"
+		(at 6.35 -0.006001 180)
+		(layer "F.SilkS")
+		(uuid "d8108174-d473-4a1f-92d7-86f3d14da0d7")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "USB_PWR"
+		(at 0 2.8 180)
+		(layer "F.Fab")
+		(uuid "df654e1d-c0f0-4665-abd7-495c85acd603")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 180)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "55a66e58-2e00-483e-8b74-0c478b0dcb36")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "Rework Jumper, 2-pole, closed/bridged"
+		(at 0 0 180)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "c1d462f7-5f60-488f-b06b-21c5eb31c558")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole exclude_from_bom allow_soldermask_bridges)
+	(net_tie_pad_groups "1,2")
+	(fp_rect
+		(start -0.9652 -0.9271)
+		(end 3.5052 0.9271)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill yes)
+		(layer "F.Mask")
+		(uuid "9ec7cade-1c79-4201-bc54-04f038d508ec")
+	)
+	(fp_rect
+		(start -0.9652 -0.9271)
+		(end 3.5052 0.9271)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill yes)
+		(layer "B.Mask")
+		(uuid "303fd6e6-b999-4cf7-865b-14531ce1e56c")
+	)
+	(fp_rect
+		(start -1.0795 -1.016)
+		(end 3.6195 1.016)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.SilkS")
+		(uuid "7c31c02d-98e4-438e-b4ba-c00c071fff9c")
+	)
+	(fp_rect
+		(start -1.0795 -1.016)
+		(end 3.6195 1.016)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "B.SilkS")
+		(uuid "672f3a43-6883-4d73-ae28-45a5a3f6e0e9")
+	)
+	(fp_rect
+		(start -1.143 -1.143)
+		(end 3.683 1.143)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill no)
+		(layer "B.CrtYd")
+		(uuid "04242b0e-4dab-411c-a3b0-4189118737de")
+	)
+	(fp_rect
+		(start -1.143 -1.143)
+		(end 3.683 1.143)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "2702884f-3067-4525-8589-5e212baa47a5")
+	)
+	(pad "1" thru_hole rect
+		(at 0 0)
+		(size 1.905 1.778)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "ebfe2c59-0e1b-467e-9808-48149d868ef4")
+	)
+	(pad "2" thru_hole custom
+		(at 2.54 0)
+		(size 1.905 1.778)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(options
+			(clearance outline)
+			(anchor rect)
+		)
+		(primitives
+			(gr_poly
+				(pts
+					(xy -0.9525 -0.889) (xy -0.9525 -0.254) (xy -1.6256 -0.254) (xy -1.6256 0.254) (xy -0.9525 0.254)
+					(xy -0.9525 0.889) (xy 0.9525 0.889) (xy 0.9525 -0.889)
+				)
+				(width 0)
+				(fill yes)
+			)
+		)
+		(uuid "590737d5-4d4f-4f93-b8cb-45817a871734")
+	)
+	(embedded_fonts no)
+	(model "${KICAD9_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x01_P2.54mm_Vertical.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

@@ -1,0 +1,232 @@
+(footprint "J_Mini-DIN-6"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(descr "Mini-DIN-6 Jack. CUI Devices # MD-60SM (with shield can on outer two pins). alt: # MD-60S (no shield can)")
+	(property "Reference" "REF**"
+		(at -1.9185 1.9274 90)
+		(layer "F.SilkS")
+		(uuid "b1e119ca-c22e-4e30-8604-417edeaffd6e")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.08)
+			)
+		)
+	)
+	(property "Value" "PS/2"
+		(at 0 -1.27 180)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "7d44aaef-0b70-4195-8ea4-0581f9efc17c")
+		(effects
+			(font
+				(size 0.64 0.64)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" "http://service.powerdynamics.com/ec/Catalog17/Section%2011.pdf"
+		(at 0 0 180)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "2fd1bc6b-e50d-4843-950b-c8db7241f963")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "6-pin Mini-DIN connector"
+		(at 0 0 180)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "92f97ba4-8b47-4ef4-9993-b4bd73408994")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole exclude_from_pos_files)
+	(fp_line
+		(start -6.35 0)
+		(end 6.35 0)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "41383f9e-7a83-4a97-9761-4b60fe61a65e")
+	)
+	(fp_line
+		(start -6.35 3.429)
+		(end -6.35 0)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "cadfebca-19fd-46b9-ae2d-bc19de5b5635")
+	)
+	(fp_line
+		(start -6.35 7.62)
+		(end -6.35 12.7)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "141cdad6-b83f-4727-87ab-9b4e92e39b71")
+	)
+	(fp_line
+		(start -6.35 12.7)
+		(end 6.35 12.7)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "d3067358-a976-42bb-97d5-8d0fe719edfa")
+	)
+	(fp_line
+		(start 6.35 0)
+		(end 6.35 3.556)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "8f86b174-fb7b-4e1f-bdc7-1c8b2f1913f9")
+	)
+	(fp_line
+		(start 6.35 12.7)
+		(end 6.35 7.493)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "0d278862-6d4f-491f-a165-202ee690c438")
+	)
+	(fp_rect
+		(start -6.5 -0.1)
+		(end 6.5 12.8)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "1189ef11-f62e-4ae1-9ada-7ab242aefecb")
+	)
+	(fp_rect
+		(start -6.25 0)
+		(end 6.25 12.75)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "2ba2e06c-b537-49c0-b27d-d742b1249b8f")
+	)
+	(fp_text user "${REFERENCE}"
+		(at -0.25 1.75 180)
+		(layer "F.Fab")
+		(uuid "42dc0fea-4772-446d-a814-667fecf6b62d")
+		(effects
+			(font
+				(size 0.5 0.5)
+				(thickness 0.1)
+			)
+		)
+	)
+	(pad "1" thru_hole circle
+		(at -1.3 8.5)
+		(size 1.778 1.778)
+		(drill 0.9)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "305db968-2ad5-4f97-b36e-d48a5ec04672")
+	)
+	(pad "2" thru_hole circle
+		(at 1.3 8.5)
+		(size 1.778 1.778)
+		(drill 0.9)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "8c621592-63b2-457a-a6fc-e36db6a675e2")
+	)
+	(pad "3" thru_hole circle
+		(at -3.4 8.5)
+		(size 1.778 1.778)
+		(drill 0.9)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "a994f820-dd05-41da-b9b2-8a7de1ad4e6a")
+	)
+	(pad "4" thru_hole circle
+		(at 3.4 8.5)
+		(size 1.778 1.778)
+		(drill 0.9)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "54646a45-2eea-4690-a6ce-91c48c34b646")
+	)
+	(pad "5" thru_hole circle
+		(at -3.4 11)
+		(size 1.778 1.778)
+		(drill 0.9)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "c491c0d7-f76e-4f7f-9fcb-6d2a7810006a")
+	)
+	(pad "6" thru_hole circle
+		(at 3.4 11)
+		(size 1.778 1.778)
+		(drill 0.9)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "6981b748-103b-491c-8825-2d6720e3ff2f")
+	)
+	(pad "S" thru_hole circle
+		(at -6.75 5.5)
+		(size 3.81 3.81)
+		(drill 2.2)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "235071c1-7811-45aa-a517-4ac642d8ab4b")
+	)
+	(pad "S" thru_hole circle
+		(at 0 4.7)
+		(size 3.81 3.81)
+		(drill 2.2)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "0334aa33-5d9f-4804-a05d-856cb5d3d556")
+	)
+	(pad "S" thru_hole circle
+		(at 6.75 5.5)
+		(size 3.81 3.81)
+		(drill 2.2)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "40667493-05c9-4e6c-9f18-3164677c8f80")
+	)
+	(embedded_fonts no)
+	(model "${KIPRJMOD}/3dmodels/J_Mini-DIN-6.step"
+		(offset
+			(xyz 0 -1 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -0 -0 -0)
+		)
+	)
+)

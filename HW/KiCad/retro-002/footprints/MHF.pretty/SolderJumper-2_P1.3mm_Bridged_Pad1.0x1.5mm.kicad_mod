@@ -1,0 +1,122 @@
+(footprint "SolderJumper-2_P1.3mm_Bridged_Pad1.0x1.5mm"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(descr "SMD Solder Jumper, 1x1.5mm Pads, 0.3mm gap, bridged with 1 copper strip")
+	(tags "net tie solder jumper bridged")
+	(property "Reference" "REF**"
+		(at 0 -1.8 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "ac34bad5-022b-4bcd-b3d1-be21377deffb")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "ANDB1+"
+		(at 0 1.9 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "112d4e0b-24e9-4168-96c1-af5107f99446")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "aee942b4-a7be-42e1-897f-3be400eb4de6")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "Solder Jumper, 2-pole, closed/bridged"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "09e7ffbc-5531-4158-ace2-4d6fe0641a83")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(zone_connect 1)
+	(attr exclude_from_pos_files exclude_from_bom allow_soldermask_bridges)
+	(net_tie_pad_groups "1, 2")
+	(fp_rect
+		(start -0.277 -0.75)
+		(end 0.277 0.75)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill yes)
+		(layer "F.Mask")
+		(uuid "160f4ccc-80c8-480f-881f-337a59cb70a1")
+	)
+	(fp_rect
+		(start -1.143 -1.016)
+		(end 1.143 1.016)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill no)
+		(layer "F.SilkS")
+		(uuid "e5909578-d0e9-4ea9-9729-1c2e447b07ac")
+	)
+	(fp_rect
+		(start -1.143 -1.016)
+		(end 1.143 1.016)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "b7bc3ea9-80fa-4319-b7ad-54de78b9a86d")
+	)
+	(pad "1" smd rect
+		(at -0.635 0)
+		(size 0.762 1.524)
+		(layers "F.Cu" "F.Mask")
+		(uuid "15cdc09a-1921-467c-bd0c-68bbd19d6fbf")
+	)
+	(pad "2" smd custom
+		(at 0.635 0)
+		(size 0.762 1.524)
+		(layers "F.Cu" "F.Mask")
+		(options
+			(clearance outline)
+			(anchor rect)
+		)
+		(primitives
+			(gr_poly
+				(pts
+					(xy -0.381 0.381) (xy -1.016 0.381) (xy -1.016 -0.254) (xy -0.381 -0.254) (xy -0.381 -0.762) (xy 0.381 -0.762)
+					(xy 0.381 0.762) (xy -0.381 0.762)
+				)
+				(width 0)
+				(fill yes)
+			)
+		)
+		(uuid "2133d304-34f7-4af7-b29d-188dbbe75b6e")
+	)
+	(embedded_fonts no)
+)
