@@ -14472,9 +14472,9 @@
 		)
 		(uuid "fdc6cdff-1058-48be-823c-4ff001d9d3de")
 	)
-	(text_box "A000..A003"
+	(text_box "A000..A01F"
 		(exclude_from_sim no)
-		(at 58.42 659.4254 0)
+		(at 58.42 651.51 0)
 		(size 12.6999 2.7391)
 		(margins 0.9525 0.9525 0.9525 0.9525)
 		(stroke
@@ -14516,7 +14516,7 @@
 	)
 	(text_box "A100..FFFF"
 		(exclude_from_sim no)
-		(at 58.42 651.8054 0)
+		(at 58.42 659.13 0)
 		(size 12.6999 2.7391)
 		(margins 0.9525 0.9525 0.9525 0.9525)
 		(stroke
@@ -14642,14 +14642,14 @@
 		)
 		(uuid "4b906c65-a511-488e-8fc4-9a2cf7655ff1")
 	)
-	(text_box "4 GLUE registers"
+	(text_box "6 GLUE registers (xxx = regnum)"
 		(exclude_from_sim no)
-		(at 72.39 659.4254 0)
-		(size 20.0024 2.7391)
+		(at 72.39 651.51 0)
+		(size 35.56 2.7391)
 		(margins 0.9525 0.9525 0.9525 0.9525)
 		(stroke
 			(width 0)
-			(type default)
+			(type solid)
 		)
 		(fill
 			(type none)
@@ -14684,14 +14684,14 @@
 		)
 		(uuid "618d3c24-fa0d-4387-93f9-1da407602352")
 	)
-	(text_box "01xx"
+	(text_box "1xxx"
 		(exclude_from_sim no)
-		(at 50.8 659.4254 0)
+		(at 50.8 651.51 0)
 		(size 6.3499 2.7391)
 		(margins 0.9525 0.9525 0.9525 0.9525)
 		(stroke
 			(width 0)
-			(type default)
+			(type solid)
 		)
 		(fill
 			(type none)
@@ -14705,14 +14705,14 @@
 		)
 		(uuid "6a72cb41-ecfb-43d8-8dca-1c94058baa9e")
 	)
-	(text_box "1000"
+	(text_box "0100"
 		(exclude_from_sim no)
-		(at 50.8 655.6154 0)
+		(at 50.8 655.32 0)
 		(size 6.3499 2.7391)
 		(margins 0.9525 0.9525 0.9525 0.9525)
 		(stroke
 			(width 0)
-			(type default)
+			(type solid)
 		)
 		(fill
 			(type none)
@@ -14728,8 +14728,8 @@
 	)
 	(text_box "Memory mapped devices (? 15 x 16 B?)"
 		(exclude_from_sim no)
-		(at 72.39 655.6154 0)
-		(size 40.3225 2.7391)
+		(at 72.39 655.32 0)
+		(size 40.6399 2.7391)
 		(margins 0.9525 0.9525 0.9525 0.9525)
 		(stroke
 			(width 0)
@@ -14747,14 +14747,14 @@
 		)
 		(uuid "71fe76bd-743b-46cf-861c-32aff03bd9c9")
 	)
-	(text_box "0000"
+	(text_box "0011"
 		(exclude_from_sim no)
-		(at 50.8 651.8054 0)
+		(at 50.8 659.13 0)
 		(size 6.3499 2.7391)
 		(margins 0.9525 0.9525 0.9525 0.9525)
 		(stroke
 			(width 0)
-			(type default)
+			(type solid)
 		)
 		(fill
 			(type none)
@@ -14833,9 +14833,9 @@
 		)
 		(uuid "8f6edd82-67b3-4497-84c4-e22a60373bb2")
 	)
-	(text_box "A004..A0FF"
+	(text_box "A020..A0FF"
 		(exclude_from_sim no)
-		(at 58.42 655.6154 0)
+		(at 58.42 655.32 0)
 		(size 12.6999 2.7391)
 		(margins 0.9525 0.9525 0.9525 0.9525)
 		(stroke
@@ -14856,7 +14856,7 @@
 	)
 	(text_box "Native RAM ~ ROM 23.75K"
 		(exclude_from_sim no)
-		(at 72.39 651.8054 0)
+		(at 72.39 659.13 0)
 		(size 31.4324 2.7391)
 		(margins 0.9525 0.9525 0.9525 0.9525)
 		(stroke
@@ -15115,12 +15115,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "363be9a3-bac2-409a-bcab-c1bcc0886108")
-	)
-	(junction
-		(at 298.45 704.85)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "38694e74-89f3-4f4e-bc9e-1762c6d7de17")
 	)
 	(junction
 		(at 788.67 69.85)
@@ -23478,16 +23472,6 @@
 		)
 		(uuid "308270b1-5837-4d07-ad66-3c48f0b20a55")
 	)
-	(bus
-		(pts
-			(xy 298.45 704.85) (xy 298.45 707.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3084c4d4-9c7d-4617-be2f-3172add11fc6")
-	)
 	(polyline
 		(pts
 			(xy 447.04 603.25) (xy 443.23 599.44)
@@ -23977,6 +23961,16 @@
 			(type default)
 		)
 		(uuid "37206ee1-1321-4f7a-9fd4-ee36a4c699e1")
+	)
+	(bus
+		(pts
+			(xy 299.72 703.58) (xy 298.45 702.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3730db90-3e19-4e90-88dc-0ccad72e1f85")
 	)
 	(bus
 		(pts
@@ -29748,6 +29742,16 @@
 		)
 		(uuid "8dbc3baa-cd53-404f-a8c1-43cf74a36b79")
 	)
+	(bus
+		(pts
+			(xy 335.28 703.58) (xy 337.82 703.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8de69d99-5fd9-402a-a84a-67d85d6fe818")
+	)
 	(polyline
 		(pts
 			(xy 434.34 680.72) (xy 436.88 680.72)
@@ -31170,7 +31174,7 @@
 	)
 	(bus
 		(pts
-			(xy 298.45 636.27) (xy 298.45 704.85)
+			(xy 298.45 636.27) (xy 298.45 707.39)
 		)
 		(stroke
 			(width 0)
@@ -32277,16 +32281,6 @@
 			(type default)
 		)
 		(uuid "b690e864-ba34-4b9e-a353-0b2b1fa5e16f")
-	)
-	(bus
-		(pts
-			(xy 336.55 703.58) (xy 337.82 703.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b693b1ff-2a61-4a84-893f-13198bd0f69a")
 	)
 	(bus
 		(pts
@@ -33577,16 +33571,6 @@
 			(type default)
 		)
 		(uuid "c8b7f508-1fb0-421e-b8b6-7063eb9d1d30")
-	)
-	(bus
-		(pts
-			(xy 298.45 704.85) (xy 299.72 703.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c8fe0f39-decb-4e0d-8a75-914a970cc977")
 	)
 	(polyline
 		(pts
@@ -42670,7 +42654,7 @@
 	)
 	(global_label "{Dev_Sel_bus}"
 		(shape output)
-		(at 320.04 703.58 0)
+		(at 335.28 703.58 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -42678,16 +42662,16 @@
 				(thickness 0.254)
 				(bold yes)
 			)
-			(justify left)
+			(justify right)
 		)
 		(uuid "4265ac23-5e28-4b63-9367-82c2faf9c0a4")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 336.7454 703.58 0)
+			(at 318.5746 703.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 				(hide yes)
 			)
 		)
