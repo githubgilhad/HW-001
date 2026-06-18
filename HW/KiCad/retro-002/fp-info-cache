@@ -1,4 +1,4 @@
-25823891731660321
+25828458750822227
 Arduino Mega 2560
 CAP_EEHZA1E470P
 
@@ -60395,6 +60395,20 @@ HC-49-4H, Crystal, http://5hertz.com/pdfs/04404_D.pdf
 0
 2
 2
+Gilhad_footprints
+DIP-24_W15.24mm
+24-lead though-hole mounted DIP package, row spacing 15.24mm (600 mils)
+THT DIP DIL PDIP 2.54mm 15.24mm 600mil
+0
+24
+24
+Gilhad_footprints
+DIP-40_W15.24mm
+40-lead though-hole mounted DIP package, row spacing 15.24mm (600 mils)
+THT DIP DIL PDIP 2.54mm 15.24mm 600mil
+0
+40
+40
 Gilhad_footprints
 EmptyHole_1mm
 Empty Hole 2.5mm, no annular

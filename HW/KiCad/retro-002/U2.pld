@@ -1,0 +1,48 @@
+U2 (ATF1)
+
+PIN 6   = CA0;
+PIN 8   = CA1;
+PIN 9   = CA2;
+PIN 10  = CA3;
+PIN 12  = CA4;
+PIN 13  = CA5;
+PIN 14  = CA6;
+PIN 16  = CA7;
+PIN 17  = CA8;
+PIN 19  = CA9;
+PIN 20  = CA10;
+PIN 21  = CA11;
+
+PIN 23  = CA12;
+PIN 25  = CA13;
+PIN 29  = CA14;
+PIN 30  = CA15;
+
+PIN 31  = E;
+PIN 32  = RW;
+PIN 33  = Reset_N;
+PIN 35  = HALT_N;
+PIN 36  = BA;
+PIN 37  = NMI_N;
+PIN 40  = IRQ_N;
+PIN 41  = FIRQ_N;
+PIN 42  = DMA_BREQ_N;
+PIN 44  = MRDY;
+PIN 45  = BS;
+
+PIN 76  = Dev_Sel_7_N;
+PIN 79  = Dev_Sel_6_N;
+PIN 80  = Dev_Sel_5_N;
+PIN 81  = Dev_Sel_4_N;
+PIN 83  = Dev_Sel_3_N;
+PIN 84  = Dev_Sel_2_N;
+PIN 92  = Dev_Sel_1_N;
+PIN 93  = Dev_Sel_0_N;
+
+PIN 94  = Write_N;
+PIN 96  = Read_N;
+
+PIN 97  = MR3;
+PIN 98  = MR2;
+PIN 99  = MR1;
+PIN 100 = MR0;

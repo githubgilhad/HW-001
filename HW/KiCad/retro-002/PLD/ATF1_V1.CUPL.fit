@@ -1,0 +1,692 @@
+Atmel ATF1504AS Fitter Version 1.8.7.8 ,running Wed Jun 17 01:41:36 2026
+
+
+fit1504 Z:\ATF1_V1.CUPL.tt2 -CUPL -dev P1504T100 -JTAG ON
+
+
+****** Initial fitting strategy and property ******
+ Pla_in_file = ATF1_V1.tt2
+ Pla_out_file = ATF1_V1.tt3
+ Jedec_file = ATF1_V1.jed
+ Vector_file = ATF1_V1.tmv
+ verilog_file = ATF1_V1.vt
+ Time_file = 
+ Log_file = ATF1_V1.fit
+ err_file = 
+ Device_name = TQFP100
+ Module_name = 
+ Package_type = TQFP
+ Preassign_file = 
+ Property_file = 
+ Sleep_mode = 
+ Preassignment = 
+ Security_mode = OFF
+ Pin_keep_mode = ON
+ Dedicated_input_clock = 
+ Dedicated_input_reset = 
+ Dedicated_input_oe = 
+ supporter = CUPL
+ optimize = ON
+ Soft_buffer = 
+ Xor_synthesis = OFF
+ Foldback_logic =  on
+ Expander = 
+ Cascade_logic = OFF
+ Dedicated_input = 
+ Output_fast = OFF
+ *******************************
+ Power down pin 1 = OFF
+ Power down pin 2 = OFF
+ power_reset = OFF
+ JTAG = ON
+ TDI pullup = OFF
+ TMS pullup = OFF
+ MC_power = OFF
+ Open_collector = OFF
+ ITD0 = ON
+ ITD1 = ON
+ ITD2 = ON
+ Fast_inlatch = off
+ *******************************
+---------------------------------------------------------
+ Fitter_Pass 1, Preassign = KEEP, LOGIC_DOUBLING : OFF 
+ ... 
+## ERROR : Bad user pin assignement : 103
+ ## ERROR : Bad user pin assignement 
+---------------------------------------------------------
+ Fitter_Pass 2, Preassign = KEEP, NODE ASSIGN : OFF 
+ ... 
+ ## Warning : Placement fail 
+---------------------------------------------------------
+ Fitter_Pass 3, Preassign = KEEP, CASCADE_LOGIC : (TRY) 
+ ... 
+ ## Warning : Placement fail 
+---------------------------------------------------------
+ Fitter_Pass 4, Preassign = KEEP, CASCADE_LOGIC : (OFF) 
+ ... 
+
+Performing global Output Enable pin assignments ...
+
+Performing global pin assignments ...
+--------------------------------------
+
+
+
+Final global control pins assignment (if applicable)...
+-------------------------------------------------------
+Q assigned to pin  90
+Reset assigned to pin  89
+
+
+
+Performing input pin pre-assignments ...
+------------------------------------
+Q assigned to pin  90
+E assigned to pin  87
+Reset assigned to pin  89
+
+Attempt to place floating signals ...
+------------------------------------
+CA6 is placed at pin 14 (MC 1)
+CA5 is placed at pin 13 (MC 2)
+CA4 is placed at pin 12 (MC 3)
+CA3 is placed at pin 10 (MC 4)
+CA2 is placed at pin 9 (MC 5)
+CA1 is placed at pin 8 (MC 6)
+XXL_106 is placed at feedback node 606 (MC 6)
+CA0 is placed at pin 6 (MC 7)
+XXL_108 is placed at feedback node 607 (MC 7)
+TDI is placed at pin 4 (MC 8)
+XXL_101 is placed at feedback node 608 (MC 8)
+MR0 is placed at pin 100 (MC 9)
+MR1 is placed at pin 99 (MC 10)
+MR2 is placed at pin 98 (MC 11)
+MR3 is placed at pin 97 (MC 12)
+Read is placed at pin 96 (MC 13)
+Write is placed at pin 94 (MC 14)
+RAM is placed at pin 93 (MC 15)
+Dev_Sel_1 is placed at pin 92 (MC 16)
+Rw is placed at pin 31 (MC 22)
+CA15 is placed at pin 30 (MC 23)
+XXL_104 is placed at feedback node 623 (MC 23)
+CA14 is placed at pin 29 (MC 24)
+ROM_SIZE1 is placed at feedback node 624 (MC 24)
+CA13 is placed at pin 25 (MC 25)
+ROM_SIZE0 is placed at feedback node 625 (MC 25)
+CA12 is placed at pin 23 (MC 26)
+XXL_86 is placed at feedback node 626 (MC 26)
+Com_Ctrl_100 is placed at foldback expander node 326 (MC 26)
+CA11 is placed at pin 21 (MC 27)
+XXL_103 is placed at feedback node 627 (MC 27)
+CA10 is placed at pin 20 (MC 28)
+XXL_107 is placed at feedback node 628 (MC 28)
+CA9 is placed at pin 19 (MC 29)
+XXL_102 is placed at feedback node 629 (MC 29)
+CA8 is placed at pin 17 (MC 30)
+XXL_105 is placed at feedback node 630 (MC 30)
+CA7 is placed at pin 16 (MC 31)
+XXL_84 is placed at feedback node 631 (MC 31)
+TMS is placed at pin 15 (MC 32)
+D0 is placed at pin 58 (MC 45)
+D1 is placed at pin 60 (MC 46)
+D2 is placed at pin 61 (MC 47)
+TCK is placed at pin 62 (MC 48)
+ROM_SIZE2 is placed at feedback node 648 (MC 48)
+D3 is placed at pin 63 (MC 49)
+D4 is placed at pin 64 (MC 50)
+D5 is placed at pin 65 (MC 51)
+D6 is placed at pin 67 (MC 52)
+D7 is placed at pin 68 (MC 53)
+RomMapped is placed at pin 69 (MC 54)
+BootSrc is placed at pin 71 (MC 55)
+TDO is placed at pin 73 (MC 56)
+ROM is placed at pin 75 (MC 57)
+Dev_Sel_7 is placed at pin 76 (MC 58)
+Dev_Sel_6 is placed at pin 79 (MC 59)
+Dev_Sel_5 is placed at pin 80 (MC 60)
+Dev_Sel_4 is placed at pin 81 (MC 61)
+Dev_Sel_3 is placed at pin 83 (MC 62)
+Dev_Sel_2 is placed at pin 84 (MC 63)
+
+                                                                                             
+                                                                                             
+                                                                                             
+                                                                                             
+                                    D               D D   D D D     D                        
+                                    e               e e   e e e     e                        
+                                    v               v v   v v v     v                        
+                                    _               _ _   _ _ _     _                        
+                                W   S     R         S S   S S S     S                        
+                            R   r   e     e         e e   e e e     e                        
+                    M M M M e G i R l V   s     G   l l V l l l     l                        
+                    R R R R a N t A _ C   e     N   _ _ C _ _ _ N N _                        
+                    0 1 2 3 d D e M 1 C Q t   E D   2 3 C 4 5 6 C C 7                        
+                  ------------------------------------------------------                     
+                 / 100  98  96  94  92  90  88  86  84  82  80  78  76  \                   
+                /     99  97  95  93  91  89  87  85  83  81  79  77     \                  
+            NC | 1                                                     75 | ROM              
+            NC | 2                                                     74 | GND              
+           VCC | 3                                                     73 | TDO              
+           TDI | 4                                                     72 | NC               
+            NC | 5                                                     71 | BootSrc          
+           CA0 | 6                                                     70 | NC               
+            NC | 7                                                     69 | RomMapped        
+           CA1 | 8                                                     68 | D7               
+           CA2 | 9                                                     67 | D6               
+           CA3 | 10                                                    66 | VCC              
+           GND | 11                                                    65 | D5               
+           CA4 | 12                     ATF1504                        64 | D4               
+           CA5 | 13                  100-Lead TQFP                     63 | D3               
+           CA6 | 14                                                    62 | TCK              
+           TMS | 15                                                    61 | D2               
+           CA7 | 16                                                    60 | D1               
+           CA8 | 17                                                    59 | GND              
+           VCC | 18                                                    58 | D0               
+           CA9 | 19                                                    57 |                  
+          CA10 | 20                                                    56 |                  
+          CA11 | 21                                                    55 | NC               
+            NC | 22                                                    54 |                  
+          CA12 | 23                                                    53 | NC               
+            NC | 24                                                    52 |                  
+          CA13 | 25                                                    51 | VCC              
+                \     27  29  31  33  35  37  39  41  43  45   47  49    /                   
+                 \  26  28  30  32  34  36  38  40  42  44  46  48   50 /                    
+                  ------------------------------------------------------                     
+                    G N N C C R     V       G V       G            N N                       
+                    N C C A A w     C       N C       N            C C                       
+                    D     1 1       C       D C       D                                      
+                          4 5                                                                
+
+
+
+VCC = Supply Voltage pin which must be connected to (5.0V or 3.0V)
+
+GND = GND pin which must be connected to ground
+
+TMS,TDI,TDO,TDI = JTAG pins which must reserved for the JTAG interface
+
+NC = Unused I/O pins which must be unconnected on the board
+
+Universal-Interconnect-Multiplexer assignments
+------------------------------------------------
+FanIn assignment for block A [25]
+{
+CA7,CA6,CA9,CA15,CA8,CA5,CA4,CA14,CA11,CA2,CA10,CA12,CA13,
+E,
+Rw,ROM_SIZE2,ROM_SIZE1,ROM_SIZE0,
+XXL_102,XXL_103,XXL_107,XXL_108,XXL_86,XXL_101,XXL_106,
+}
+Multiplexer assignment for block A
+CA7			(MC24	P)   : MUX 0		Ref (B31p)
+CA6			(MC11	P)   : MUX 1		Ref (A1p)
+CA9			(MC22	P)   : MUX 2		Ref (B29p)
+CA15			(MC16	P)   : MUX 3		Ref (B23p)
+CA8			(MC23	P)   : MUX 4		Ref (B30p)
+CA5			(MC12	P)   : MUX 5		Ref (A2p)
+Rw			(MC15	P)   : MUX 7		Ref (B22p)
+ROM_SIZE2		(MC10	FB)  : MUX 9		Ref (C48fb)
+CA4			(MC13	P)   : MUX 11		Ref (A3p)
+CA14			(MC17	P)   : MUX 15		Ref (B24p)
+ROM_SIZE1		(MC4	FB)  : MUX 16		Ref (B24fb)
+XXL_102			(MC9	FB)  : MUX 19		Ref (B29fb)
+CA11			(MC20	P)   : MUX 20		Ref (B27p)
+CA2			(MC14	P)   : MUX 21		Ref (A5p)
+CA10			(MC21	P)   : MUX 22		Ref (B28p)
+XXL_103			(MC7	FB)  : MUX 23		Ref (B27fb)
+CA12			(MC19	P)   : MUX 24		Ref (B26p)
+XXL_107			(MC8	FB)  : MUX 25		Ref (B28fb)
+XXL_108			(MC2	FB)  : MUX 26		Ref (A7fb)
+XXL_86			(MC6	FB)  : MUX 27		Ref (B26fb)
+ROM_SIZE0		(MC5	FB)  : MUX 31		Ref (B25fb)
+XXL_101			(MC3	FB)  : MUX 32		Ref (A8fb)
+CA13			(MC18	P)   : MUX 34		Ref (B25p)
+XXL_106			(MC1	FB)  : MUX 38		Ref (A6fb)
+E			(MC25	FB)  : MUX 39		Ref (GCLK)
+
+FanIn assignment for block B [25]
+{
+CA7,CA6,CA15,CA5,CA8,CA4,CA9,CA14,CA3,CA11,CA2,CA10,CA12,CA1,CA0,CA13,
+D1,D0,
+ROM_SIZE2,Rw,ROM_SIZE1,RomMapped,ROM_SIZE0,
+XXL_104,XXL_105,
+}
+Multiplexer assignment for block B
+CA7			(MC25	P)   : MUX 0		Ref (B31p)
+CA6			(MC9	P)   : MUX 1		Ref (A1p)
+CA15			(MC17	P)   : MUX 3		Ref (B23p)
+XXL_104			(MC1	FB)  : MUX 4		Ref (B23fb)
+CA5			(MC10	P)   : MUX 5		Ref (A2p)
+CA8			(MC24	P)   : MUX 6		Ref (B30p)
+CA4			(MC11	P)   : MUX 7		Ref (A3p)
+ROM_SIZE2		(MC7	FB)  : MUX 9		Ref (C48fb)
+D1			(MC6	P)   : MUX 10		Ref (C46p)
+XXL_105			(MC4	FB)  : MUX 11		Ref (B30fb)
+D0			(MC5	P)   : MUX 12		Ref (C45p)
+Rw			(MC16	P)   : MUX 13		Ref (B22p)
+CA9			(MC23	P)   : MUX 14		Ref (B29p)
+CA14			(MC18	P)   : MUX 15		Ref (B24p)
+ROM_SIZE1		(MC2	FB)  : MUX 16		Ref (B24fb)
+CA3			(MC12	P)   : MUX 17		Ref (A4p)
+CA11			(MC21	P)   : MUX 20		Ref (B27p)
+CA2			(MC13	P)   : MUX 21		Ref (A5p)
+CA10			(MC22	P)   : MUX 22		Ref (B28p)
+CA12			(MC20	P)   : MUX 24		Ref (B26p)
+CA1			(MC14	P)   : MUX 25		Ref (A6p)
+RomMapped		(MC8	P)   : MUX 27		Ref (D54p)
+CA0			(MC15	P)   : MUX 31		Ref (A7p)
+CA13			(MC19	P)   : MUX 34		Ref (B25p)
+ROM_SIZE0		(MC3	FB)  : MUX 39		Ref (B25fb)
+
+FanIn assignment for block C [24]
+{
+BootSrc,
+CA7,CA6,CA9,CA15,CA5,CA8,CA4,CA14,CA3,CA11,CA10,CA2,CA12,CA1,CA0,CA13,
+D2,
+E,
+Rw,ROM_SIZE2,ROM_SIZE1,RomMapped,ROM_SIZE0,
+}
+Multiplexer assignment for block C
+CA7			(MC22	P)   : MUX 0		Ref (B31p)
+CA6			(MC6	P)   : MUX 1		Ref (A1p)
+CA9			(MC20	P)   : MUX 2		Ref (B29p)
+CA15			(MC14	P)   : MUX 3		Ref (B23p)
+CA5			(MC7	P)   : MUX 5		Ref (A2p)
+CA8			(MC21	P)   : MUX 6		Ref (B30p)
+Rw			(MC13	P)   : MUX 7		Ref (B22p)
+ROM_SIZE2		(MC4	FB)  : MUX 9		Ref (C48fb)
+CA4			(MC8	P)   : MUX 11		Ref (A3p)
+D2			(MC3	P)   : MUX 12		Ref (C47p)
+CA14			(MC15	P)   : MUX 15		Ref (B24p)
+ROM_SIZE1		(MC1	FB)  : MUX 16		Ref (B24fb)
+CA3			(MC9	P)   : MUX 17		Ref (A4p)
+CA11			(MC18	P)   : MUX 20		Ref (B27p)
+RomMapped		(MC5	P)   : MUX 21		Ref (D54p)
+CA10			(MC19	P)   : MUX 22		Ref (B28p)
+CA2			(MC10	P)   : MUX 23		Ref (A5p)
+CA12			(MC17	P)   : MUX 24		Ref (B26p)
+CA1			(MC11	P)   : MUX 25		Ref (A6p)
+BootSrc			(MC23	P)   : MUX 29		Ref (D55p)
+CA0			(MC12	P)   : MUX 31		Ref (A7p)
+E			(MC24	FB)  : MUX 33		Ref (GCLK)
+CA13			(MC16	P)   : MUX 34		Ref (B25p)
+ROM_SIZE0		(MC2	FB)  : MUX 39		Ref (B25fb)
+
+FanIn assignment for block D [22]
+{
+BootSrc,
+CA7,CA6,CA15,CA8,CA5,CA4,CA3,CA9,CA14,CA11,CA2,CA10,CA12,CA1,CA0,CA13,
+D0,
+E,
+Rw,Reset,
+XXL_84,
+}
+Multiplexer assignment for block D
+CA7			(MC19	P)   : MUX 0		Ref (B31p)
+CA6			(MC3	P)   : MUX 1		Ref (A1p)
+CA15			(MC11	P)   : MUX 3		Ref (B23p)
+CA8			(MC18	P)   : MUX 4		Ref (B30p)
+CA5			(MC4	P)   : MUX 5		Ref (A2p)
+CA4			(MC5	P)   : MUX 7		Ref (A3p)
+CA3			(MC6	P)   : MUX 9		Ref (A4p)
+D0			(MC2	P)   : MUX 12		Ref (C45p)
+Rw			(MC10	P)   : MUX 13		Ref (B22p)
+CA9			(MC17	P)   : MUX 14		Ref (B29p)
+CA14			(MC12	P)   : MUX 15		Ref (B24p)
+XXL_84			(MC1	FB)  : MUX 19		Ref (B31fb)
+CA11			(MC15	P)   : MUX 20		Ref (B27p)
+CA2			(MC7	P)   : MUX 21		Ref (A5p)
+CA10			(MC16	P)   : MUX 22		Ref (B28p)
+CA12			(MC14	P)   : MUX 24		Ref (B26p)
+CA1			(MC8	P)   : MUX 25		Ref (A6p)
+CA0			(MC9	P)   : MUX 27		Ref (A7p)
+BootSrc			(MC20	P)   : MUX 29		Ref (D55p)
+E			(MC21	FB)  : MUX 33		Ref (GCLK)
+CA13			(MC13	P)   : MUX 34		Ref (B25p)
+Reset			(MC22	FB)  : MUX 36		Ref (GCLR)
+
+Creating JEDEC file Z:\ATF1_V1.CUPL.jed ...
+
+TQFP100 programmed logic:
+-----------------------------------
+D0 = ((CA0 & CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & ROM_SIZE0.Q)
+	# (!CA0 & CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & RomMapped.Q));
+
+D1 = ((CA0 & CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & ROM_SIZE1.Q)
+	# (!CA0 & CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & BootSrc));
+
+D2 = (CA0 & CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & ROM_SIZE2.Q);
+
+D3 = 0;
+
+D4 = 0;
+
+D5 = 0;
+
+D6 = 0;
+
+D7 = 0;
+
+!Dev_Sel_1 = (CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
+
+!Dev_Sel_2 = (!CA5 & CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
+
+!Dev_Sel_3 = (CA5 & CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
+
+!Dev_Sel_4 = (!CA5 & !CA6 & CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
+
+!Dev_Sel_5 = (CA5 & !CA6 & CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
+
+!Dev_Sel_6 = (!CA5 & CA6 & CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
+
+!Dev_Sel_7 = (CA5 & CA6 & CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
+
+MR0 = ((CA15 & CA13 & CA8 & !ROM_SIZE0.Q & !ROM_SIZE1.Q & !ROM_SIZE2.Q)
+	# XXL_101
+	# XXL_102
+	# (CA15 & !CA14 & !CA12 & !CA8 & !CA9 & !CA11 & !CA10 & !CA5 & !CA6 & !CA7 & CA4)
+	# (CA15 & !CA14 & !CA12 & !CA13));
+
+MR1 = (XXL_107
+	# XXL_108
+	# XXL_106);
+
+MR2 = ((!CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA2)
+	# XXL_103);
+
+MR3 = (!CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
+
+!XXL_86.TH = ((CA13 & CA14 & CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA12)
+	# XXL_104);
+
+XXL_84.TH = ((CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA14 & CA12 & CA13)
+	# XXL_105
+	# (CA15 & !ROM_SIZE2.Q & RomMapped.Q & !ROM_SIZE1.Q & CA12 & CA13 & !ROM_SIZE0.Q)
+	# (CA15 & !ROM_SIZE2.Q & RomMapped.Q & !ROM_SIZE1.Q & CA14));
+
+ROM_SIZE0.D = D0.PIN;
+
+ROM_SIZE1.D = D1.PIN;
+
+ROM_SIZE2.D = D2.PIN;
+
+!Read = (E & Rw);
+
+RomMapped.D = D0.PIN;
+
+!Write = (E & !Rw);
+
+ROM = !XXL_84.PIN;
+
+RAM = !XXL_86.PIN;
+
+!Com_Ctrl_100 = (!CA13 & !CA14 & CA15);
+
+XXL_101 = ((CA15 & !ROM_SIZE1.Q & !ROM_SIZE2.Q & CA13 & !ROM_SIZE0.Q & CA11)
+	# (CA15 & !ROM_SIZE1.Q & !ROM_SIZE2.Q & CA13 & !ROM_SIZE0.Q & CA10)
+	# (CA15 & !ROM_SIZE1.Q & !ROM_SIZE2.Q & CA13 & !ROM_SIZE0.Q & CA12)
+	# (CA15 & !ROM_SIZE1.Q & !ROM_SIZE2.Q & CA13 & !ROM_SIZE0.Q & CA9)
+	# (CA15 & !ROM_SIZE1.Q & !ROM_SIZE2.Q & CA14));
+
+XXL_102 = ((CA15 & !CA14 & !CA12 & !CA8 & !CA9 & !CA11 & !CA10 & CA0 & !CA5 & !CA6 & !CA7)
+	# (CA15 & !CA14 & !CA12 & !CA8 & !CA9 & !CA11 & !CA10 & !CA5 & !CA6 & !CA7 & CA2 & CA1)
+	# (CA15 & !CA14 & !CA12 & !CA8 & !CA9 & !CA11 & !CA10 & !CA5 & !CA6 & !CA7 & CA3)
+	# (CA13 & CA15 & !ROM_SIZE2.Q & CA14 & !ROM_SIZE0.Q)
+	# (CA13 & CA15 & !ROM_SIZE2.Q & CA14 & CA12));
+
+XXL_103 = ((!CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA5)
+	# (!CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA6)
+	# (!CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA7)
+	# (!CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA3)
+	# (!CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA4));
+
+XXL_104 = ((CA15 & CA14 & !ROM_SIZE2.Q & RomMapped.Q & !ROM_SIZE0.Q & CA13)
+	# (CA15 & CA14 & !ROM_SIZE2.Q & RomMapped.Q & !ROM_SIZE1.Q)
+	# (CA15 & !CA14 & !CA13)
+	# (CA15 & !ROM_SIZE2.Q & RomMapped.Q & !ROM_SIZE0.Q & !ROM_SIZE1.Q)
+	# (CA15 & !CA14 & !CA12 & !CA8 & !CA9 & !CA10 & !CA11));
+
+XXL_105 = ((CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA13 & !ROM_SIZE0.Q & !ROM_SIZE1.Q & CA9)
+	# (CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA13 & !ROM_SIZE0.Q & !ROM_SIZE1.Q & CA11)
+	# (CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA13 & !ROM_SIZE0.Q & !ROM_SIZE1.Q & CA10)
+	# (CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA13 & !ROM_SIZE0.Q & CA14)
+	# (CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA13 & !ROM_SIZE0.Q & !ROM_SIZE1.Q & CA8));
+
+XXL_106 = ((CA15 & !ROM_SIZE1.Q & !ROM_SIZE2.Q & CA13 & !ROM_SIZE0.Q & CA11)
+	# (CA15 & !ROM_SIZE1.Q & !ROM_SIZE2.Q & CA13 & !ROM_SIZE0.Q & CA10)
+	# (CA15 & !ROM_SIZE1.Q & !ROM_SIZE2.Q & !ROM_SIZE0.Q & CA12)
+	# (CA15 & !ROM_SIZE2.Q & CA14 & CA13 & !ROM_SIZE0.Q)
+	# (CA15 & !ROM_SIZE1.Q & !ROM_SIZE2.Q & CA14));
+
+XXL_107 = ((CA13 & CA15 & !CA14 & !CA12 & !CA9 & !CA11 & !CA10 & !CA8 & CA1)
+	# (CA13 & CA15 & !CA14 & !CA12 & !CA9 & !CA11 & !CA10 & !CA8 & CA3)
+	# (CA13 & CA15 & !CA14 & !CA12 & !CA9 & !CA11 & !CA10 & !CA8 & CA4)
+	# (!CA13 & CA15 & !CA14 & CA12)
+	# (CA13 & CA15 & !ROM_SIZE2.Q & CA14 & CA12));
+
+XXL_108 = ((CA13 & CA15 & !CA9 & !CA14 & !CA11 & !CA10 & !CA12 & !CA8 & CA6)
+	# (CA13 & CA15 & !CA9 & !CA14 & !CA11 & !CA10 & !CA12 & !CA8 & CA7)
+	# (CA13 & CA15 & CA8 & !ROM_SIZE0.Q & !ROM_SIZE1.Q & !ROM_SIZE2.Q)
+	# (CA13 & CA15 & CA9 & !ROM_SIZE0.Q & !ROM_SIZE1.Q & !ROM_SIZE2.Q)
+	# (CA13 & CA15 & !CA9 & !CA14 & !CA11 & !CA10 & !CA12 & !CA8 & CA5));
+
+D0.OE = (CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & E & Rw);
+
+D1.OE = (CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & E & Rw);
+
+D2.OE = (CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & E & Rw);
+
+D3.OE = (CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & E & Rw);
+
+D4.OE = (CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & E & Rw);
+
+D5.OE = (CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & E & Rw);
+
+D6.OE = (CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & E & Rw);
+
+D7.OE = (CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & E & Rw);
+
+XXL_86.OE = Com_Ctrl_100;
+
+XXL_84.OE = Com_Ctrl_100;
+
+ROM_SIZE0.C = !Q;
+
+ROM_SIZE0.AR = !Reset;
+
+ROM_SIZE0.CE = (CA0 & CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & !Rw);
+
+ROM_SIZE1.C = !Q;
+
+ROM_SIZE1.AR = !Reset;
+
+ROM_SIZE1.CE = (CA0 & CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & !Rw);
+
+ROM_SIZE2.C = !Q;
+
+ROM_SIZE2.AR = !Reset;
+
+ROM_SIZE2.CE = (CA0 & CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & !Rw);
+
+RomMapped.C = !Q;
+
+RomMapped.AR = (!BootSrc & !Reset);
+
+RomMapped.AP = (BootSrc & !Reset);
+
+RomMapped.CE = (!CA0 & CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & !Rw);
+
+
+TQFP100 Pin/Node Placement:
+------------------------------------
+Pin 4  = TDI; /* MC 8 */
+Pin 6  = CA0; /* MC 7 */
+Pin 8  = CA1; /* MC 6 */
+Pin 9  = CA2; /* MC 5 */
+Pin 10 = CA3; /* MC  4 */
+Pin 12 = CA4; /* MC  3 */
+Pin 13 = CA5; /* MC  2 */
+Pin 14 = CA6; /* MC  1 */
+Pin 15 = TMS; /* MC 32 */ 
+Pin 16 = CA7; /* MC 31 */ 
+Pin 17 = CA8; /* MC 30 */ 
+Pin 19 = CA9; /* MC 29 */ 
+Pin 20 = CA10; /* MC 28 */ 
+Pin 21 = CA11; /* MC 27 */ 
+Pin 23 = CA12; /* MC 26 */ 
+Pin 25 = CA13; /* MC 25 */ 
+Pin 29 = CA14; /* MC 24 */ 
+Pin 30 = CA15; /* MC 23 */ 
+Pin 31 = Rw; /* MC 22 */ 
+Pin 58 = D0; /* MC 45 */ 
+Pin 60 = D1; /* MC 46 */ 
+Pin 61 = D2; /* MC 47 */ 
+Pin 62 = TCK; /* MC 48 */ 
+Pin 63 = D3; /* MC 49 */ 
+Pin 64 = D4; /* MC 50 */ 
+Pin 65 = D5; /* MC 51 */ 
+Pin 67 = D6; /* MC 52 */ 
+Pin 68 = D7; /* MC 53 */ 
+Pin 69 = RomMapped; /* MC 54 */ 
+Pin 71 = BootSrc; /* MC 55 */ 
+Pin 73 = TDO; /* MC 56 */ 
+Pin 75 = ROM; /* MC 57 */ 
+Pin 76 = Dev_Sel_7; /* MC 58 */ 
+Pin 79 = Dev_Sel_6; /* MC 59 */ 
+Pin 80 = Dev_Sel_5; /* MC 60 */ 
+Pin 81 = Dev_Sel_4; /* MC 61 */ 
+Pin 83 = Dev_Sel_3; /* MC 62 */ 
+Pin 84 = Dev_Sel_2; /* MC 63 */ 
+Pin 87 = E;
+Pin 89 = Reset;
+Pin 90 = Q;
+Pin 92 = Dev_Sel_1; /* MC 16 */ 
+Pin 93 = RAM; /* MC 15 */ 
+Pin 94 = Write; /* MC 14 */ 
+Pin 96 = Read; /* MC 13 */ 
+Pin 97 = MR3; /* MC 12 */ 
+Pin 98 = MR2; /* MC 11 */ 
+Pin 99 = MR1; /* MC 10 */ 
+Pin 100 = MR0; /* MC  9 */
+PINNODE 326 = Com_Ctrl_100; /* MC 26 Foldback */
+PINNODE 606 = XXL_106; /* MC 6 Feedback */
+PINNODE 607 = XXL_108; /* MC 7 Feedback */
+PINNODE 608 = XXL_101; /* MC 8 Feedback */
+PINNODE 623 = XXL_104; /* MC 23 Feedback */
+PINNODE 624 = ROM_SIZE1; /* MC 24 Feedback */
+PINNODE 625 = ROM_SIZE0; /* MC 25 Feedback */
+PINNODE 626 = XXL_86; /* MC 26 Feedback */
+PINNODE 627 = XXL_103; /* MC 27 Feedback */
+PINNODE 628 = XXL_107; /* MC 28 Feedback */
+PINNODE 629 = XXL_102; /* MC 29 Feedback */
+PINNODE 630 = XXL_105; /* MC 30 Feedback */
+PINNODE 631 = XXL_84; /* MC 31 Feedback */
+PINNODE 648 = ROM_SIZE2; /* MC 48 Feedback */
+
+** Resource Usage **
+
+
+DCERP Field = Summary of Allocations.
+|||||
+|||||_Preset [p,-]       ==  p = PT preset, - No Preset.
+||||
+||||__Reset [g,r,-]      ==  g= Global AR, r = PT reset, - No reset.
+|||
+|||___Clock Enable [e,-] ==  e = Product Term, - always enabled, - none.
+||
+||____Clock [c,g,-],     ==  c = Product term, g = Global term, - No Clock.
+|
+|_____Type [C,D,L,T],    ==  Register type C= combin, D=dff, L=latch, T=tff.
+
+For input only = INPUT.
+
+MCell Pin# Oe   PinDrive  DCERP  FBDrive   DCERP  Foldback     CascadeOut     TotPT output_slew
+MC1   14   --   CA6       INPUT  --               --           --             0     slow
+MC2   13   --   CA5       INPUT  --               --           --             0     slow
+MC3   12   --   CA4       INPUT  --               --           --             0     slow
+MC4   10   --   CA3       INPUT  --               --           --             0     slow
+MC5   9    --   CA2       INPUT  --               --           --             0     slow
+MC6   8    --   CA1       INPUT  XXL_106   C----  NA           --             5     slow
+MC7   6    --   CA0       INPUT  XXL_108   C----  NA           --             5     slow
+MC8   4    --   TDI       INPUT  XXL_101   C----  NA           --             5     slow
+MC9   100  on   MR0       C----  --               NA           --             5     slow
+MC10  99   on   MR1       C----  --               --           --             3     slow
+MC11  98   on   MR2       C----  --               --           --             2     slow
+MC12  97   on   MR3       C----  --               --           --             1     slow
+MC13  96   on   Read      C----  --               --           --             1     slow
+MC14  94   on   Write     C----  --               --           --             1     slow
+MC15  93   on   RAM       C----  --               --           --             1     slow
+MC16  92   on   Dev_Sel_1 C----  --               --           --             1     slow
+MC17  37        --               --               --           --             0     slow
+MC18  36        --               --               --           --             0     slow
+MC19  35        --               --               --           --             0     slow
+MC20  33        --               --               --           --             0     slow
+MC21  32        --               --               --           --             0     slow
+MC22  31   --   Rw        INPUT  --               --           --             0     slow
+MC23  30   --   CA15      INPUT  XXL_104   C----  NA           --             5     slow
+MC24  29   --   CA14      INPUT  ROM_SIZE1 Dgeg-  --           --             2     slow
+MC25  25   --   CA13      INPUT  ROM_SIZE0 Dgeg-  --           --             2     slow
+MC26  23   PT   CA12      INPUT  XXL_86    C----  Com_Ctrl_100 --             4     slow
+MC27  21   --   CA11      INPUT  XXL_103   C----  NA           --             5     slow
+MC28  20   --   CA10      INPUT  XXL_107   C----  NA           --             5     slow
+MC29  19   --   CA9       INPUT  XXL_102   C----  NA           --             5     slow
+MC30  17   --   CA8       INPUT  XXL_105   C----  NA           --             5     slow
+MC31  16   PT   CA7       INPUT  XXL_84    C----  NA           --             5     slow
+MC32  15   --   TMS       INPUT  --               --           --             0     slow
+MC33  40        --               --               --           --             0     slow
+MC34  41        --               --               --           --             0     slow
+MC35  42        --               --               --           --             0     slow
+MC36  44        --               --               --           --             0     slow
+MC37  45        --               --               --           --             0     slow
+MC38  46        --               --               --           --             0     slow
+MC39  47        --               --               --           --             0     slow
+MC40  48        --               --               --           --             0     slow
+MC41  52        --               --               --           --             0     slow
+MC42  54        --               --               --           --             0     slow
+MC43  56        --               --               --           --             0     slow
+MC44  57        --               --               --           --             0     slow
+MC45  58   PT   D0        C----  --               --           --             3     slow
+MC46  60   PT   D1        C----  --               --           --             3     slow
+MC47  61   PT   D2        C----  --               --           --             2     slow
+MC48  62   --   TCK       INPUT  ROM_SIZE2 Dgeg-  --           --             2     slow
+MC49  63   PT   D3        C----  --               --           --             1     slow
+MC50  64   PT   D4        C----  --               --           --             1     slow
+MC51  65   PT   D5        C----  --               --           --             1     slow
+MC52  67   PT   D6        C----  --               --           --             1     slow
+MC53  68   PT   D7        C----  --               --           --             1     slow
+MC54  69   on   RomMapped Dgerp  --               --           --             4     slow
+MC55  71   --   BootSrc   INPUT  --               --           --             0     slow
+MC56  73   --   TDO       INPUT  --               --           --             0     slow
+MC57  75   on   ROM       C----  --               --           --             1     slow
+MC58  76   on   Dev_Sel_7 C----  --               --           --             1     slow
+MC59  79   on   Dev_Sel_6 C----  --               --           --             1     slow
+MC60  80   on   Dev_Sel_5 C----  --               --           --             1     slow
+MC61  81   on   Dev_Sel_4 C----  --               --           --             1     slow
+MC62  83   on   Dev_Sel_3 C----  --               --           --             1     slow
+MC63  84   on   Dev_Sel_2 C----  --               --           --             1     slow
+MC64  85        --               --               --           --             0     slow
+MC0   90        Q         INPUT  --               --           --             0     slow
+MC0   89        Reset     INPUT  --               --           --             0     slow
+MC0   88        --               --               --           --             0     slow
+MC0   87        E         INPUT  --               --           --             0     slow
+
+Logic Array Block	Logic Cells	I/O Pins	Foldbacks	TotalPT		FanIN	Cascades
+A: LC1	- LC16		11/16(68%)	16/16(100%)	0/16(0%)	30/80(37%)	(25)	0
+B: LC17	- LC32		9/16(56%)	11/16(68%)	1/16(6%)	38/80(47%)	(25)	0
+C: LC33	- LC48		4/16(25%)	4/16(25%)	0/16(0%)	10/80(12%)	(24)	0
+D: LC49	- LC64		13/16(81%)	15/16(93%)	0/16(0%)	16/80(20%)	(22)	0
+
+Total dedicated input used:	3/4 	(75%)
+Total I/O pins used		46/64 	(71%)
+Total Logic cells used 		37/64 	(57%)
+Total Flip-Flop used 		4/64 	(6%)
+Total Foldback logic used 	1/64 	(1%)
+Total Nodes+FB/MCells 		38/64 	(59%)
+Total cascade used 		0
+Total input pins 		25
+Total output pins 		24
+Total Pts 			94
+Creating pla file Z:\ATF1_V1.CUPL.tt3 with 0 inputs 0 outputs, 0 pins 0 nodes and 0 pterms...
+
+----------------  End fitter, Design FITS
+$Device TQFP100 fits 
+FIT1504 completed in 0.00 seconds
