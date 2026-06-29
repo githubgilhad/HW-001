@@ -1,7 +1,7 @@
 Name     ATF1_GLUE;
 PartNo   0001;
 Date     2026-06-13;
-Revision 0.1;
+Revision 0.2;
 Designer ChatGPT;
 Company  None ;
 Assembly None ;
@@ -44,6 +44,8 @@ PIN 41  = MRDY;
 PIN 42  = BS;
 
 /*
+        unused so far
+
 Pin 44  = IO_26;
 Pin 45  = IO_27;
 Pin 46  = IO_28;
@@ -55,25 +57,24 @@ Pin 56  = IO_33;
 Pin 57  = IO_34;
 */
 
-Pin [58,60,61,63, 64,65,67,68] = [D0..7]; 
-/*
-Pin 58  = IO_35;
-Pin 60  = IO_36;
-Pin 61  = IO_37;
-Pin 63  = IO_38;
-Pin 64  = IO_39;
-Pin 65  = IO_40;
-Pin 67  = IO_41;
-Pin 68  = IO_42;
-*/
 
-Pin 69  = RomMapped;
 Pin 71  = BootSrc;	/* 1=ROM, 0=RAM */
-Pin 75  = !ROM;
+
+/***** Input Only ****/
+
+/* Pin 85 = IO_52;      /* INPUT/GCLK3 */ 
+Pin 87 = E;      /* INPUT/GCLK1 */
+Pin 88 = xIO_62; /* INPUT/OE1 - 12V Vpp */
+Pin 89 = !Reset; /* INPUT/GCLR */
+Pin 90 = Q;      /* INPUT/OE2/GCLK2 */
+
 
 /************************************************************/
 /* OUTPUTS                                                  */
 /************************************************************/
+Pin 69  = RomMapped;
+Pin 75  = !ROM;
+
 PIN 76  = !Dev_Sel_7;
 PIN 79  = !Dev_Sel_6;
 PIN 80  = !Dev_Sel_5;
@@ -91,14 +92,21 @@ PIN 98  = MR2;
 PIN 99  = MR1;
 PIN 100 = MR0;
 
-/***** Input Only ****/
 
-/* Pin 85 = IO_52;      /* INPUT/GCLK3 */ 
-Pin 87 = E;      /* INPUT/GCLK1 */
-Pin 88 = xIO_62; /* INPUT/OE1 - 12V Vpp */
-Pin 89 = !Reset; /* INPUT/GCLR */
-Pin 90 = Q;      /* INPUT/OE2/GCLK2 */
-
+/************************************************************/
+/* BIDIRECTIONAL  (data)                                    */
+/************************************************************/
+Pin [58,60,61,63, 64,65,67,68] = [D0..7]; 
+/*
+Pin 58  = IO_35;
+Pin 60  = IO_36;
+Pin 61  = IO_37;
+Pin 63  = IO_38;
+Pin 64  = IO_39;
+Pin 65  = IO_40;
+Pin 67  = IO_41;
+Pin 68  = IO_42;
+*/
 
 /************************************************************/
 /* vytazeni vnitrnich vyrazu pro testy                      */
@@ -268,11 +276,14 @@ ROM_4K  = CA:[F000..FFFF];
 
 
 ROM_AREA = 
-	  ((ROM_SIZE:0) & ROM_24K)
-	# ((ROM_SIZE:1) & ROM_16K)
-	# ((ROM_SIZE:2) & ROM_8K)
-	# ((ROM_SIZE:3) & ROM_4K)
-	/* ROM_SIZE 4+ == zadna ROM */
+	RomMapped & 
+	(
+		  ((ROM_SIZE:0) & ROM_24K)
+		# ((ROM_SIZE:1) & ROM_16K)
+		# ((ROM_SIZE:2) & ROM_8K)
+		# ((ROM_SIZE:3) & ROM_4K)
+		/* ROM_SIZE 4+ == zadna ROM */
+	)
 	;
 
 NATIVE_RAM_HI = ROM_24K & !ROM_AREA;
@@ -355,26 +366,26 @@ Write = E & !Rw;
 
 RAM 		= NATIVE_RAM_LO 
 		# NATIVE_RAM_HI 
-		# ROM_AREA & !RomMapped;
+		;
 
-ROM		= ROM_AREA &  RomMapped;
+ROM		= ROM_AREA;
 
 EMS_WINDOW 	= EMS1_WINDOW # EMS2_WINDOW;
 
-RAM.OE	= !EMS_WINDOW; /* managed by ATF2 */
-ROM.OE	= !EMS_WINDOW; /* managed by ATF2 */
+RAM.OE	= !EMS_WINDOW & !BA; /* managed by ATF2 */
+ROM.OE	= !EMS_WINDOW & !BA; /* managed by ATF2 */
 
 /************************************************************/
 /* DEVICE BLOCK                                             */
 /************************************************************/
 
-Dev_Sel_1 = CA:[A020..A03F];
-Dev_Sel_2 = CA:[A040..A05F];
-Dev_Sel_3 = CA:[A060..A07F];
-Dev_Sel_4 = CA:[A080..A09F];
-Dev_Sel_5 = CA:[A0A0..A0BF];
-Dev_Sel_6 = CA:[A0C0..A0DF];
-Dev_Sel_7 = CA:[A0E0..A0FF];
+Dev_Sel_1 = CA:[A020..A03F] & !BA;
+Dev_Sel_2 = CA:[A040..A05F] & !BA;
+Dev_Sel_3 = CA:[A060..A07F] & !BA;
+Dev_Sel_4 = CA:[A080..A09F] & !BA;
+Dev_Sel_5 = CA:[A0A0..A0BF] & !BA;
+Dev_Sel_6 = CA:[A0C0..A0DF] & !BA;
+Dev_Sel_7 = CA:[A0E0..A0FF] & !BA;
 
 
 /************************************************************/
@@ -403,7 +414,7 @@ RomMapped.d = D0;
 RomMapped.CK = !Q;
 RomMapped.AR = Reset & !BootSrc;
 RomMapped.AP = Reset & BootSrc;
-RomMapped.CE = REG6 & !Rw;
+RomMapped.CE = REG6 & !Rw & !BA;
 
 
 /************************************************************/
@@ -414,14 +425,14 @@ ROM_SIZE.d=[D2..D0];
 
 ROM_SIZE.CK=!Q;
 ROM_SIZE.AR=Reset;
-ROM_SIZE.CE = REG7 & !Rw;
+ROM_SIZE.CE = REG7 & !Rw & !BA;
 
 
 /************************************************************/
 /* ATF1 Registers Read                                      */
 /************************************************************/
 
-[D7..D0].OE = E & Rw & ( REG6 # REG7 ); /* write full D */
+[D7..D0].OE = E & Rw & ( REG6 # REG7 ) & !BA; /* write full D */
 
 [D7..D3] = E & !E;		/* 0 for unused */
 
