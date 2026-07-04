@@ -691,13 +691,13 @@
 	/************************************************************/
 	
 	RAM =
-	
 	      EMS_WINDOW
+	   &  ACTIVE_SYS
+	   # BA
+	   ;
 	
-	   &  ACTIVE_SYS;
 	
-	
-	RAM.OE = EMS_WINDOW & !BA;
+	RAM.OE = EMS_WINDOW & !BA # BA;
 	
 	/************************************************************/
 	/* SHARED CHIP SELECT                                       */
