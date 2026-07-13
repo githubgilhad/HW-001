@@ -12,7 +12,7 @@
 	Skutecna jmena signalu a cisla pinu, pokud je pred jmenem !, je signal aktivni v LOW:
 	*/
 	/************************************************************/
-	/* I is Input, O is output, H is 3state HiZ                 */
+	/* I is Input, O is output, H is 3state HiZ         {{{  OK */
 	/************************************************************/
 	
 	/* IOH Data for everything */
@@ -49,10 +49,10 @@
 	PIN 36  = B_SHARE_DIRTY;	/* O Dirty+Wanted: if(SHARE_GRANTED){WANTS:1=CPU wants SharedRAM}else{DIRTY:1=CPU already got SharedRAM} */
 	PIN 37  = B_SHARE_GRANTED;	/* O MHF owns SharedRAM 1=Active */
 	PIN 40  = B_SHARE_REQUEST;	/* I MHF wants own SharedRAM 1=Active */
-	PIN 41  = B_S_SELECT;		/* O SharedRAM ~{CS} 0=Active */
-	PIN 42  = B_S_READ;		/* O SharedRAM ~{OE} 0=Active */
-	PIN 44  = B_S_WRITE;		/* O SharedRAM ~{WE} 0=Active */
-	PIN 45  = B_G_ENABLE;		/* O Gate enabled 0=Enabled 1=HiZ */
+	PIN 41  = !B_S_SELECT;		/* O SharedRAM ~{CS} 0=Active */
+	PIN 42  = !B_S_READ;		/* O SharedRAM ~{OE} 0=Active */
+	PIN 44  = !B_S_WRITE;		/* O SharedRAM ~{WE} 0=Active */
+	PIN 45  = !B_G_ENABLE;		/* O Gate enabled 0=Enabled 1=HiZ */
 	PIN 46  = B_G_A_DIR;		/* O Address dir 1=MHF->CPU 0=CPU->MHF */
 	PIN 47  = B_G_D_DIR;		/* O Data dir 1=MHF->CPU 0=CPU->MHF */
 	PIN 48  = B_SHARE_SELECT;	/* I MHF request 1=manage SharedRAM 0=manage (BA?SystemRAM:nothing) */
@@ -72,7 +72,8 @@
 	PIN 69  = A_S_16;		/* IO connected to SharedRAM.A16 and MHF MCU */
 			/* pokud CPU vlastni shared RAM, je to Output a ovlada jeji A16 */
 			/* pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */
-	/* I HD6309 CPU signals {{{ */
+	/* }}} */
+	/* I HD6309 CPU signals {{{ OK */
 	PIN 71  = BS;
 	PIN 75  = MRDY;
 	PIN 76  = DMA_BREQ;
@@ -81,20 +82,20 @@
 	PIN 81  = Dev_NMI;
 	PIN 83  = BA;
 	/* }}} */
-	/* I Memory Regions {{{ */
+	/* I Memory Regions {{{ OK */
 	PIN 84  = MR3;
 	PIN 92  = MR2;
 	PIN 93  = MR1;
 	PIN 94  = MR0;
 	/* }}} */
-	/* OH GA12..16 is connected to SystemRAM.A12..16 and SysBus.A12..15 {{{ */
+	/* OH GA12..16 is connected to SystemRAM.A12..16 and SysBus.A12..15 {{{ OK */
 	PIN 96  = GA16;
 	PIN 97  = GA15;
 	PIN 98  = GA14;
 	PIN 99  = GA13;
 	PIN 100 = GA12;
 	/* }}} */
-	/***** Input Only {{{ ****/
+	/***** Input Only {{{ *** OK */
 	
 	/* Pin 85 = IO_52;      /* INPUT/GCLK3 */ 
 	Pin 87 = E;      /* INPUT/GCLK1 */
@@ -102,48 +103,48 @@
 	Pin 89 = !Reset; /* INPUT/GCLR */
 	Pin 90 = Q;      /* INPUT/OE2/GCLK2 */
 	/* }}} */
-	/* {{{ HD6309 Memory Regions
-	 +-------------------------------------------------------------------------+
-	 |   HD6309 Memory Regions                                                 |
-	 +---------------+---------------+-----------------------------------------+
-	 |   TYP     hex | RANGE         | CONTENT                                 |
-	 +---------------+---------------+-----------------------------------------+
-	 |   0000     0  | 0000..7FFF    | Native RAM 32K (or more)                |
-	 +---------------+---------------+-----------------------------------------+
-	 |   0001     1  | 8000..8FFF    | EMS1 4K                                 |
-	 +---------------+---------------+-----------------------------------------+
-	 |   0010     2  | 9000..9FFF    | EMS2 4K                                 |
-	 +---------------+---------------+-----------------------------------------+
-	 |   1rrr     8+ | A000..A005    | 6 GLUE registers ( rrr = regnum )       |
-	 +---------------+---------------+-----------------------------------------+
-	 |   1000     8  | A000          | GLUE register 000 EMS1.Page AAxBBBBB    |
-	 +---------------+---------------+-----------------------------------------+
-	 |   1001     9  | A001          | GLUE register 001 EMS1.Status xxxxxWxC  |
-	 +---------------+---------------+-----------------------------------------+
-	 |   1010     A  | A002          | GLUE register 002 EMS2.Page AAxBBBBB    |
-	 +---------------+---------------+-----------------------------------------+
-	 |   1011     B  | A003          | GLUE register 003 EMS2.Status xxxxxWxC  |
-	 +---------------+---------------+-----------------------------------------+
-	 |   1100     C  | A004          | GLUE register 004 ChipA.Status xxxxDWAC |
-	 +---------------+---------------+-----------------------------------------+
-	 |   1101     D  | A005          | GLUE register 005 ChipB.Status xxxxDWAC |
-	 +---------------+---------------+-----------------------------------------+
-	 |   1111     F  | A006..A01F    | GLUE registers mirrored /reserved       |
-	 +---------------+---------------+-----------------------------------------+
-	 |   0100     4  | A020..A0FF    | Memory mapped devices [1..7] x 32 B     |
-	 +---------------+---------------+-----------------------------------------+
-	 |   0011     3  | A100..FFFF    | Native ROM 23.75K (or less)             |
-	 +---------------+---------------+-----------------------------------------+
+	/* {{{ HD6309 Memory Regions OK
+	 +-----------------------------------------------------------------------------+
+	 |   HD6309 Memory Regions                                                     |
+	 +---------------+---------------+---------------------------------------------+
+	 |   TYP     hex | RANGE         | CONTENT                                     |
+	 +---------------+---------------+---------------------------------------------+
+	 |   0000     0  | 0000..7FFF    | Native RAM 32K (or more)                    |
+	 +---------------+---------------+---------------------------------------------+
+	 |   0001     1  | 8000..8FFF    | EMS1 4K                                     |
+	 +---------------+---------------+---------------------------------------------+
+	 |   0010     2  | 9000..9FFF    | EMS2 4K                                     |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1rrr     8+ | A000..A005    | 6 GLUE registers ( rrr = regnum )           |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1000     8  | A000          | RW GLUE register 000 EMS1.Page AAxBBBBB     |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1001     9  | A001          | R  GLUE register 001 EMS1.Status xxxxxWxC   |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1010     A  | A002          | RW GLUE register 002 EMS2.Page AAxBBBBB     |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1011     B  | A003          | R  GLUE register 003 EMS2.Status xxxxxWxC   |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1100     C  | A004          | R  GLUE register 004 ChipA.Status xxxxDWAC  |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1101     D  | A005          | R  GLUE register 005 ChipB.Status xxxxDWAC  |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1111     F  | A006..A007    | RW GLUE ATF1 registers RomMapped + ROM_SIZE |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1111     F  | A008..A01F    | GLUE registers reserved                     |
+	 +---------------+---------------+---------------------------------------------+
+	 |   0100     4  | A020..A0FF    | Memory mapped devices [1..7] x 32 B         |
+	 +---------------+---------------+---------------------------------------------+
+	 |   0011     3  | A100..FFFF    | Native ROM 23.75K (or less)                 |
+	 +---------------+---------------+---------------------------------------------+
 	}}} */
+	/************************************************************/
+	/* SOME DECLARATION - need to check {{{                     */
+	/************************************************************/
+	
 	
 	TRUE = E # !E;
 	FALSE = E & !E;
-	/************************************************************/
-	/* HALT mode                                                */
-	/************************************************************/
-	
-	HALT = A_HALT # B_HALT;
-	/* nasledne se aktivuje BA behem nekolika taktu a tim se odpoji sbernice od CPU */
 	
 	/************************************************************/
 	/* FIELDS                                                   */
@@ -192,16 +193,18 @@
 	/*
 	A = owned by MHF
 	C = owned by CPU
-	D = dirty
+	Dc, Dm = dirty (from being used by CPU or MHF)
 	*/
 	
 	NODE CHIPA_A;
 	NODE CHIPA_C;
-	NODE CHIPA_D;
+	NODE CHIPA_Dc;
+	NODE CHIPA_Dm;
 	
 	NODE CHIPB_A;
 	NODE CHIPB_C;
-	NODE CHIPB_D;
+	NODE CHIPB_Dc;
+	NODE CHIPB_Dm;
 	
 	
 	/************************************************************/
@@ -247,9 +250,9 @@
 	NODE ACTIVE_B1;
 	NODE ACTIVE_B0;
 	
-	
+	/* }}} */
 	/************************************************************/
-	/* CONSTANT DECODE                                          */
+	/* CONSTANT DECODE - need to check {{{                      */
 	/************************************************************/
 	
 	RAM_WINDOW =
@@ -300,9 +303,9 @@
 	EMS2_ROM  =  EMS2_A1 &  EMS2_A0;
 	
 	
-	
+	/* }}} */
 	/************************************************************/
-	/* REG0 EMS1 PAGE {{{                                       */
+	/* REG0 EMS1 PAGE {{{   (A[1..0] x B[4..0])              OK */
 	/************************************************************/
 	/*
 	D7 D6 = AA
@@ -360,7 +363,7 @@
 	
 	/* }}} */
 	/************************************************************/
-	/* REG2 EMS2 PAGE {{{                                       */
+	/* REG2 EMS2 PAGE {{{ (A[1..0] x B[4..0])               OK  */
 	/************************************************************/
 	
 	/*
@@ -414,6 +417,178 @@
 	EMS2_B0.CE = REG_WRITE & (MR:A);
 	
 	
+	/* }}} */
+	/* SUPERVISED part BEGIN {{{ */
+	/************************************************************/
+	/* HALT mode                                                */
+	/************************************************************/
+	
+	HALT =	   A_HALT # B_HALT;
+	HALT.OE =  A_HALT # B_HALT; /* enabled if driven by us */
+	
+	/* nasledne se aktivuje BA behem nekolika taktu a tim se odpoji sbernice od CPU */
+	
+	/* Rw je bezne ovladan ATF1, s vyjimkou HALT rezimu, kdy to prevezme ATF2 a ridi se dle MHF_x */
+	Rw =	  !A_S_READ & A_HALT
+		# !B_S_READ & B_HALT & !A_HALT; /* directed by A primary, or B secondary */
+	Rw.OE =	  BA; /* driven only in HALT mode */
+	
+	/* RAM je bezne ovladan ATF1, s vyjimkou HALT rezimu a EMS oken, kdy to prevezme ATF2 a ridi se dle MHF_x a nastaveni EMS  */
+	RAM =	  BA                /* v HALT rezimu je RAM vybrana permanentne */
+		# (MR:1) & EMS1_SYS /* Sys RAM selected in EMS1 */
+		# (MR:2) & EMS2_SYS /* Sys RAM selected in EMS2 */
+		;
+	RAM.OE =   BA
+		# (MR:1)
+		# (MR:2)
+		;
+	
+	/* ROM je  bezne ovladan ATF1, s vyjimkou HALT rezimu (kde vybran neni) a EMS oken, kdy to prevezme ATF2 a ridi se dle MHF_x a nastaveni EMS  */
+	ROM = 	
+		  (MR:1) & EMS1_ROM & !BA
+		# (MR:2) & EMS2_ROM & !BA
+		;
+	ROM.OE =   BA
+		# (MR:1)
+		# (MR:2)
+		;
+	
+	/*  IO connected to SharedRAM.A16 and MHF MCU */
+			/* pokud CPU vlastni shared RAM, je to Output a ovlada jeji A16 */
+			/* pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */ /* TODO GA16 */
+	A_S_16 = 	  (MR:1) & EMS1_MHFA & CHIPA_C & EMS1_B4
+			# (MR:2) & EMS2_MHFA & CHIPA_C & EMS2_B4
+			;
+	A_S_16.OE = 	  (MR:1) & EMS1_MHFA & CHIPA_C 
+			# (MR:2) & EMS2_MHFA & CHIPA_C 
+			;
+	
+	/*  IO connected to SharedRAM.A16 and MHF MCU */
+			/* pokud CPU vlastni shared RAM, je to Output a ovlada jeji A16 */
+			/* pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */ /* TODO GA16 */
+	B_S_16 = 	  (MR:1) & EMS1_MHFB & CHIPB_C & EMS1_B4
+			# (MR:2) & EMS2_MHFB & CHIPB_C & EMS2_B4
+			;
+	B_S_16.OE = 	  (MR:1) & EMS1_MHFB & CHIPB_C 
+			# (MR:2) & EMS2_MHFB & CHIPB_C 
+			;
+	/* O Dirty+Wanted+BA: BA?1:if(SHARE_GRANTED){WANTS:1=CPU wants SharedRAM}else{DIRTY:1=CPU already got SharedRAM} */
+	/* in HALT state 1= writing SystemRAM is possible
+	 * if SHARE_GRANTED 1= CPU already wants SharedRAM (=please release it soon)
+	 * if !SHARE_GRANTED 1 = CPU already got SharedRAM (=and maybe modified it)
+	 * 0 = nothing special
+	 */
+	A_SHARE_DIRTY =	  BA
+			# A_SHARE_GRANTED & ( EMS1_MHFA # EMS2_MHFA )
+			# !A_SHARE_GRANTED & CHIPA_Dc
+			;
+	B_SHARE_DIRTY =	  BA & !A_HALT /* write if MHF_A released it alredy */
+			# B_SHARE_GRANTED & ( EMS1_MHFB # EMS2_MHFB )
+			# !B_SHARE_GRANTED & CHIPB_Dc
+			;
+	A_SHARE_GRANTED =	A_SHARE_REQUEST & 
+	
+	/************************************************************/
+	/* SUPERVISED part ENDS }}}                                 */
+	/************************************************************/
+
+CPU_REQ = EMS1_A1 & !EMS1_A0;
+
+CPU_ACQUIRE = CPU_REQ & !CHIPA_A;
+CPU_RELEASE = !CPU_REQ;
+
+MHF_ACQUIRE = A_SHARE_REQUEST & !CHIPA_C;
+MHF_RELEASE = !A_SHARE_REQUEST;
+
+Pak registry:
+
+CHIPA_C.d =
+        CPU_ACQUIRE
+    #   (CHIPA_C & !CPU_RELEASE);
+
+CHIPA_A.d =
+        MHF_ACQUIRE
+    #   (CHIPA_A & !MHF_RELEASE);
+
+CHIPA_Dc.d =
+        CPU_ACQUIRE
+    #   (CHIPA_Dc & !MHF_RELEASE);
+
+A_SHARE_GRANTED pak skutečně jen
+
+A_SHARE_GRANTED = CHIPA_A & A_SHARE_REQUEST;
+
+
+Já bych proto CPU_ACQUIRE definoval jinak
+
+CPU může získat chip, když
+
+CPU o něj žádá
+a MHF už o něj nežádá.
+
+Ne podle registru CHIPA_A, ale podle vstupu.
+
+CPU_ACQUIRE = CPU_REQ & !A_SHARE_REQUEST;
+
+Analogicky
+
+MHF_ACQUIRE = A_SHARE_REQUEST & !CPU_REQ;
+
+Pak dostaneš
+	/************************************************************/
+	/* REGISTERS READ  {{{                                      */
+	/************************************************************/
+	/* REG0 */
+	
+	[D7..D0].OE = REG_READ;
+	
+	D7 =  REG_READ & (
+		  (MR:8)  & EMS1_A1
+		# (MR:A) & EMS2_A1
+		);
+	
+	D6 =  REG_READ & (
+		  (MR:8)  & EMS1_A0
+		# (MR:A) & EMS2_A0
+		);
+	
+	D5 =  REG_READ & (
+		/*  (MR:8) & FALSE ) */
+		FALSE
+		);
+	
+	D4 =  REG_READ & (
+		  (MR:8)  & EMS1_B4
+		# (MR:A) & EMS2_B4
+		);
+	D3 =  REG_READ & (
+		  (MR:8)  & EMS1_B3
+		# (MR:A) & EMS2_B3
+		# (MR:C) & CHIPA_D
+		# (MR:D) & CHIPB_D
+		);
+	D2 =  REG_READ & (
+		  (MR:8) & EMS1_B2
+		# (MR:9) & EMS1_W
+		# (MR:A) & EMS2_B2
+		# (MR:B) & EMS2_W
+		# (MR:C) & CHIPA_W
+		# (MR:D) & CHIPB_W
+		);
+	D1 =  REG_READ & (
+		  (MR:8) & EMS1_B1
+		# (MR:A) & EMS2_B1
+		# (MR:C) & CHIPA_A
+		# (MR:D) & CHIPB_A
+		);
+	D0 =  REG_READ & (
+		  (MR:8) & EMS1_B0
+		# (MR:9) & EMS1_C
+		# (MR:A) & EMS2_B0
+		# (MR:B) & EMS2_C
+		# (MR:C) & CHIPA_C
+		# (MR:D) & CHIPB_C
+		);
 	/* }}} */
 	/************************************************************/
 	/* CPU wants which chip  FIXME: MHF??                       */
@@ -860,61 +1035,6 @@
 	      EMS2_MHFA & CHIPA_W
 	
 	   #  EMS2_MHFB & CHIPB_W;
-	
-	/************************************************************/
-	/* REGISTERS READ                                           */
-	/************************************************************/
-	/* REG0 */
-	
-	[D7..D0].OE = REG_READ;
-	
-	D7 =  REG_READ & (
-		  (MR:8)  & EMS1_A1
-		# (MR:A) & EMS2_A1
-		);
-	
-	D6 =  REG_READ & (
-		  (MR:8)  & EMS1_A0
-		# (MR:A) & EMS2_A0
-		);
-	
-	D5 =  REG_READ & (
-		/*  (MR:8) & FALSE ) */
-		FALSE
-		);
-	
-	D4 =  REG_READ & (
-		  (MR:8)  & EMS1_B4
-		# (MR:A) & EMS2_B4
-		);
-	D3 =  REG_READ & (
-		  (MR:8)  & EMS1_B3
-		# (MR:A) & EMS2_B3
-		# (MR:C) & CHIPA_D
-		# (MR:D) & CHIPB_D
-		);
-	D2 =  REG_READ & (
-		  (MR:8) & EMS1_B2
-		# (MR:9) & EMS1_W
-		# (MR:A) & EMS2_B2
-		# (MR:B) & EMS2_W
-		# (MR:C) & CHIPA_W
-		# (MR:D) & CHIPB_W
-		);
-	D1 =  REG_READ & (
-		  (MR:8) & EMS1_B1
-		# (MR:A) & EMS2_B1
-		# (MR:C) & CHIPA_A
-		# (MR:D) & CHIPB_A
-		);
-	D0 =  REG_READ & (
-		  (MR:8) & EMS1_B0
-		# (MR:9) & EMS1_C
-		# (MR:A) & EMS2_B0
-		# (MR:B) & EMS2_C
-		# (MR:C) & CHIPA_C
-		# (MR:D) & CHIPB_C
-		);
 	
 	
 	
