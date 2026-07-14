@@ -193,7 +193,7 @@
 	/*
 	A = owned by MHF
 	C = owned by CPU
-	Dc, Dm = dirty (from being used by CPU or MHF)
+	Dc, Dm = dirty (from viewpoint of CPU or MHF)
 	*/
 	
 	NODE CHIPA_A;
@@ -211,15 +211,15 @@
 	/* Derived signals                                          */
 	/************************************************************/
 	
-	NODE EMS1_SYS;
-	NODE EMS1_MHFA;
-	NODE EMS1_MHFB;
-	NODE EMS1_ROM;
+	NODE EMS1_is_SYS;
+	NODE EMS1_is_MHFA;
+	NODE EMS1_is_MHFB;
+	NODE EMS1_is_ROM;
 	
-	NODE EMS2_SYS;
-	NODE EMS2_MHFA;
-	NODE EMS2_MHFB;
-	NODE EMS2_ROM;
+	NODE EMS2_is_SYS;
+	NODE EMS2_is_MHFA;
+	NODE EMS2_is_MHFB;
+	NODE EMS2_is_ROM;
 	
 	
 	NODE CHIPA_W;
@@ -292,15 +292,15 @@
 	/* Decode current mapping                                   */
 	/************************************************************/
 	
-	EMS1_SYS  = !EMS1_A1 & !EMS1_A0;
-	EMS1_MHFA = !EMS1_A1 &  EMS1_A0;
-	EMS1_MHFB =  EMS1_A1 & !EMS1_A0;
-	EMS1_ROM  =  EMS1_A1 &  EMS1_A0;
+	EMS1_is_SYS  = !EMS1_A1 & !EMS1_A0;
+	EMS1_is_MHFA = !EMS1_A1 &  EMS1_A0;
+	EMS1_is_MHFB =  EMS1_A1 & !EMS1_A0;
+	EMS1_is_ROM  =  EMS1_A1 &  EMS1_A0;
 	
-	EMS2_SYS  = !EMS2_A1 & !EMS2_A0;
-	EMS2_MHFA = !EMS2_A1 &  EMS2_A0;
-	EMS2_MHFB =  EMS2_A1 & !EMS2_A0;
-	EMS2_ROM  =  EMS2_A1 &  EMS2_A0;
+	EMS2_is_SYS  = !EMS2_A1 & !EMS2_A0;
+	EMS2_is_MHFA = !EMS2_A1 &  EMS2_A0;
+	EMS2_is_MHFB =  EMS2_A1 & !EMS2_A0;
+	EMS2_is_ROM  =  EMS2_A1 &  EMS2_A0;
 	
 	
 	/* }}} */
@@ -331,7 +331,7 @@
 	*/
 	
 	
-	/* spolecne rizeni */
+	/* spolecne rizeni 0.25 tact */
 	
 	EMS1_A1.CK = !Q;
 	EMS1_A0.CK = !Q;
@@ -435,8 +435,8 @@
 	
 	/* RAM je bezne ovladan ATF1, s vyjimkou HALT rezimu a EMS oken, kdy to prevezme ATF2 a ridi se dle MHF_x a nastaveni EMS  */
 	RAM =	  BA                /* v HALT rezimu je RAM vybrana permanentne */
-		# (MR:1) & EMS1_SYS /* Sys RAM selected in EMS1 */
-		# (MR:2) & EMS2_SYS /* Sys RAM selected in EMS2 */
+		# (MR:1) & EMS1_is_SYS /* Sys RAM selected in EMS1 */
+		# (MR:2) & EMS2_is_SYS /* Sys RAM selected in EMS2 */
 		;
 	RAM.OE =   BA
 		# (MR:1)
@@ -445,8 +445,8 @@
 	
 	/* ROM je  bezne ovladan ATF1, s vyjimkou HALT rezimu (kde vybran neni) a EMS oken, kdy to prevezme ATF2 a ridi se dle MHF_x a nastaveni EMS  */
 	ROM = 	
-		  (MR:1) & EMS1_ROM & !BA
-		# (MR:2) & EMS2_ROM & !BA
+		  (MR:1) & EMS1_is_ROM & !BA
+		# (MR:2) & EMS2_is_ROM & !BA
 		;
 	ROM.OE =   BA
 		# (MR:1)
@@ -456,21 +456,21 @@
 	/*  IO connected to SharedRAM.A16 and MHF MCU */
 			/* pokud CPU vlastni shared RAM, je to Output a ovlada jeji A16 */
 			/* pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */ /* TODO GA16 */
-	A_S_16 = 	  (MR:1) & EMS1_MHFA & CHIPA_C & EMS1_B4
-			# (MR:2) & EMS2_MHFA & CHIPA_C & EMS2_B4
+	A_S_16 = 	  (MR:1) & EMS1_is_MHFA & CHIPA_C & EMS1_B4
+			# (MR:2) & EMS2_is_MHFA & CHIPA_C & EMS2_B4
 			;
-	A_S_16.OE = 	  (MR:1) & EMS1_MHFA & CHIPA_C 
-			# (MR:2) & EMS2_MHFA & CHIPA_C 
+	A_S_16.OE = 	  (MR:1) & EMS1_is_MHFA & CHIPA_C 
+			# (MR:2) & EMS2_is_MHFA & CHIPA_C 
 			;
 	
 	/*  IO connected to SharedRAM.A16 and MHF MCU */
 			/* pokud CPU vlastni shared RAM, je to Output a ovlada jeji A16 */
 			/* pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */ /* TODO GA16 */
-	B_S_16 = 	  (MR:1) & EMS1_MHFB & CHIPB_C & EMS1_B4
-			# (MR:2) & EMS2_MHFB & CHIPB_C & EMS2_B4
+	B_S_16 = 	  (MR:1) & EMS1_is_MHFB & CHIPB_C & EMS1_B4
+			# (MR:2) & EMS2_is_MHFB & CHIPB_C & EMS2_B4
 			;
-	B_S_16.OE = 	  (MR:1) & EMS1_MHFB & CHIPB_C 
-			# (MR:2) & EMS2_MHFB & CHIPB_C 
+	B_S_16.OE = 	  (MR:1) & EMS1_is_MHFB & CHIPB_C 
+			# (MR:2) & EMS2_is_MHFB & CHIPB_C 
 			;
 	/* O Dirty+Wanted+BA: BA?1:if(SHARE_GRANTED){WANTS:1=CPU wants SharedRAM}else{DIRTY:1=CPU already got SharedRAM} */
 	/* in HALT state 1= writing SystemRAM is possible
@@ -479,62 +479,65 @@
 	 * 0 = nothing special
 	 */
 	A_SHARE_DIRTY =	  BA
-			# A_SHARE_GRANTED & ( EMS1_MHFA # EMS2_MHFA )
-			# !A_SHARE_GRANTED & CHIPA_Dc
+			# A_SHARE_GRANTED & ( EMS1_is_MHFA # EMS2_is_MHFA )
+			# !A_SHARE_GRANTED & CHIPA_Dm
 			;
 	B_SHARE_DIRTY =	  BA & !A_HALT /* write if MHF_A released it alredy */
-			# B_SHARE_GRANTED & ( EMS1_MHFB # EMS2_MHFB )
-			# !B_SHARE_GRANTED & CHIPB_Dc
+			# B_SHARE_GRANTED & ( EMS1_is_MHFB # EMS2_is_MHFB )
+			# !B_SHARE_GRANTED & CHIPB_Dm
 			;
-	A_SHARE_GRANTED =	A_SHARE_REQUEST & 
+	A_SHARE_GRANTED =	A_SHARE_REQUEST & CHIPA_A;
+	B_SHARE_GRANTED =	B_SHARE_REQUEST & CHIPB_A;
 	
+	/************************************************************/
+	/* OWNERSHIP CHIP_xx                   {{{               OK */
+	/************************************************************/
+	/* EMSx_is_MHFx is re/set in 0.25 tact */
+	CHIPA_C.d =
+			  EMS1_is_MHFA & !CHIPA_A
+			# EMS2_is_MHFA & !CHIPA_A /* set if ask and free */
+			# EMS1_is_MHFA &  CHIPA_C
+			# EMS2_is_MHFA &  CHIPA_C /* keep if ask */
+			;
+	CHIPB_C.d =
+			  EMS1_is_MHFB & !CHIPB_A
+			# EMS2_is_MHFB & !CHIPB_A /* set if ask and free */
+			# EMS1_is_MHFB &  CHIPB_C
+			# EMS2_is_MHFB &  CHIPB_C /* keep if ask */
+			;
+	
+	CHIPA_C.CK = !E; /* 0.5 tact */
+	CHIPB_C.CK = !E; /* 0.5 tact */
+	
+	CHIPA_A.d =
+			  A_SHARE_REQUEST & !CHIPA_C /* set */
+			# A_SHARE_REQUEST &  CHIPA_A /* keep */
+			;
+	CHIPB_A.d =
+			  B_SHARE_REQUEST & !CHIPB_C
+			# B_SHARE_REQUEST &  CHIPB_A
+			;
+	CHIPA_A.CK = Q; /* 0.75 tact */
+	CHIPB_A.CK = Q; /* 0.75 tact */
+	
+	
+	CHIPA_Dc.d = 
+			  CHIPA_A
+			# CHIPA_Dc & !CHIPA_C;
+	CHIPA_Dc.CK = E; /* 0.0 tact, az po CHIPA_A a CHIPA_C, a pred zapisem registru, na pocatku cteni, takze CPU uz cte pripadne novou hodnotu  */ 
+	
+	CHIPA_Dm.d = 
+			  CHIPA_C
+			# CHIPA_Dm & !CHIPA_A;
+	CHIPA_Dm.CK = E; /* 0.0 tact, az po CHIPA_A a CHIPA_C, a pred zapisem registru, na pocatku cteni, takze CPU uz cte pripadne novou hodnotu  */ 
+	
+	/* }}} */
 	/************************************************************/
 	/* SUPERVISED part ENDS }}}                                 */
 	/************************************************************/
 
-CPU_REQ = EMS1_A1 & !EMS1_A0;
-
-CPU_ACQUIRE = CPU_REQ & !CHIPA_A;
-CPU_RELEASE = !CPU_REQ;
-
-MHF_ACQUIRE = A_SHARE_REQUEST & !CHIPA_C;
-MHF_RELEASE = !A_SHARE_REQUEST;
-
-Pak registry:
-
-CHIPA_C.d =
-        CPU_ACQUIRE
-    #   (CHIPA_C & !CPU_RELEASE);
-
-CHIPA_A.d =
-        MHF_ACQUIRE
-    #   (CHIPA_A & !MHF_RELEASE);
-
-CHIPA_Dc.d =
-        CPU_ACQUIRE
-    #   (CHIPA_Dc & !MHF_RELEASE);
-
-A_SHARE_GRANTED pak skutečně jen
-
-A_SHARE_GRANTED = CHIPA_A & A_SHARE_REQUEST;
-
-
-Já bych proto CPU_ACQUIRE definoval jinak
-
-CPU může získat chip, když
-
-CPU o něj žádá
-a MHF už o něj nežádá.
-
-Ne podle registru CHIPA_A, ale podle vstupu.
-
-CPU_ACQUIRE = CPU_REQ & !A_SHARE_REQUEST;
-
-Analogicky
-
-MHF_ACQUIRE = A_SHARE_REQUEST & !CPU_REQ;
-
-Pak dostaneš
+	
+	
 	/************************************************************/
 	/* REGISTERS READ  {{{                                      */
 	/************************************************************/
@@ -564,8 +567,8 @@ Pak dostaneš
 	D3 =  REG_READ & (
 		  (MR:8)  & EMS1_B3
 		# (MR:A) & EMS2_B3
-		# (MR:C) & CHIPA_D
-		# (MR:D) & CHIPB_D
+		# (MR:C) & CHIPA_Dc
+		# (MR:D) & CHIPB_Dc
 		);
 	D2 =  REG_READ & (
 		  (MR:8) & EMS1_B2
@@ -590,6 +593,35 @@ Pak dostaneš
 		# (MR:D) & CHIPB_C
 		);
 	/* }}} */
+
+	/************************************************************/
+	/* EMS STATUS                                               */
+	/************************************************************/
+	
+	EMS1_C = /* owned by CPU */
+		  EMS1_is_SYS
+		# (EMS1_is_MHFA & CHIPA_C)
+		# (EMS1_is_MHFB & CHIPB_C
+		# EMS1_is_ROM
+		;
+	
+	
+	EMS2_C =
+		  EMS2_is_SYS
+		# EMS2_is_MHFA & CHIPA_C
+		# EMS2_is_MHFB & CHIPB_C
+		# EMS2_is_ROM
+		;
+	
+	EMS1_W = /* Wanted by card */
+		  EMS1_is_MHFA & A_SHARE_REQUEST
+		# EMS1_is_MHFB & B_SHARE_REQUEST
+		;
+	
+	EMS2_W = /* Wanted by card */
+		  EMS2_is_MHFA & A_SHARE_REQUEST
+		# EMS2_is_MHFB & B_SHARE_REQUEST
+		;
 	/************************************************************/
 	/* CPU wants which chip  FIXME: MHF??                       */
 	/************************************************************/
@@ -602,11 +634,11 @@ Pak dostaneš
 	/************************************************************/
 	
 	CPU_REQ_A = 
-	      EMS1_MHFA
-	   #  EMS2_MHFA;
+	      EMS1_is_MHFA
+	   #  EMS2_is_MHFA;
 	CPU_REQ_B = 
-	      EMS1_MHFB
-	   #  EMS2_MHFB;
+	      EMS1_is_MHFB
+	   #  EMS2_is_MHFB;
 	
 	
 	MHF_REQ_A = A_SHARE_REQUEST;
@@ -1001,40 +1033,7 @@ Pak dostaneš
 	
 	   &  E;
 	
-	/************************************************************/
-	/* EMS STATUS                                               */
-	/************************************************************/
 	
-	EMS1_C =
-	
-	      EMS1_SYS
-	
-	   # (EMS1_MHFA & CHIPA_C)
-	
-	   # (EMS1_MHFB & CHIPB_C);
-	
-	
-	EMS2_C =
-	
-	      EMS2_SYS
-	
-	   # (EMS2_MHFA & CHIPA_C)
-	
-	   # (EMS2_MHFB & CHIPB_C);
-	
-	
-	EMS1_W =
-	
-	      EMS1_MHFA & CHIPA_W
-	
-	   #  EMS1_MHFB & CHIPB_W;
-	
-	
-	EMS2_W =
-	
-	      EMS2_MHFA & CHIPA_W
-	
-	   #  EMS2_MHFB & CHIPB_W;
 	
 	
 	
