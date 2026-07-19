@@ -1,0 +1,3 @@
+DIRTY
+Asi pouziju S s vykladem v dokumentaci Seen/Sync/Servised/Stamp. S tim, ze podle situace si to muze kdokoli vyslovovat jak chce a jak mu to v danem kontextu zni nejlip. (Ja to mozna budu vyslovovat cesky jako Spoluprace).
+S (Synchronization state) – hardware-maintained flag indicating that the opposite side has acquired ownership of the shared memory chip since the current side last owned it. Depending on the operating mode it serves as a synchronization, service or notification flag.

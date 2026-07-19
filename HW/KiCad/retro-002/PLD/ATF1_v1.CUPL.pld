@@ -296,38 +296,44 @@ NATIVE_RAM_HI = ROM_24K & !ROM_AREA;
 /* MEMORY REGION BUS                                        */
 /************************************************************/
 
-MR0 =
-      EMS1_WINDOW
-    # ROM_AREA
-    # REG1
-    # REG3
-    # REG5
-    # REG_MIRROR;
+MR0 = !BA & (
+	  EMS1_WINDOW
+	# ROM_AREA
+	# REG1
+	# REG3
+	# REG5
+	# REG_MIRROR
+	);
 
-MR1 =
-      EMS2_WINDOW
-    # ROM_AREA
-    # DEVICE_AREA
-    # REG2
-    # REG3
-    # REG_MIRROR;
+MR1 = !BA & (
+	  EMS2_WINDOW
+	# ROM_AREA
+	# DEVICE_AREA
+	# REG2
+	# REG3
+	# REG_MIRROR
+	);
 
-MR2 =
-      DEVICE_AREA
-    # REG4
-    # REG5
-    # REG_MIRROR;
+MR2 = !BA & (
+	  DEVICE_AREA
+	# REG4
+	# REG5
+	# REG_MIRROR
+	);
 
-MR3 =
-      REG0
-    # REG1
-    # REG2
-    # REG3
-    # REG4
-    # REG5
-    # REG_MIRROR;
+MR3 = !BA & (
+	  REG0
+	# REG1
+	# REG2
+	# REG3
+	# REG4
+	# REG5
+	# REG_MIRROR
+	);
 
 /*
+	HALT/BA active	MR = 0; 	0000  // pri HALTu je vsechno RAM
+
 	NATIVE_RAM_LO	MR = 0; 	0000
 	NATIVE_RAM_HI	MR = 0; 	0000
 	EMS1_WINDOW	MR = 1; 	0001
