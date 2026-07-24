@@ -1,0 +1,2 @@
+OBSOLETE druhy navrh desky CPU s HD6309 + 2x ATF1504 + 128 kB RAM + 32kB EEPROM + SysBus (1504 je po okraj a potrebuje prehazet piny = dam radeji 1508 )
+

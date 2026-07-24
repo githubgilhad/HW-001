@@ -1,0 +1,2 @@
+treti navrh desky CPU s HD6309 + ATF1508 + 128 kB RAM + 32kB EEPROM + SysBus
+

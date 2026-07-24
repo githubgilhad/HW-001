@@ -1,13 +1,52 @@
+	/*
+	                  PREFACE: 
+	
+	 am building GLUE logic for 6039 retrocomputer (called CPU), to connect MHF cards into EMS windows (4kB each, at $8000 and $9000). 
+	
+	I am using wincupl and atf1504. Here is code for address decoder (ATF1) and EMS manager (ATF2). Comments are part in English and part in Czech language.
+	
+	On the CPU PCB is SystemRAM(SysRAM 128kB) and EEPROM(ROM up to 32kB), on each MHF_A and MHF_B are 74HC245 gates for Address[0..15] and Data[0..7] busses that guards SharedRam (A/B 128kB).
+	
+	On boot HW keeps CPU in HALT mode, until the MHF cards start manage it. They may fill SysRAM with system/data at start (while MHF manage system bus, BA active)
+	
+	and then let CPU boot (and manage system bus, BA inactive ) from the filled values, or from ROM, depending on external switch BootSource.
+	
+	CPU can map 4k part of (SysRAM,ROM,SharedRAM_A,SharedRAM_B) into EMS1 and/or EMS2 window (which is managed by ATF2).
+	
+	SharedRAM serve for sending blocks of data between CPU (4 Mhz) and MHF cards (driven each by ATmega2560 at 16 MHz and different style of RAM communication).
+	
+	HALT is mainly driven by external pullup for possible extending.
+	
+	DIRTY is really bad name, should be like "the other side cooperated/cooperate just now". Who writes SharedRAM, set it 0 and when the other read/write it, it is set 1 as sign,
+	
+	that the data was used and can be rewritten next turn. (Typically command like PRINT "XYZ" or info like KEYS_ENTERED="abcd" do not need reply.)
+	
+	Default ROM size at boot is A100..FFFF, ROM/system may it change and/or map ROM later at will.
+	
+	CHIPx_C and CHIPx_A ensure, that who got ownership, keeps it, until explicitly release, the other have to wait. (Be it CPU or MHF_x.)
+	
+	*/
+	
+	
+	
 	Name     ATF2_GLUE;
 	PartNo   0002;
-	Date     2026-06-26;
-	Revision 0.1;
-	Designer Gilhad and ChatGPT;
+	Date     2026-07-23;
+	Revision 0.2;
+	Designer Gilhad;
 	Company  None ;
 	Assembly None ;
 	Location ;
 	Device  f1504isptqfp100;
 	
+	/*
+	NOTE to AI about syntax: in "PIN xx = !NAME" the exclamation mark means, that signal is active low (0V) and inactive high (+5V), so
+	PIN 6 = !A;
+	PIN 8 = !B;
+	Pin 9 = !C; // = 3 active low signals 
+	C = A & B; // means C is active (=0V) when (and only when) A is active (=0V) AND B is active (=0V) and the compiler translates it to formula PIN 9 = PIN 6 # PIN 8
+	It makes easy to works with active low signals (like Chip Enable), where the equation goes stright Chip is Enable = true mean it is enabled ...
+	*/
 	/*
 	Skutecna jmena signalu a cisla pinu, pokud je pred jmenem !, je signal aktivni v LOW:
 	*/
@@ -429,8 +468,8 @@
 	/* nasledne se aktivuje BA behem nekolika taktu a tim se odpoji sbernice od CPU */
 	
 	/* Rw je ovladan CPU, vyjma HALT rezimu, kdy to prevezme ATF2 a ridi se dle MHF_x */
-	Rw =	  !A_S_READ & A_HALT
-		# !B_S_READ & B_HALT & !A_HALT; /* directed by A primary, or B secondary */
+	Rw =	  !A_READ & A_HALT
+		# !B_READ & B_HALT & !A_HALT; /* directed by A primary, or B secondary */
 	Rw.OE =	  BA; /* driven only in HALT mode */
 	
 	/************************************************************/
@@ -494,35 +533,36 @@
 	B_SHARE_GRANTED =	B_SHARE_REQUEST & CHIPB_A;
 	
 	/************************************************************/
-	/* OWNERSHIP CHIP_xx                   {{{               OK */
+	/* OWNERSHIP CHIP_xx FIXME: dole je lepsi {{{            OK */
 	/************************************************************/
+	/*
 	CHIPA_C.d =
 			  EMS1_is_MHFA & !CHIPA_A
-			# EMS2_is_MHFA & !CHIPA_A /* set if ask and free */
+			# EMS2_is_MHFA & !CHIPA_A 
 			# EMS1_is_MHFA &  CHIPA_C
-			# EMS2_is_MHFA &  CHIPA_C /* keep if ask */
+			# EMS2_is_MHFA &  CHIPA_C
 			;
 	CHIPB_C.d =
 			  EMS1_is_MHFB & !CHIPB_A
-			# EMS2_is_MHFB & !CHIPB_A /* set if ask and free */
+			# EMS2_is_MHFB & !CHIPB_A
 			# EMS1_is_MHFB &  CHIPB_C
-			# EMS2_is_MHFB &  CHIPB_C /* keep if ask */
+			# EMS2_is_MHFB &  CHIPB_C
 			;
 	
-	CHIPA_C.CK = !E; /* 0.5 tact */
-	CHIPB_C.CK = !E; /* 0.5 tact */
+	CHIPA_C.CK = !E;
+	CHIPB_C.CK = !E; 
 	
 	CHIPA_A.d =
-			  A_SHARE_REQUEST & !CHIPA_C /* set */
-			# A_SHARE_REQUEST &  CHIPA_A /* keep */
+			  A_SHARE_REQUEST & !CHIPA_C 
+			# A_SHARE_REQUEST &  CHIPA_A
 			;
 	CHIPB_A.d =
 			  B_SHARE_REQUEST & !CHIPB_C
 			# B_SHARE_REQUEST &  CHIPB_A
 			;
-	CHIPA_A.CK = Q; /* 0.75 tact */
-	CHIPB_A.CK = Q; /* 0.75 tact */
-	
+	CHIPA_A.CK = Q;
+	CHIPB_A.CK = Q; 
+	*/
 	/* }}} */
 	/************************************************************/
 	/* Dirty flags                                       {{{ OK */
@@ -698,11 +738,11 @@
 	   #  ( CPU_REQ_A &  MHF_REQ_A & CHIPA_A );
 	
 	
-	CHIPA_C.CK = !E;
+	CHIPA_C.CK = !E; /* 0.5 tact */
 	CHIPA_C.AR = Reset;
 	CHIPA_C.CE = E # !E;
 	
-	CHIPA_A.CK = Q;
+	CHIPA_A.CK = Q; /* 0.75 tact */
 	CHIPA_A.AR = Reset;
 	CHIPA_A.CE = E # !E;
 	
@@ -729,21 +769,13 @@
 	
 	
 	
-	CHIPB_C.CK = !E;
+	CHIPB_C.CK = !E; /* 0.5 tact */
 	CHIPB_C.AR = Reset;
 	CHIPB_C.CE = E # !E;
 	
-	CHIPB_A.CK = Q;
+	CHIPB_A.CK = Q; /* 0.75 tact */
 	CHIPB_A.AR = Reset;
 	CHIPB_A.CE = E # !E;
-	
-	/* }}} */
-	/************************************************************/
-	/* SHARE_GRANTED                                     {{{ OK */
-	/************************************************************/
-	
-	A_SHARE_GRANTED = CHIPA_A;
-	B_SHARE_GRANTED = CHIPB_A;
 	
 	/* }}} */
 	/************************************************************/
@@ -786,7 +818,7 @@
 	ACTIVE_SYS  = !ACTIVE_PAGE_A1 & !ACTIVE_PAGE_A0;
 	ACTIVE_MHFA = !ACTIVE_PAGE_A1 &  ACTIVE_PAGE_A0;
 	ACTIVE_MHFB =  ACTIVE_PAGE_A1 & !ACTIVE_PAGE_A0;
-	ACTIVE_ROM  = !ACTIVE_PAGE_A1 &  ACTIVE_PAGE_A0;
+	ACTIVE_ROM  =  ACTIVE_PAGE_A1 &  ACTIVE_PAGE_A0;
 	
 	/************************************************************/
 	/* EMS ACCESS                                               */
@@ -883,13 +915,13 @@
 	/************************************************************/
 	
 	A_G_D_DIR =
-		  CHIPA_C & !Rw       /* mimo EMS je nezajimave protoze gate je zavrena */
-		# CHIPA_A & !A_READ
+		  !BA & CHIPA_C & Rw                   /* mimo EMS je nezajimave protoze gate je zavrena */
+		#  BA & A_HALT  & !A_READ              /* in BA A_READ means MHF want read FROM CPU's SysRAM, so Data goes CPU side -> MHF side */
 		;
 	
 	B_G_D_DIR =
-		  CHIPB_C & !Rw       /* mimo EMS je nezajimave protoze gate je zavrena */
-		# CHIPB_A & !B_READ
+		  !BA & CHIPB_C & Rw                   /* mimo EMS je nezajimave protoze gate je zavrena */
+		#  BA & !A_HALT & B_HALT & !B_READ     /* in BA B_READ means MHF want read FROM CPU's SysRAM, so Data goes CPU side -> MHF side */
 		;
 	
 	/* }}} */
@@ -897,8 +929,10 @@
 	/* ENABLE GATES                                             */
 	/************************************************************/
 	
-	A_G_ENABLE = CHIPA_C & EMS_WINDOW & ACTIVE_MHFA & E;
-	B_G_ENABLE = CHIPB_C & EMS_WINDOW & ACTIVE_MHFB & E;
+	A_G_ENABLE = CHIPA_C & EMS_WINDOW & ACTIVE_MHFA & E
+		# BA & A_HALT;
+	B_G_ENABLE = CHIPB_C & EMS_WINDOW & ACTIVE_MHFB & E
+		# BA & !A_HALT & B_HALT;
 	
 	/* }}} */
 	
