@@ -1,4 +1,4 @@
-25828458750822227
+25830615478657769
 Arduino Mega 2560
 CAP_EEHZA1E470P
 
@@ -60373,6 +60373,13 @@ ATF1504 CPLD with longer footprints for hand soldering
 ATF1504AS-10AU100 
 0
 184
+100
+Gilhad_footprints
+ATF1508-AS_TQFP100_long
+ATF1508 CPLD with longer footprints for hand soldering
+ATF1508AS-10AU100 
+0
+200
 100
 Gilhad_footprints
 CUI_RCJ-047

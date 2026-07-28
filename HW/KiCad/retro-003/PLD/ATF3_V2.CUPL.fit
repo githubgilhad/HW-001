@@ -1,0 +1,1533 @@
+Atmel ATF1508AS Fitter Version 1.8.7.8 ,running Tue Jul 28 02:24:30 2026
+
+
+fit1508 Z:\ATF3_V2.CUPL.tt2 -CUPL -dev P1508T100 -JTAG ON
+
+
+****** Initial fitting strategy and property ******
+ Pla_in_file = ATF3_V2.tt2
+ Pla_out_file = ATF3_V2.tt3
+ Jedec_file = ATF3_V2.jed
+ Vector_file = ATF3_V2.tmv
+ verilog_file = ATF3_V2.vt
+ Time_file = 
+ Log_file = ATF3_V2.fit
+ err_file = 
+ Device_name = TQFP100
+ Module_name = 
+ Package_type = TQFP
+ Preassign_file = 
+ Property_file = 
+ Sleep_mode = 
+ Preassignment = 
+ Security_mode = OFF
+ Pin_keep_mode = ON
+ Dedicated_input_clock = 
+ Dedicated_input_reset = 
+ Dedicated_input_oe = 
+ supporter = CUPL
+ optimize = ON
+ Soft_buffer = 
+ Xor_synthesis = OFF
+ Foldback_logic =  on
+ Expander = 
+ Cascade_logic = OFF
+ Dedicated_input = 
+ Output_fast = OFF
+ *******************************
+ Power down pin 1 = OFF
+ Power down pin 2 = OFF
+ power_reset = OFF
+ JTAG = ON
+ TDI pullup = OFF
+ TMS pullup = OFF
+ MC_power = OFF
+ Open_collector = OFF
+ ITD0 = ON
+ ITD1 = ON
+ ITD2 = ON
+ Fast_inlatch = off
+ *******************************
+---------------------------------------------------------
+ Fitter_Pass 1, Preassign = KEEP, LOGIC_DOUBLING : OFF 
+ ... 
+## ERROR : Bad user pin assignement : 164
+ ## ERROR : Bad user pin assignement 
+---------------------------------------------------------
+ Fitter_Pass 2, Preassign = KEEP, NODE ASSIGN : OFF 
+ ... 
+Unable to Keep Fanin of 41 on Block A
+ ## Warning : Grouping fail 
+---------------------------------------------------------
+ Fitter_Pass 3, Preassign = KEEP, CASCADE_LOGIC : (TRY) 
+ ... 
+ ## Warning : Placement fail 
+---------------------------------------------------------
+ Fitter_Pass 4, Preassign = KEEP, CASCADE_LOGIC : (OFF) 
+ ... 
+Fail to route variable CA3 in Block 8
+
+Performing global Output Enable pin assignments ...
+
+Performing global pin assignments ...
+--------------------------------------
+
+
+
+Final global control pins assignment (if applicable)...
+-------------------------------------------------------
+Q assigned to pin  90
+E assigned to pin  87
+Reset assigned to pin  89
+BA assigned to pin  88
+
+
+
+Performing input pin pre-assignments ...
+------------------------------------
+Q assigned to pin  90
+E assigned to pin  87
+Reset assigned to pin  89
+BA assigned to pin  88
+B_S_16.OE equation needs patching.
+A_S_16.OE equation needs patching.
+RAM.OE equation needs patching.
+3 control equtions need patching
+
+Attempt to place floating signals ...
+------------------------------------
+D7 is placed at pin 2 (MC 1)
+D6 is placed at pin 1 (MC 3)
+CHIPA_Dc is placed at feedback node 604 (MC 4)
+D5 is placed at pin 100 (MC 5)
+D4 is placed at pin 99 (MC 6)
+XXL_305 is placed at feedback node 607 (MC 7)
+D3 is placed at pin 98 (MC 8)
+D2 is placed at pin 97 (MC 9)
+CHIPA_C is placed at feedback node 610 (MC 10)
+D1 is placed at pin 96 (MC 11)
+CHIPA_A is placed at feedback node 612 (MC 12)
+D0 is placed at pin 94 (MC 13)
+FB_351 is placed at foldback expander node 313 (MC 13)
+Rw is placed at pin 93 (MC 14)
+EMS2_is_MHFA is placed at foldback expander node 314 (MC 14)
+XXL_353 is placed at feedback node 615 (MC 15)
+HALT is placed at pin 92 (MC 16)
+EMS1_is_MHFA is placed at foldback expander node 316 (MC 16)
+CA8 is placed at pin 14 (MC 17)
+EMS1_B0 is placed at feedback node 617 (MC 17)
+EMS_WINDOW is placed at feedback node 618 (MC 18)
+CA7 is placed at pin 13 (MC 19)
+EMS2_B0 is placed at feedback node 619 (MC 19)
+MR1 is placed at foldback expander node 319 (MC 19)
+ACTIVE_PAGE_A1 is placed at feedback node 620 (MC 20)
+CA6 is placed at pin 12 (MC 21)
+EMS2_A0 is placed at feedback node 621 (MC 21)
+CA5 is placed at pin 10 (MC 22)
+EMS2_B2 is placed at feedback node 622 (MC 22)
+EMS2_B1 is placed at feedback node 623 (MC 23)
+CA4 is placed at pin 9 (MC 24)
+EMS2_A1 is placed at feedback node 624 (MC 24)
+CA3 is placed at pin 8 (MC 25)
+EMS2_B4 is placed at feedback node 625 (MC 25)
+B_S_16.OE is placed at feedback node 626 (MC 26)
+CA2 is placed at pin 7 (MC 27)
+A_S_16.OE is placed at feedback node 627 (MC 27)
+EMS1_B3 is placed at feedback node 628 (MC 28)
+CA1 is placed at pin 6 (MC 29)
+EMS2_B3 is placed at feedback node 629 (MC 29)
+CA0 is placed at pin 5 (MC 30)
+ACTIVE_PAGE_A0 is placed at feedback node 630 (MC 30)
+XXL_301 is placed at feedback node 631 (MC 31)
+MR0 is placed at foldback expander node 331 (MC 31)
+TDI is placed at pin 4 (MC 32)
+XXL_303 is placed at feedback node 632 (MC 32)
+B_S_16 is placed at pin 25 (MC 33)
+A_S_16 is placed at pin 24 (MC 35)
+CA15 is placed at pin 23 (MC 37)
+EMS1_A0 is placed at feedback node 637 (MC 37)
+CA14 is placed at pin 22 (MC 38)
+CHIPB_Dc is placed at feedback node 638 (MC 38)
+EMS1_B1 is placed at feedback node 639 (MC 39)
+CA13 is placed at pin 21 (MC 40)
+EMS1_A1 is placed at feedback node 640 (MC 40)
+CA12 is placed at pin 20 (MC 41)
+EMS1_B2 is placed at feedback node 641 (MC 41)
+EMS1_B4 is placed at feedback node 642 (MC 42)
+CA11 is placed at pin 19 (MC 43)
+REG_ACCESS is placed at feedback node 644 (MC 44)
+CA10 is placed at pin 17 (MC 45)
+XXL_358 is placed at feedback node 645 (MC 45)
+MR1 is placed at foldback expander node 345 (MC 45)
+CA9 is placed at pin 16 (MC 46)
+RAM.OE is placed at feedback node 646 (MC 46)
+MR0 is placed at foldback expander node 346 (MC 46)
+XXL_356 is placed at feedback node 647 (MC 47)
+TMS is placed at pin 15 (MC 48)
+XXL_352 is placed at feedback node 648 (MC 48)
+B_SHARE_REQUEST is placed at pin 37 (MC 49)
+A_SHARE_REQUEST is placed at pin 36 (MC 51)
+B_SHARE_GRANTED is placed at pin 35 (MC 53)
+A_SHARE_GRANTED is placed at pin 33 (MC 54)
+XXL_362 is placed at feedback node 655 (MC 55)
+B_SHARE_DIRTY is placed at pin 32 (MC 56)
+A_SHARE_DIRTY is placed at pin 31 (MC 57)
+CHIPA_Dm is placed at feedback node 658 (MC 58)
+B_READ is placed at pin 30 (MC 59)
+CHIPB_Dm is placed at feedback node 659 (MC 59)
+EMS2_is_MHFA is placed at foldback expander node 359 (MC 59)
+XXL_367 is placed at feedback node 660 (MC 60)
+EMS1_is_MHFA is placed at foldback expander node 360 (MC 60)
+A_READ is placed at pin 29 (MC 61)
+B_HALT is placed at pin 28 (MC 62)
+XXL_357 is placed at feedback node 662 (MC 62)
+XXL_359 is placed at feedback node 663 (MC 63)
+A_HALT is placed at pin 27 (MC 64)
+XXL_366 is placed at feedback node 664 (MC 64)
+A_S_SELECT is placed at pin 40 (MC 65)
+B_S_SELECT is placed at pin 41 (MC 67)
+A_S_READ is placed at pin 42 (MC 69)
+B_S_READ is placed at pin 44 (MC 70)
+ROM_SIZE2 is placed at feedback node 671 (MC 71)
+A_S_WRITE is placed at pin 45 (MC 72)
+B_S_WRITE is placed at pin 46 (MC 73)
+ROM_SIZE0 is placed at feedback node 674 (MC 74)
+A_G_ENABLE is placed at pin 47 (MC 75)
+ROM_SIZE1 is placed at feedback node 676 (MC 76)
+B_G_ENABLE is placed at pin 48 (MC 77)
+A_G_A_DIR is placed at pin 49 (MC 78)
+XXL_365 is placed at feedback node 679 (MC 79)
+B_G_A_DIR is placed at pin 50 (MC 80)
+A_G_D_DIR is placed at pin 52 (MC 81)
+B_G_D_DIR is placed at pin 53 (MC 83)
+A_SHARE_SELECT is placed at pin 54 (MC 85)
+B_SHARE_SELECT is placed at pin 55 (MC 86)
+GA16 is placed at pin 56 (MC 88)
+GA15 is placed at pin 57 (MC 89)
+GA14 is placed at pin 58 (MC 91)
+GA13 is placed at pin 60 (MC 93)
+GA12 is placed at pin 61 (MC 94)
+CHIPB_A is placed at feedback node 695 (MC 95)
+MR1 is placed at foldback expander node 395 (MC 95)
+TCK is placed at pin 62 (MC 96)
+CHIPB_C is placed at feedback node 696 (MC 96)
+MR0 is placed at foldback expander node 396 (MC 96)
+Read is placed at pin 63 (MC 97)
+REG2 is placed at feedback node 698 (MC 98)
+Write is placed at pin 64 (MC 99)
+REG0 is placed at feedback node 700 (MC 100)
+ROM is placed at pin 65 (MC 101)
+RAM is placed at pin 67 (MC 102)
+REG4 is placed at feedback node 703 (MC 103)
+Dev_Sel_1 is placed at pin 68 (MC 104)
+Dev_Sel_2 is placed at pin 69 (MC 105)
+REG1 is placed at feedback node 706 (MC 106)
+Dev_Sel_3 is placed at pin 70 (MC 107)
+REG3 is placed at feedback node 708 (MC 108)
+Dev_Sel_4 is placed at pin 71 (MC 109)
+Dev_Sel_5 is placed at pin 72 (MC 110)
+XXL_355 is placed at feedback node 711 (MC 111)
+TDO is placed at pin 73 (MC 112)
+XXL_360 is placed at feedback node 712 (MC 112)
+Dev_Sel_6 is placed at pin 75 (MC 113)
+REG6 is placed at feedback node 714 (MC 114)
+Dev_Sel_7 is placed at pin 76 (MC 115)
+MR3 is placed at feedback node 716 (MC 116)
+REG5 is placed at feedback node 717 (MC 117)
+XXL_363 is placed at feedback node 719 (MC 119)
+XXL_361 is placed at feedback node 720 (MC 120)
+XXL_364 is placed at feedback node 722 (MC 122)
+BootSrc is placed at pin 84 (MC 126)
+XXL_354 is placed at feedback node 726 (MC 126)
+MR2 is placed at feedback node 727 (MC 127)
+RomMapped is placed at pin 85 (MC 128)
+
+                                                                                             
+                                                                                             
+                                                                                             
+                                                                                             
+                                                  R                 D                        
+                                                  o                 e                        
+                                                  m B               v                        
+                                                  M o               _                        
+                                          R       a o               S                        
+                                    H     e       p t               e                        
+                              G     A V   s     G p S   V           l                        
+                    D D D D D N D R L C   e B   N e r   C           _                        
+                    5 4 3 2 1 D 0 w T C Q t A E D d c   C           7                        
+                  ------------------------------------------------------                     
+                 / 100  98  96  94  92  90  88  86  84  82  80  78  76  \                   
+                /     99  97  95  93  91  89  87  85  83  81  79  77     \                  
+            D6 | 1                                                     75 | Dev_Sel_6        
+            D7 | 2                                                     74 | GND              
+           VCC | 3                                                     73 | TDO              
+           TDI | 4                                                     72 | Dev_Sel_5        
+           CA0 | 5                                                     71 | Dev_Sel_4        
+           CA1 | 6                                                     70 | Dev_Sel_3        
+           CA2 | 7                                                     69 | Dev_Sel_2        
+           CA3 | 8                                                     68 | Dev_Sel_1        
+           CA4 | 9                                                     67 | RAM              
+           CA5 | 10                                                    66 | VCC              
+           GND | 11                                                    65 | ROM              
+           CA6 | 12                     ATF1508                        64 | Write            
+           CA7 | 13                  100-Lead TQFP                     63 | Read             
+           CA8 | 14                                                    62 | TCK              
+           TMS | 15                                                    61 | GA12             
+           CA9 | 16                                                    60 | GA13             
+          CA10 | 17                                                    59 | GND              
+           VCC | 18                                                    58 | GA14             
+          CA11 | 19                                                    57 | GA15             
+          CA12 | 20                                                    56 | GA16             
+          CA13 | 21                                                    55 | B_SHARE_SELECT   
+          CA14 | 22                                                    54 | A_SHARE_SELECT   
+          CA15 | 23                                                    53 | B_G_D_DIR        
+        A_S_16 | 24                                                    52 | A_G_D_DIR        
+        B_S_16 | 25                                                    51 | VCC              
+                \     27  29  31  33  35  37  39  41  43  45   47  49    /                  
+                 \  26  28  30  32  34  36  38  40  42  44  46  48   50 /                   
+                  ------------------------------------------------------                     
+B                   G A B A B A B A V B A B G V A B A G B A B A B A                          
+_                   N _ _ _ _ _ _ _ C _ _ _ N C _ _ _ N _ _ _ _ _ _                          
+G                   D H H R R S S S C S S S D C S S S D S S S G G G                          
+_                     A A E E H H H   H H H     _ _ _   _ _ _ _ _ _                          
+A                     L L A A A A A   A A A     S S R   R W W E E A                          
+_                     T T D D R R R   R R R     E E E   E R R N N _                          
+D                             E E E   E E E     L L A   A I I A A D                          
+I                             _ _ _   _ _ _     E E D   D T T B B I                          
+R                             D D G   G R R     C C       E E L L R                          
+                              I I R   R E E     T T           E E                            
+                              R R A   A Q Q                                                  
+                              T T N   N U U                                                  
+                              Y Y T   T E E                                                  
+
+
+
+VCC = Supply Voltage pin which must be connected to (5.0V or 3.0V)
+
+GND = GND pin which must be connected to ground
+
+TMS,TDI,TDO,TDI = JTAG pins which must reserved for the JTAG interface
+
+NC = Unused I/O pins which must be unconnected on the board
+
+Universal-Interconnect-Multiplexer assignments
+------------------------------------------------
+FanIn assignment for block A [37]
+{
+A_SHARE_REQUEST,A_READ,A_HALT,
+B_SHARE_REQUEST,B_READ,BootSrc,B_HALT,
+CHIPA_A,CHIPB_A,CHIPA_Dc,CHIPB_Dc,CHIPA_C,
+EMS2_A1,EMS1_A1,EMS1_B4,EMS2_B3,EMS1_A0,E,EMS2_B4,EMS2_A0,EMS1_B3,
+Q,
+REG4,REG_ACCESS,Rw,RomMapped,REG5,REG0,REG6,REG2,
+XXL_305,XXL_358,XXL_359,XXL_357,XXL_367,XXL_366,XXL_356,
+}
+Multiplexer assignment for block A
+XXL_305			(MC2	FB)  : MUX 0		Ref (A7fb)
+CHIPA_A			(MC4	FB)  : MUX 1		Ref (A12fb)
+REG4			(MC25	FB)  : MUX 2		Ref (G103fb)
+EMS2_A1			(MC7	FB)  : MUX 4		Ref (B24fb)
+B_SHARE_REQUEST		(MC29	P)   : MUX 5		Ref (D49p)
+EMS1_A1			(MC13	FB)  : MUX 6		Ref (C40fb)
+REG_ACCESS		(MC15	FB)  : MUX 7		Ref (C44fb)
+Rw			(MC5	P)   : MUX 8		Ref (A14p)
+EMS1_B4			(MC14	FB)  : MUX 9		Ref (C42fb)
+RomMapped		(MC28	P)   : MUX 10		Ref (H128p)
+CHIPB_A			(MC22	FB)  : MUX 11		Ref (F95fb)
+B_READ			(MC31	P)   : MUX 12		Ref (D59p)
+A_SHARE_REQUEST		(MC30	P)   : MUX 13		Ref (D51p)
+CHIPA_Dc		(MC1	FB)  : MUX 14		Ref (A4fb)
+EMS2_B3			(MC10	FB)  : MUX 15		Ref (B29fb)
+EMS1_A0			(MC11	FB)  : MUX 16		Ref (C37fb)
+XXL_358			(MC16	FB)  : MUX 17		Ref (C45fb)
+REG5			(MC27	FB)  : MUX 18		Ref (H117fb)
+XXL_359			(MC20	FB)  : MUX 19		Ref (D63fb)
+A_READ			(MC32	P)   : MUX 20		Ref (D61p)
+XXL_357			(MC19	FB)  : MUX 21		Ref (D62fb)
+REG0			(MC24	FB)  : MUX 22		Ref (G100fb)
+E			(MC37	FB)  : MUX 23		Ref (GCLK)
+REG6			(MC26	FB)  : MUX 24		Ref (H114fb)
+XXL_367			(MC18	FB)  : MUX 25		Ref (D60fb)
+CHIPB_Dc		(MC12	FB)  : MUX 26		Ref (C38fb)
+BootSrc			(MC35	P)   : MUX 28		Ref (H126p)
+XXL_366			(MC21	FB)  : MUX 29		Ref (D64fb)
+REG2			(MC23	FB)  : MUX 30		Ref (G98fb)
+B_HALT			(MC33	P)   : MUX 32		Ref (D62p)
+XXL_356			(MC17	FB)  : MUX 33		Ref (C47fb)
+Q			(MC36	FB)  : MUX 34		Ref (OE2)
+EMS2_B4			(MC8	FB)  : MUX 35		Ref (B25fb)
+EMS2_A0			(MC6	FB)  : MUX 36		Ref (B21fb)
+EMS1_B3			(MC9	FB)  : MUX 37		Ref (B28fb)
+A_HALT			(MC34	P)   : MUX 38		Ref (D64p)
+CHIPA_C			(MC3	FB)  : MUX 39		Ref (A10fb)
+
+FanIn assignment for block B [26]
+{
+BA,
+CHIPB_C,CHIPA_C,
+D0,D7,D4,D2,D3,D1,D6,
+EMS2_A1,EMS1_A0,EMS1_A1,EMS2_A0,
+MR2,MR3,
+Reset,REG_ACCESS,RAM.OE,Rw,
+XXL_363,XXL_361,XXL_364,XXL_365,XXL_362,XXL_360,
+}
+Multiplexer assignment for block B
+D0			(MC8	P)   : MUX 0		Ref (A13p)
+D7			(MC1	P)   : MUX 1		Ref (A1p)
+Reset			(MC25	FB)  : MUX 2		Ref (GCLR)
+BA			(MC26	FB)  : MUX 3		Ref (OE1)
+EMS2_A1			(MC11	FB)  : MUX 4		Ref (B24fb)
+XXL_363			(MC21	FB)  : MUX 6		Ref (H119fb)
+REG_ACCESS		(MC14	FB)  : MUX 7		Ref (C44fb)
+EMS1_A0			(MC12	FB)  : MUX 8		Ref (C37fb)
+D4			(MC3	P)   : MUX 9		Ref (A6p)
+XXL_361			(MC22	FB)  : MUX 10		Ref (H120fb)
+MR2			(MC24	FB)  : MUX 11		Ref (H127fb)
+MR3			(MC20	FB)  : MUX 12		Ref (H116fb)
+CHIPB_C			(MC18	FB)  : MUX 15		Ref (F96fb)
+D2			(MC5	P)   : MUX 18		Ref (A9p)
+EMS1_A1			(MC13	FB)  : MUX 20		Ref (C40fb)
+D3			(MC4	P)   : MUX 21		Ref (A8p)
+XXL_364			(MC23	FB)  : MUX 23		Ref (H122fb)
+D1			(MC7	P)   : MUX 24		Ref (A11p)
+RAM.OE			(MC15	FB)  : MUX 25		Ref (C46fb)
+Rw			(MC9	P)   : MUX 26		Ref (A14p)
+CHIPA_C			(MC6	FB)  : MUX 27		Ref (A10fb)
+EMS2_A0			(MC10	FB)  : MUX 28		Ref (B21fb)
+D6			(MC2	P)   : MUX 31		Ref (A3p)
+XXL_365			(MC17	FB)  : MUX 33		Ref (E79fb)
+XXL_362			(MC16	FB)  : MUX 34		Ref (D55fb)
+XXL_360			(MC19	FB)  : MUX 37		Ref (G112fb)
+
+FanIn assignment for block C [37]
+{
+A_S_16.OE,A_S_16.OE,
+B_SHARE_REQUEST,BA,
+CHIPA_C,CHIPB_A,CHIPB_C,CHIPB_Dc,
+D7,D1,D6,D4,D2,
+EMS2_B0,EMS2_A1,EMS1_B4,EMS1_B0,EMS1_A0,EMS2_B4,EMS1_A1,E,EMS2_A0,
+MR2,MR3,
+Rw,REG_ACCESS,REG4,REG2,REG3,REG0,REG1,
+XXL_365,XXL_361,XXL_362,XXL_364,XXL_360,XXL_363,
+}
+Multiplexer assignment for block C
+EMS2_B0			(MC9	FB)  : MUX 0		Ref (B19fb)
+D7			(MC1	P)   : MUX 1		Ref (A1p)
+B_S_16.OE		(MC13	FB)  : MUX 3		Ref (B26fb)
+EMS2_A1			(MC11	FB)  : MUX 4		Ref (B24fb)
+XXL_365			(MC21	FB)  : MUX 5		Ref (E79fb)
+D1			(MC6	P)   : MUX 6		Ref (A11p)
+D6			(MC2	P)   : MUX 7		Ref (A3p)
+Rw			(MC7	P)   : MUX 8		Ref (A14p)
+D4			(MC3	P)   : MUX 9		Ref (A6p)
+XXL_361			(MC32	FB)  : MUX 10		Ref (H120fb)
+EMS1_B4			(MC18	FB)  : MUX 11		Ref (C42fb)
+EMS1_B0			(MC8	FB)  : MUX 12		Ref (B17fb)
+CHIPA_C			(MC5	FB)  : MUX 13		Ref (A10fb)
+XXL_362			(MC20	FB)  : MUX 14		Ref (D55fb)
+B_SHARE_REQUEST		(MC35	P)   : MUX 15		Ref (D49p)
+EMS1_A0			(MC15	FB)  : MUX 16		Ref (C37fb)
+EMS2_B4			(MC12	FB)  : MUX 17		Ref (B25fb)
+D2			(MC4	P)   : MUX 18		Ref (A9p)
+REG_ACCESS		(MC19	FB)  : MUX 19		Ref (C44fb)
+EMS1_A1			(MC17	FB)  : MUX 20		Ref (C40fb)
+XXL_364			(MC33	FB)  : MUX 21		Ref (H122fb)
+REG4			(MC26	FB)  : MUX 22		Ref (G103fb)
+CHIPB_A			(MC22	FB)  : MUX 23		Ref (F95fb)
+REG2			(MC24	FB)  : MUX 24		Ref (G98fb)
+CHIPB_C			(MC23	FB)  : MUX 25		Ref (F96fb)
+CHIPB_Dc		(MC16	FB)  : MUX 26		Ref (C38fb)
+XXL_360			(MC29	FB)  : MUX 27		Ref (G112fb)
+XXL_363			(MC31	FB)  : MUX 28		Ref (H119fb)
+MR2			(MC34	FB)  : MUX 29		Ref (H127fb)
+REG3			(MC28	FB)  : MUX 31		Ref (G108fb)
+MR3			(MC30	FB)  : MUX 32		Ref (H116fb)
+A_S_16.OE		(MC14	FB)  : MUX 33		Ref (B27fb)
+REG0			(MC25	FB)  : MUX 34		Ref (G100fb)
+E			(MC36	FB)  : MUX 35		Ref (GCLK)
+EMS2_A0			(MC10	FB)  : MUX 36		Ref (B21fb)
+BA			(MC37	FB)  : MUX 37		Ref (OE1)
+REG1			(MC27	FB)  : MUX 39		Ref (G106fb)
+
+FanIn assignment for block D [37]
+{
+A_SHARE_GRANTED,A_SHARE_REQUEST,A_HALT,
+B_SHARE_REQUEST,B_SHARE_GRANTED,BA,
+CA12,CA15,CA14,CHIPA_A,CHIPB_A,CHIPB_C,CHIPA_C,CA13,CHIPB_Dm,CHIPA_Dm,
+EMS1_A1,EMS1_B2,EMS2_A1,EMS2_B1,EMS1_A0,EMS2_B2,EMS2_A0,EMS1_B1,
+REG_ACCESS,REG6,Rw,RomMapped,ROM_SIZE1,REG3,REG5,REG1,REG4,REG2,ROM_SIZE2,ROM_SIZE0,REG0,
+}
+Multiplexer assignment for block D
+EMS1_A1			(MC10	FB)  : MUX 0		Ref (C40fb)
+EMS1_B2			(MC11	FB)  : MUX 1		Ref (C41fb)
+CA12			(MC33	P)   : MUX 2		Ref (C41p)
+CA15			(MC30	P)   : MUX 3		Ref (C37p)
+EMS2_A1			(MC7	FB)  : MUX 4		Ref (B24fb)
+REG_ACCESS		(MC12	FB)  : MUX 5		Ref (C44fb)
+REG6			(MC27	FB)  : MUX 6		Ref (H114fb)
+A_SHARE_GRANTED		(MC14	P)   : MUX 7		Ref (D54p)
+Rw			(MC3	P)   : MUX 8		Ref (A14p)
+A_SHARE_REQUEST		(MC35	P)   : MUX 9		Ref (D51p)
+RomMapped		(MC29	P)   : MUX 10		Ref (H128p)
+ROM_SIZE1		(MC19	FB)  : MUX 11		Ref (E76fb)
+A_HALT			(MC36	P)   : MUX 12		Ref (D64p)
+REG3			(MC26	FB)  : MUX 13		Ref (G108fb)
+EMS2_B1			(MC6	FB)  : MUX 14		Ref (B23fb)
+B_SHARE_REQUEST		(MC34	P)   : MUX 15		Ref (D49p)
+EMS1_A0			(MC8	FB)  : MUX 16		Ref (C37fb)
+CA14			(MC31	P)   : MUX 17		Ref (C38p)
+REG5			(MC28	FB)  : MUX 18		Ref (H117fb)
+REG1			(MC25	FB)  : MUX 19		Ref (G106fb)
+CHIPA_A			(MC2	FB)  : MUX 21		Ref (A12fb)
+REG4			(MC24	FB)  : MUX 22		Ref (G103fb)
+CHIPB_A			(MC20	FB)  : MUX 23		Ref (F95fb)
+REG2			(MC22	FB)  : MUX 24		Ref (G98fb)
+CHIPB_C			(MC21	FB)  : MUX 25		Ref (F96fb)
+EMS2_B2			(MC5	FB)  : MUX 26		Ref (B22fb)
+CHIPA_C			(MC1	FB)  : MUX 27		Ref (A10fb)
+ROM_SIZE2		(MC17	FB)  : MUX 28		Ref (E71fb)
+CA13			(MC32	P)   : MUX 29		Ref (C40p)
+EMS2_A0			(MC4	FB)  : MUX 30		Ref (B21fb)
+B_SHARE_GRANTED		(MC13	P)   : MUX 31		Ref (D53p)
+ROM_SIZE0		(MC18	FB)  : MUX 33		Ref (E74fb)
+REG0			(MC23	FB)  : MUX 34		Ref (G100fb)
+CHIPB_Dm		(MC16	FB)  : MUX 35		Ref (D59fb)
+EMS1_B1			(MC9	FB)  : MUX 36		Ref (C39fb)
+BA			(MC37	FB)  : MUX 37		Ref (OE1)
+CHIPA_Dm		(MC15	FB)  : MUX 39		Ref (D58fb)
+
+FanIn assignment for block E [37]
+{
+ACTIVE_PAGE_A1,ACTIVE_PAGE_A0,A_SHARE_SELECT,A_READ,A_HALT,
+B_READ,B_SHARE_SELECT,B_HALT,BA,
+CA15,CA4,CA0,CA5,CA7,CHIPB_A,CA8,CA10,CHIPB_C,CA1,CA11,CHIPA_A,CA9,CA13,CA2,CA14,CHIPA_C,CA3,CA6,CA12,
+D2,D0,D1,
+EMS_WINDOW,E,
+Rw,REG6,REG3,
+}
+Multiplexer assignment for block E
+D2			(MC1	P)   : MUX 0		Ref (A9p)
+CA15			(MC23	P)   : MUX 1		Ref (C37p)
+ACTIVE_PAGE_A1		(MC8	FB)  : MUX 2		Ref (B20fb)
+CA4			(MC18	P)   : MUX 3		Ref (B24p)
+CA0			(MC22	P)   : MUX 4		Ref (B30p)
+ACTIVE_PAGE_A0		(MC9	FB)  : MUX 5		Ref (B30fb)
+D0			(MC5	P)   : MUX 6		Ref (A13p)
+CA5			(MC17	P)   : MUX 7		Ref (B22p)
+Rw			(MC6	P)   : MUX 8		Ref (A14p)
+CA7			(MC15	P)   : MUX 9		Ref (B19p)
+D1			(MC3	P)   : MUX 10		Ref (A11p)
+CHIPB_A			(MC10	FB)  : MUX 11		Ref (F95fb)
+B_READ			(MC30	P)   : MUX 12		Ref (D59p)
+CA8			(MC14	P)   : MUX 13		Ref (B17p)
+CA10			(MC28	P)   : MUX 14		Ref (C45p)
+CHIPB_C			(MC11	FB)  : MUX 15		Ref (F96fb)
+CA1			(MC21	P)   : MUX 16		Ref (B29p)
+CA11			(MC27	P)   : MUX 18		Ref (C43p)
+CHIPA_A			(MC4	FB)  : MUX 19		Ref (A12fb)
+CA9			(MC29	P)   : MUX 20		Ref (C46p)
+CA13			(MC25	P)   : MUX 21		Ref (C40p)
+REG6			(MC13	FB)  : MUX 22		Ref (H114fb)
+A_SHARE_SELECT		(MC34	P)   : MUX 23		Ref (F85p)
+CA2			(MC20	P)   : MUX 24		Ref (B27p)
+CA14			(MC24	P)   : MUX 25		Ref (C38p)
+CHIPA_C			(MC2	FB)  : MUX 27		Ref (A10fb)
+EMS_WINDOW		(MC7	FB)  : MUX 28		Ref (B18fb)
+B_SHARE_SELECT		(MC35	P)   : MUX 29		Ref (F86p)
+CA3			(MC19	P)   : MUX 30		Ref (B25p)
+REG3			(MC12	FB)  : MUX 31		Ref (G108fb)
+B_HALT			(MC32	P)   : MUX 32		Ref (D62p)
+CA6			(MC16	P)   : MUX 33		Ref (B21p)
+CA12			(MC26	P)   : MUX 34		Ref (C41p)
+A_READ			(MC31	P)   : MUX 36		Ref (D61p)
+BA			(MC37	FB)  : MUX 37		Ref (OE1)
+A_HALT			(MC33	P)   : MUX 38		Ref (D64p)
+E			(MC36	FB)  : MUX 39		Ref (GCLK)
+
+FanIn assignment for block F [37]
+{
+A_HALT,A_S_16,A_READ,
+B_S_16,B_READ,B_HALT,BA,
+CA12,CA15,CA14,CA13,CHIPA_C,CHIPB_C,
+EMS_WINDOW,EMS1_B0,EMS1_B4,EMS2_B2,EMS2_B4,EMS2_B1,EMS2_B0,EMS2_B3,EMS1_B2,EMS1_B3,EMS1_B1,E,
+MR2,MR3,
+Q,
+Rw,
+XXL_353,XXL_365,XXL_364,XXL_363,XXL_352,XXL_361,XXL_360,XXL_362,
+}
+Multiplexer assignment for block F
+EMS_WINDOW		(MC5	FB)  : MUX 0		Ref (B18fb)
+B_S_16			(MC12	P)   : MUX 1		Ref (C33p)
+CA12			(MC30	P)   : MUX 2		Ref (C41p)
+CA15			(MC27	P)   : MUX 3		Ref (C37p)
+Q			(MC35	FB)  : MUX 4		Ref (OE2)
+XXL_353			(MC3	FB)  : MUX 5		Ref (A15fb)
+A_HALT			(MC34	P)   : MUX 6		Ref (D64p)
+CA14			(MC28	P)   : MUX 7		Ref (C38p)
+Rw			(MC2	P)   : MUX 8		Ref (A14p)
+A_S_16			(MC13	P)   : MUX 9		Ref (C35p)
+EMS1_B0			(MC4	FB)  : MUX 10		Ref (B17fb)
+CA13			(MC29	P)   : MUX 11		Ref (C40p)
+B_READ			(MC31	P)   : MUX 12		Ref (D59p)
+CHIPA_C			(MC1	FB)  : MUX 13		Ref (A10fb)
+EMS1_B4			(MC16	FB)  : MUX 15		Ref (C42fb)
+EMS2_B2			(MC7	FB)  : MUX 16		Ref (B22fb)
+EMS2_B4			(MC9	FB)  : MUX 17		Ref (B25fb)
+EMS2_B1			(MC8	FB)  : MUX 18		Ref (B23fb)
+XXL_365			(MC19	FB)  : MUX 19		Ref (E79fb)
+A_READ			(MC32	P)   : MUX 20		Ref (D61p)
+XXL_364			(MC25	FB)  : MUX 21		Ref (H122fb)
+EMS2_B0			(MC6	FB)  : MUX 22		Ref (B19fb)
+EMS2_B3			(MC11	FB)  : MUX 23		Ref (B29fb)
+EMS1_B2			(MC15	FB)  : MUX 25		Ref (C41fb)
+XXL_363			(MC23	FB)  : MUX 26		Ref (H119fb)
+XXL_352			(MC17	FB)  : MUX 27		Ref (C48fb)
+B_HALT			(MC33	P)   : MUX 28		Ref (D62p)
+MR2			(MC26	FB)  : MUX 29		Ref (H127fb)
+EMS1_B3			(MC10	FB)  : MUX 31		Ref (B28fb)
+XXL_361			(MC24	FB)  : MUX 32		Ref (H120fb)
+CHIPB_C			(MC20	FB)  : MUX 33		Ref (F96fb)
+EMS1_B1			(MC14	FB)  : MUX 34		Ref (C39fb)
+BA			(MC37	FB)  : MUX 35		Ref (OE1)
+MR3			(MC22	FB)  : MUX 36		Ref (H116fb)
+XXL_360			(MC21	FB)  : MUX 37		Ref (G112fb)
+XXL_362			(MC18	FB)  : MUX 38		Ref (D55fb)
+E			(MC36	FB)  : MUX 39		Ref (GCLK)
+
+FanIn assignment for block G [28]
+{
+BA,
+CA2,CA15,CA7,CA6,CA9,CA12,CA10,CA13,CA0,CA4,CA14,CA5,CA11,CA3,CA8,CA1,
+Dev_Sel_2,Dev_Sel_1,
+E,
+Rw,RomMapped,REG4,REG2,ROM_SIZE1,ROM_SIZE2,
+XXL_303,XXL_301,
+}
+Multiplexer assignment for block G
+CA2			(MC17	P)   : MUX 0		Ref (B27p)
+CA15			(MC20	P)   : MUX 1		Ref (C37p)
+Dev_Sel_2		(MC9	P)   : MUX 2		Ref (G105p)
+BA			(MC28	FB)  : MUX 3		Ref (OE1)
+E			(MC27	FB)  : MUX 5		Ref (GCLK)
+Rw			(MC1	P)   : MUX 8		Ref (A14p)
+CA7			(MC12	P)   : MUX 9		Ref (B19p)
+RomMapped		(MC10	P)   : MUX 10		Ref (H128p)
+CA6			(MC13	P)   : MUX 11		Ref (B21p)
+CA9			(MC26	P)   : MUX 12		Ref (C46p)
+CA12			(MC23	P)   : MUX 16		Ref (C41p)
+Dev_Sel_1		(MC8	P)   : MUX 17		Ref (G104p)
+CA10			(MC25	P)   : MUX 18		Ref (C45p)
+REG4			(MC7	FB)  : MUX 20		Ref (G103fb)
+CA13			(MC22	P)   : MUX 21		Ref (C40p)
+CA0			(MC19	P)   : MUX 22		Ref (B30p)
+CA4			(MC15	P)   : MUX 23		Ref (B24p)
+REG2			(MC6	FB)  : MUX 24		Ref (G98fb)
+CA14			(MC21	P)   : MUX 25		Ref (C38p)
+CA5			(MC14	P)   : MUX 27		Ref (B22p)
+CA11			(MC24	P)   : MUX 28		Ref (C43p)
+ROM_SIZE1		(MC5	FB)  : MUX 29		Ref (E76fb)
+CA3			(MC16	P)   : MUX 30		Ref (B25p)
+CA8			(MC11	P)   : MUX 31		Ref (B17p)
+CA1			(MC18	P)   : MUX 32		Ref (B29p)
+XXL_303			(MC3	FB)  : MUX 37		Ref (B32fb)
+ROM_SIZE2		(MC4	FB)  : MUX 38		Ref (E71fb)
+XXL_301			(MC2	FB)  : MUX 39		Ref (B31fb)
+
+FanIn assignment for block H [36]
+{
+BootSrc,BA,
+CA2,CA15,CA7,CA6,CA9,CA10,CA12,CA14,CA11,CA13,CA0,CA4,CA5,CA3,CA1,CA8,
+D7,Dev_Sel_2,Dev_Sel_1,
+REG5,Rw,RomMapped,REG1,REG4,REG6,ROM_SIZE2,ROM_SIZE1,REG0,Reset,REG3,REG2,ROM_SIZE0,
+XXL_355,XXL_354,
+}
+Multiplexer assignment for block H
+CA2			(MC24	P)   : MUX 0		Ref (B27p)
+D7			(MC1	P)   : MUX 1		Ref (A1p)
+Dev_Sel_2		(MC10	P)   : MUX 2		Ref (G105p)
+CA15			(MC27	P)   : MUX 3		Ref (C37p)
+REG5			(MC15	FB)  : MUX 4		Ref (H117fb)
+BootSrc			(MC34	P)   : MUX 6		Ref (H126p)
+XXL_355			(MC13	FB)  : MUX 7		Ref (G111fb)
+Rw			(MC2	P)   : MUX 8		Ref (A14p)
+CA7			(MC19	P)   : MUX 9		Ref (B19p)
+RomMapped		(MC17	P)   : MUX 10		Ref (H128p)
+CA6			(MC20	P)   : MUX 11		Ref (B21p)
+CA9			(MC33	P)   : MUX 12		Ref (C46p)
+CA10			(MC32	P)   : MUX 14		Ref (C45p)
+Dev_Sel_1		(MC9	P)   : MUX 15		Ref (G104p)
+CA12			(MC30	P)   : MUX 16		Ref (C41p)
+CA14			(MC28	P)   : MUX 17		Ref (C38p)
+CA11			(MC31	P)   : MUX 18		Ref (C43p)
+REG1			(MC11	FB)  : MUX 19		Ref (G106fb)
+REG4			(MC8	FB)  : MUX 20		Ref (G103fb)
+CA13			(MC29	P)   : MUX 21		Ref (C40p)
+CA0			(MC26	P)   : MUX 22		Ref (B30p)
+CA4			(MC22	P)   : MUX 23		Ref (B24p)
+REG6			(MC14	FB)  : MUX 24		Ref (H114fb)
+XXL_354			(MC16	FB)  : MUX 25		Ref (H126fb)
+CA5			(MC21	P)   : MUX 27		Ref (B22p)
+ROM_SIZE2		(MC3	FB)  : MUX 28		Ref (E71fb)
+ROM_SIZE1		(MC5	FB)  : MUX 29		Ref (E76fb)
+CA3			(MC23	P)   : MUX 30		Ref (B25p)
+CA1			(MC25	P)   : MUX 32		Ref (B29p)
+CA8			(MC18	P)   : MUX 33		Ref (B17p)
+REG0			(MC7	FB)  : MUX 34		Ref (G100fb)
+BA			(MC36	FB)  : MUX 35		Ref (OE1)
+Reset			(MC35	FB)  : MUX 36		Ref (GCLR)
+REG3			(MC12	FB)  : MUX 37		Ref (G108fb)
+REG2			(MC6	FB)  : MUX 38		Ref (G98fb)
+ROM_SIZE0		(MC4	FB)  : MUX 39		Ref (E74fb)
+
+Creating JEDEC file Z:\ATF3_V2.CUPL.jed ...
+
+TQFP100 programmed logic:
+-----------------------------------
+A_G_A_DIR = BA;
+
+A_G_D_DIR = ((!BA & CHIPA_C.Q & Rw.PIN)
+	# (BA & !A_HALT & !A_READ));
+
+A_SHARE_GRANTED = (A_SHARE_REQUEST & CHIPA_A.Q);
+
+B_G_A_DIR = BA;
+
+B_G_D_DIR = ((!BA & CHIPB_C.Q & Rw.PIN)
+	# (BA & A_HALT & !B_HALT & !B_READ));
+
+B_SHARE_GRANTED = (B_SHARE_REQUEST & CHIPB_A.Q);
+
+CHIPA_Dc.D = (CHIPA_A.Q
+	# (!CHIPA_C.Q & CHIPA_Dc.Q));
+
+CHIPA_Dm.D = (CHIPA_C.Q
+	# (!CHIPA_A.Q & CHIPA_Dm.Q));
+
+CHIPB_Dc.D = (CHIPB_A.Q
+	# (!CHIPB_C.Q & CHIPB_Dc.Q));
+
+D5 = 0;
+
+CHIPB_Dm.D = (CHIPB_C.Q
+	# (!CHIPB_A.Q & CHIPB_Dm.Q));
+
+!Dev_Sel_1 = (!BA & CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
+
+!Dev_Sel_2 = (!BA & !CA5 & CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
+
+!Dev_Sel_3 = (!BA & CA5 & CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
+
+!Dev_Sel_6 = (!BA & !CA5 & CA6 & CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
+
+!Dev_Sel_7 = (!BA & CA5 & CA6 & CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
+
+!Dev_Sel_4 = (!BA & !CA5 & !CA6 & CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
+
+!Dev_Sel_5 = (!BA & CA5 & !CA6 & CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
+
+EMS1_A0.D = D6.PIN;
+
+EMS1_A1.D = D7.PIN;
+
+EMS1_B0.D = D0.PIN;
+
+EMS1_B2.D = D2.PIN;
+
+EMS1_B1.D = D1.PIN;
+
+EMS1_B3.D = D3.PIN;
+
+EMS1_B4.D = D4.PIN;
+
+!EMS1_is_MHFA = (EMS1_A0.Q & !EMS1_A1.Q);
+
+EMS2_A0.D = D6.PIN;
+
+EMS2_A1.D = D7.PIN;
+
+EMS2_B0.D = D0.PIN;
+
+EMS2_B1.D = D1.PIN;
+
+EMS2_B2.D = D2.PIN;
+
+EMS2_B3.D = D3.PIN;
+
+EMS2_B4.D = D4.PIN;
+
+!EMS2_is_MHFA = (EMS2_A0.Q & !EMS2_A1.Q);
+
+!XXL_305.TH = (A_HALT & B_HALT);
+
+ROM_SIZE0.D = D0.PIN;
+
+ROM_SIZE1.D = D1.PIN;
+
+ROM_SIZE2.D = D2.PIN;
+
+!Read = (E & Rw.PIN);
+
+RomMapped.D = D7.PIN;
+
+!Write = (E & !Rw.PIN);
+
+Rw = ((!A_HALT & !A_READ)
+	# (A_HALT & !B_HALT & !B_READ));
+
+HALT = !XXL_305.PIN;
+
+ROM = !XXL_301.PIN;
+
+RAM = !XXL_303.PIN;
+
+CHIPA_A.D = ((A_SHARE_REQUEST & EMS1_is_MHFA & EMS2_is_MHFA)
+	# (A_SHARE_REQUEST & CHIPA_A.Q));
+
+!A_SHARE_DIRTY = ((!A_SHARE_GRANTED & !BA & !CHIPA_Dm.Q)
+	# (A_SHARE_GRANTED & !BA & EMS1_is_MHFA & EMS2_is_MHFA));
+
+B_SHARE_DIRTY = ((A_HALT & BA)
+	# (B_SHARE_GRANTED & !EMS1_A0.Q & EMS1_A1.Q)
+	# (B_SHARE_GRANTED & !EMS2_A0.Q & EMS2_A1.Q)
+	# (!B_SHARE_GRANTED & CHIPB_Dm.Q));
+
+!CHIPB_C.D = XXL_352;
+
+!CHIPA_C.D = ((EMS1_is_MHFA & EMS2_is_MHFA)
+	# (A_SHARE_REQUEST & CHIPA_A.Q & !CHIPA_C.Q));
+
+CHIPB_A.D = XXL_353;
+
+REG0 = ((!Dev_Sel_1 & !Dev_Sel_2)
+	# (!CA0 & !CA1 & !CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15));
+
+REG1 = ((!Dev_Sel_1 & !Dev_Sel_2)
+	# (CA0 & !CA1 & !CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15));
+
+REG4 = ((!Dev_Sel_1 & !Dev_Sel_2)
+	# (!CA0 & !CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15));
+
+REG2 = ((!Dev_Sel_1 & !Dev_Sel_2)
+	# (!CA0 & CA1 & !CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15));
+
+REG6 = ((!Dev_Sel_1 & !Dev_Sel_2)
+	# (!CA0 & CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15));
+
+REG3 = ((!Dev_Sel_1 & !Dev_Sel_2)
+	# (CA0 & CA1 & !CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15));
+
+REG5 = ((!Dev_Sel_1 & !Dev_Sel_2)
+	# (CA0 & !CA1 & CA2 & !CA3 & !CA4 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15));
+
+MR2 = ((!BA & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA0 & CA1 & CA2)
+	# XXL_354
+	# (!BA & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA6)
+	# (!BA & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA7)
+	# (!BA & REG5));
+
+!MR0 = (!XXL_360 & !XXL_361 & !XXL_362);
+
+!MR1 = (!XXL_363 & !XXL_364 & !XXL_365);
+
+MR3 = ((!BA & REG5)
+	# XXL_355
+	# (!BA & REG0)
+	# (!BA & REG1)
+	# (!BA & REG3));
+
+A_S_16 = ((CHIPA_C.Q & !MR2 & !MR3 & MR0 & EMS1_B4.Q & EMS1_A0.Q & !EMS1_A1.Q & !XXL_363 & !XXL_364 & !XXL_365)
+	# (CHIPA_C.Q & !MR2 & !MR3 & MR1 & EMS2_B4.Q & EMS2_A0.Q & !EMS2_A1.Q & !XXL_360 & !XXL_361 & !XXL_362));
+
+ACTIVE_PAGE_A0 = ((!MR2 & !MR3 & MR0 & EMS1_A0.Q & !XXL_363 & !XXL_364 & !XXL_365)
+	# (!MR2 & !MR3 & MR1 & EMS2_A0.Q & !XXL_360 & !XXL_361 & !XXL_362));
+
+ACTIVE_PAGE_A1 = ((!MR2 & !MR3 & MR0 & EMS1_A1.Q & !XXL_363 & !XXL_364 & !XXL_365)
+	# (!MR2 & !MR3 & MR1 & EMS2_A1.Q & !XXL_360 & !XXL_361 & !XXL_362));
+
+B_S_16 = ((CHIPB_C.Q & !MR2 & !MR3 & MR0 & EMS1_B4.Q & !EMS1_A0.Q & EMS1_A1.Q & !XXL_363 & !XXL_364 & !XXL_365)
+	# (CHIPB_C.Q & !MR2 & !MR3 & MR1 & EMS2_B4.Q & !EMS2_A0.Q & EMS2_A1.Q & !XXL_360 & !XXL_361 & !XXL_362));
+
+EMS_WINDOW = ((!MR2 & !MR3 & MR0 & !XXL_363 & !XXL_364 & !XXL_365)
+	# (!MR2 & !MR3 & MR1 & !XXL_360 & !XXL_361 & !XXL_362));
+
+XXL_303.TH = ((!MR2 & !MR3 & !XXL_363 & !XXL_364 & !XXL_365 & !EMS1_A0.Q & !EMS1_A1.Q)
+	# (!MR2 & !MR3 & !XXL_360 & !XXL_361 & !XXL_362 & !EMS2_A0.Q & !EMS2_A1.Q)
+	# BA
+	# (!MR2 & !MR3 & !XXL_360 & !XXL_361 & !XXL_362 & !XXL_363 & !XXL_364 & !XXL_365));
+
+REG_ACCESS = ((E & MR3 & !MR2)
+	# (E & MR3 & !XXL_360 & !XXL_361 & !XXL_362)
+	# (E & MR3 & !XXL_363 & !XXL_364 & !XXL_365));
+
+XXL_301.TH = ((!MR2 & !MR3 & MR1 & EMS2_A0.Q & EMS2_A1.Q)
+	# (!MR2 & !MR3 & MR0 & MR1)
+	# (!MR2 & !MR3 & MR0 & EMS1_A0.Q & EMS1_A1.Q));
+
+!A_S_READ = ((A_READ & CHIPA_A.Q)
+	# (CHIPA_C.Q & E & Rw.PIN & ACTIVE_PAGE_A0 & !ACTIVE_PAGE_A1 & EMS_WINDOW));
+
+!A_G_ENABLE = ((!A_HALT & BA)
+	# (CHIPA_C.Q & E & ACTIVE_PAGE_A0 & !ACTIVE_PAGE_A1 & EMS_WINDOW));
+
+!B_G_ENABLE = ((A_HALT & BA & !B_HALT)
+	# (CHIPB_C.Q & E & !ACTIVE_PAGE_A0 & ACTIVE_PAGE_A1 & EMS_WINDOW));
+
+!A_S_SELECT = ((CHIPA_C.Q & ACTIVE_PAGE_A0 & !ACTIVE_PAGE_A1 & EMS_WINDOW)
+	# (A_SHARE_SELECT & CHIPA_A.Q));
+
+!A_S_WRITE = ((!A_READ & CHIPA_A.Q)
+	# (CHIPA_C.Q & E & !Rw.PIN & ACTIVE_PAGE_A0 & !ACTIVE_PAGE_A1 & EMS_WINDOW));
+
+!B_S_WRITE = ((!B_READ & CHIPB_A.Q)
+	# (CHIPB_C.Q & E & !Rw.PIN & !ACTIVE_PAGE_A0 & ACTIVE_PAGE_A1 & EMS_WINDOW));
+
+!B_S_READ = ((B_READ & CHIPB_A.Q)
+	# (CHIPB_C.Q & E & Rw.PIN & !ACTIVE_PAGE_A0 & ACTIVE_PAGE_A1 & EMS_WINDOW));
+
+!B_S_SELECT = ((CHIPB_C.Q & !ACTIVE_PAGE_A0 & ACTIVE_PAGE_A1 & EMS_WINDOW)
+	# (B_SHARE_SELECT & CHIPB_A.Q));
+
+GA12 = ((EMS_WINDOW & !MR2 & !MR3 & MR0 & EMS1_B0.Q & !XXL_363 & !XXL_364 & !XXL_365)
+	# (EMS_WINDOW & !MR2 & !MR3 & MR1 & EMS2_B0.Q & !XXL_360 & !XXL_361 & !XXL_362)
+	# (!EMS_WINDOW & CA12));
+
+GA13 = ((EMS_WINDOW & !MR2 & !MR3 & MR0 & EMS1_B1.Q & !XXL_363 & !XXL_364 & !XXL_365)
+	# (EMS_WINDOW & !MR2 & !MR3 & MR1 & EMS2_B1.Q & !XXL_360 & !XXL_361 & !XXL_362)
+	# (!EMS_WINDOW & CA13));
+
+GA14 = ((EMS_WINDOW & !MR2 & !MR3 & MR0 & EMS1_B2.Q & !XXL_363 & !XXL_364 & !XXL_365)
+	# (EMS_WINDOW & !MR2 & !MR3 & MR1 & EMS2_B2.Q & !XXL_360 & !XXL_361 & !XXL_362)
+	# (!EMS_WINDOW & CA14));
+
+GA15 = ((EMS_WINDOW & !MR2 & !MR3 & MR0 & EMS1_B3.Q & !XXL_363 & !XXL_364 & !XXL_365)
+	# (EMS_WINDOW & !MR2 & !MR3 & MR1 & EMS2_B3.Q & !XXL_360 & !XXL_361 & !XXL_362)
+	# (!EMS_WINDOW & CA15));
+
+GA16 = ((!BA & !MR2 & !MR3 & MR1 & EMS2_B4.Q & !XXL_360 & !XXL_361 & !XXL_362)
+	# (BA & !A_HALT & A_S_16.PIN)
+	# (BA & A_HALT & !B_HALT & B_S_16.PIN)
+	# (!BA & MR0 & !MR2 & !MR3 & EMS1_B4.Q & !XXL_363 & !XXL_364 & !XXL_365));
+
+D0 = (XXL_356
+	# XXL_357
+	# XXL_358);
+
+D1 = XXL_359;
+
+D3 = ((REG_ACCESS & Rw.PIN & CHIPB_Dc.Q & REG5)
+	# (REG_ACCESS & Rw.PIN & CHIPA_Dc.Q & REG4)
+	# (REG_ACCESS & Rw.PIN & EMS1_B3.Q & REG0)
+	# (REG_ACCESS & Rw.PIN & EMS2_B3.Q & REG2));
+
+D2 = (XXL_366
+	# XXL_367);
+
+D4 = ((REG_ACCESS & Rw.PIN & EMS2_B4.Q & REG2)
+	# (REG_ACCESS & Rw.PIN & EMS1_B4.Q & REG0));
+
+D7 = ((REG_ACCESS & Rw.PIN & EMS1_A1.Q & REG0)
+	# (REG_ACCESS & Rw.PIN & REG6 & RomMapped.Q)
+	# (REG_ACCESS & Rw.PIN & EMS2_A1.Q & REG2));
+
+D6 = ((REG_ACCESS & Rw.PIN & EMS1_A0.Q & REG0)
+	# (REG_ACCESS & Rw.PIN & BootSrc & REG6)
+	# (REG_ACCESS & Rw.PIN & EMS2_A0.Q & REG2));
+
+!FB_351 = (B_HALT & A_HALT);
+
+XXL_352 = ((B_SHARE_REQUEST & CHIPB_A.Q & !CHIPB_C.Q)
+	# (EMS2_A0.Q & EMS1_A0.Q)
+	# (!EMS2_A1.Q & EMS1_A0.Q)
+	# (!EMS1_A1.Q & EMS2_A0.Q)
+	# (!EMS1_A1.Q & !EMS2_A1.Q));
+
+XXL_353 = ((B_SHARE_REQUEST & CHIPB_A.Q)
+	# (B_SHARE_REQUEST & EMS2_A0.Q & EMS1_A0.Q)
+	# (B_SHARE_REQUEST & !EMS2_A1.Q & EMS1_A0.Q)
+	# (B_SHARE_REQUEST & !EMS1_A1.Q & EMS2_A0.Q)
+	# (B_SHARE_REQUEST & !EMS1_A1.Q & !EMS2_A1.Q));
+
+XXL_354 = ((!BA & REG4)
+	# (!BA & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA5)
+	# (!BA & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA3)
+	# (!BA & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA4)
+	# (!BA & REG6));
+
+XXL_355 = ((!BA & REG2)
+	# (!BA & REG4)
+	# (!BA & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA0 & CA1 & CA2)
+	# (!BA & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA3)
+	# (!BA & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA4));
+
+XXL_356 = ((REG_ACCESS & Rw.PIN & EMS2_B0.Q & REG2)
+	# (REG_ACCESS & Rw.PIN & CHIPA_C.Q & REG4)
+	# (REG_ACCESS & Rw.PIN & REG1 & EMS1_A1.Q & EMS1_A0.Q)
+	# (REG_ACCESS & Rw.PIN & REG1 & EMS1_A1.Q & CHIPB_C.Q)
+	# (REG_ACCESS & Rw.PIN & EMS1_B0.Q & REG0));
+
+XXL_357 = ((REG_ACCESS & Rw.PIN & REG3 & EMS2_A0.Q & CHIPA_C.Q)
+	# (REG_ACCESS & Rw.PIN & REG3 & EMS2_A0.Q & EMS2_A1.Q)
+	# (REG_ACCESS & Rw.PIN & REG6 & ROM_SIZE0.Q)
+	# (REG_ACCESS & Rw.PIN & CHIPB_C.Q & REG5)
+	# (REG_ACCESS & Rw.PIN & REG3 & !EMS2_A0.Q & !EMS2_A1.Q));
+
+XXL_358 = ((REG_ACCESS & Rw.PIN & CHIPB_C.Q & REG3 & EMS2_A1.Q)
+	# (REG_ACCESS & Rw.PIN & REG1 & !EMS1_A0.Q & !EMS1_A1.Q)
+	# (REG_ACCESS & Rw.PIN & REG1 & EMS1_A0.Q & CHIPA_C.Q));
+
+XXL_359 = ((REG_ACCESS & Rw.PIN & EMS2_B1.Q & REG2)
+	# (REG_ACCESS & Rw.PIN & CHIPA_A.Q & REG4)
+	# (REG_ACCESS & Rw.PIN & REG6 & ROM_SIZE1.Q)
+	# (REG_ACCESS & Rw.PIN & CHIPB_A.Q & REG5)
+	# (REG_ACCESS & Rw.PIN & EMS1_B1.Q & REG0));
+
+XXL_360 = ((!BA & !CA12 & !CA14 & CA15 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & CA4)
+	# (!BA & CA14 & CA15 & !ROM_SIZE1.Q & !ROM_SIZE2.Q & RomMapped.Q)
+	# (!BA & CA12 & CA14 & CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA13)
+	# (!BA & !CA12 & !CA14 & CA15 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & CA0 & CA1 & CA2)
+	# (!BA & !CA12 & !CA14 & CA15 & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & CA3));
+
+XXL_361 = ((!BA & CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA13 & !ROM_SIZE0.Q & !ROM_SIZE1.Q & CA9)
+	# (!BA & CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA13 & !ROM_SIZE0.Q & !ROM_SIZE1.Q & CA11)
+	# (!BA & CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA13 & !ROM_SIZE0.Q & !ROM_SIZE1.Q & CA10)
+	# (!BA & CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA13 & !ROM_SIZE0.Q & CA14)
+	# (!BA & CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA13 & !ROM_SIZE0.Q & CA8 & !ROM_SIZE1.Q));
+
+XXL_362 = ((!BA & REG1)
+	# (!BA & REG3)
+	# (!BA & REG5)
+	# (!BA & CA12 & CA15 & CA13 & !ROM_SIZE1.Q & !ROM_SIZE2.Q & RomMapped.Q & !ROM_SIZE0.Q)
+	# (!BA & !CA12 & CA15 & !CA13 & !CA14));
+
+XXL_363 = ((!BA & CA14 & CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA13 & !ROM_SIZE0.Q)
+	# (!BA & CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA13 & !ROM_SIZE0.Q & !ROM_SIZE1.Q & CA8)
+	# (!BA & CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA13 & !ROM_SIZE0.Q & !ROM_SIZE1.Q & CA9)
+	# (!BA & CA14 & CA15 & !ROM_SIZE2.Q & RomMapped.Q & !ROM_SIZE1.Q)
+	# (!BA & CA14 & CA15 & !ROM_SIZE2.Q & RomMapped.Q & CA12 & CA13));
+
+XXL_364 = ((!BA & CA15 & !ROM_SIZE1.Q & !ROM_SIZE2.Q & RomMapped.Q & !ROM_SIZE0.Q & CA12)
+	# (!BA & !CA13 & CA15 & CA12 & !CA14)
+	# (!BA & REG2)
+	# (!BA & CA13 & CA15 & !ROM_SIZE1.Q & !ROM_SIZE2.Q & RomMapped.Q & !ROM_SIZE0.Q & CA11)
+	# (!BA & CA13 & CA15 & !ROM_SIZE1.Q & !ROM_SIZE2.Q & RomMapped.Q & !ROM_SIZE0.Q & CA10));
+
+XXL_365 = ((!BA & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA0 & CA1 & CA2)
+	# (!BA & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA3)
+	# (!BA & !CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15 & CA4)
+	# (!BA & REG6)
+	# (!BA & REG3));
+
+XXL_366 = ((REG_ACCESS & Rw.PIN & EMS2_B2.Q & REG2)
+	# (REG_ACCESS & Rw.PIN & A_SHARE_REQUEST & REG4)
+	# (REG_ACCESS & Rw.PIN & REG6 & ROM_SIZE2.Q)
+	# (REG_ACCESS & Rw.PIN & REG1 & !EMS1_A0.Q & EMS1_A1.Q & B_SHARE_REQUEST)
+	# (REG_ACCESS & Rw.PIN & EMS1_B2.Q & REG0));
+
+XXL_367 = ((REG_ACCESS & Rw.PIN & REG3 & !EMS2_A0.Q & EMS2_A1.Q & B_SHARE_REQUEST)
+	# (REG_ACCESS & Rw.PIN & A_SHARE_REQUEST & REG1 & EMS1_A0.Q & !EMS1_A1.Q)
+	# (REG_ACCESS & Rw.PIN & B_SHARE_REQUEST & REG5)
+	# (REG_ACCESS & Rw.PIN & A_SHARE_REQUEST & REG3 & EMS2_A0.Q & !EMS2_A1.Q));
+
+CHIPA_Dc.C = E;
+
+CHIPA_Dm.C = E;
+
+CHIPB_Dc.C = E;
+
+D5.OE = (REG_ACCESS & Rw.PIN);
+
+CHIPB_Dm.C = E;
+
+EMS1_A0.C = !Q;
+
+EMS1_A0.AR = !Reset;
+
+EMS1_A0.CE = (!MR2 & MR3 & REG_ACCESS & !Rw.PIN & !XXL_360 & !XXL_361 & !XXL_362 & !XXL_363 & !XXL_364 & !XXL_365);
+
+EMS1_A1.C = !Q;
+
+EMS1_A1.AR = !Reset;
+
+EMS1_A1.CE = (!MR2 & MR3 & REG_ACCESS & !Rw.PIN & !XXL_360 & !XXL_361 & !XXL_362 & !XXL_363 & !XXL_364 & !XXL_365);
+
+EMS1_B0.C = !Q;
+
+EMS1_B0.AR = !Reset;
+
+EMS1_B0.CE = (!MR2 & MR3 & REG_ACCESS & !Rw.PIN & !XXL_360 & !XXL_361 & !XXL_362 & !XXL_363 & !XXL_364 & !XXL_365);
+
+EMS1_B2.C = !Q;
+
+EMS1_B2.AR = !Reset;
+
+EMS1_B2.CE = (!MR2 & MR3 & REG_ACCESS & !Rw.PIN & !XXL_360 & !XXL_361 & !XXL_362 & !XXL_363 & !XXL_364 & !XXL_365);
+
+EMS1_B1.C = !Q;
+
+EMS1_B1.AR = !Reset;
+
+EMS1_B1.CE = (!MR2 & MR3 & REG_ACCESS & !Rw.PIN & !XXL_360 & !XXL_361 & !XXL_362 & !XXL_363 & !XXL_364 & !XXL_365);
+
+EMS1_B3.C = !Q;
+
+EMS1_B3.AP = !Reset;
+
+EMS1_B3.CE = (!MR2 & MR3 & REG_ACCESS & !Rw.PIN & !XXL_360 & !XXL_361 & !XXL_362 & !XXL_363 & !XXL_364 & !XXL_365);
+
+EMS1_B4.C = !Q;
+
+EMS1_B4.AR = !Reset;
+
+EMS1_B4.CE = (!MR2 & MR3 & REG_ACCESS & !Rw.PIN & !XXL_360 & !XXL_361 & !XXL_362 & !XXL_363 & !XXL_364 & !XXL_365);
+
+EMS2_A0.C = !Q;
+
+EMS2_A0.AR = !Reset;
+
+EMS2_A0.CE = (MR1 & !MR2 & MR3 & REG_ACCESS & !Rw.PIN & !XXL_360 & !XXL_361 & !XXL_362);
+
+EMS2_A1.C = !Q;
+
+EMS2_A1.AR = !Reset;
+
+EMS2_A1.CE = (MR1 & !MR2 & MR3 & REG_ACCESS & !Rw.PIN & !XXL_360 & !XXL_361 & !XXL_362);
+
+EMS2_B0.C = !Q;
+
+EMS2_B0.AP = !Reset;
+
+EMS2_B0.CE = (MR1 & !MR2 & MR3 & REG_ACCESS & !Rw.PIN & !XXL_360 & !XXL_361 & !XXL_362);
+
+EMS2_B1.C = !Q;
+
+EMS2_B1.AR = !Reset;
+
+EMS2_B1.CE = (MR1 & !MR2 & MR3 & REG_ACCESS & !Rw.PIN & !XXL_360 & !XXL_361 & !XXL_362);
+
+EMS2_B2.C = !Q;
+
+EMS2_B2.AR = !Reset;
+
+EMS2_B2.CE = (MR1 & !MR2 & MR3 & REG_ACCESS & !Rw.PIN & !XXL_360 & !XXL_361 & !XXL_362);
+
+EMS2_B3.C = !Q;
+
+EMS2_B3.AP = !Reset;
+
+EMS2_B3.CE = (MR1 & !MR2 & MR3 & REG_ACCESS & !Rw.PIN & !XXL_360 & !XXL_361 & !XXL_362);
+
+EMS2_B4.C = !Q;
+
+EMS2_B4.AR = !Reset;
+
+EMS2_B4.CE = (MR1 & !MR2 & MR3 & REG_ACCESS & !Rw.PIN & !XXL_360 & !XXL_361 & !XXL_362);
+
+XXL_305.OE = FB_351;
+
+ROM_SIZE0.C = !Q;
+
+ROM_SIZE0.AR = !Reset;
+
+ROM_SIZE0.CE = (!BA & REG6 & !Rw.PIN);
+
+ROM_SIZE1.C = !Q;
+
+ROM_SIZE1.AR = !Reset;
+
+ROM_SIZE1.CE = (!BA & REG6 & !Rw.PIN);
+
+ROM_SIZE2.C = !Q;
+
+ROM_SIZE2.AR = !Reset;
+
+ROM_SIZE2.CE = (!BA & REG6 & !Rw.PIN);
+
+RomMapped.C = !Q;
+
+RomMapped.AR = (!BootSrc & !Reset);
+
+RomMapped.AP = (BootSrc & !Reset);
+
+RomMapped.CE = (!BA & REG6 & !Rw.PIN);
+
+Rw.OE = BA;
+
+CHIPA_A.C = Q;
+
+CHIPA_A.AR = !Reset;
+
+CHIPB_C.C = !E;
+
+CHIPB_C.AR = !Reset;
+
+CHIPA_C.C = !E;
+
+CHIPA_C.AR = !Reset;
+
+CHIPB_A.C = Q;
+
+CHIPB_A.AR = !Reset;
+
+A_S_16.OE = ((CHIPA_C.Q & !MR2 & !MR3 & MR0 & EMS1_A0.Q & !EMS1_A1.Q & !XXL_363 & !XXL_364 & !XXL_365)
+	# (CHIPA_C.Q & !MR2 & !MR3 & MR1 & EMS2_A0.Q & !EMS2_A1.Q & !XXL_360 & !XXL_361 & !XXL_362));
+
+B_S_16.OE = ((CHIPB_C.Q & !MR2 & !MR3 & MR0 & !EMS1_A0.Q & EMS1_A1.Q & !XXL_363 & !XXL_364 & !XXL_365)
+	# (CHIPB_C.Q & !MR2 & !MR3 & MR1 & !EMS2_A0.Q & EMS2_A1.Q & !XXL_360 & !XXL_361 & !XXL_362));
+
+XXL_303.OE = ((!MR2 & !MR3 & !XXL_363 & !XXL_364 & !XXL_365)
+	# BA
+	# (!MR2 & !MR3 & !XXL_360 & !XXL_361 & !XXL_362));
+
+XXL_301.OE = 1;
+
+GA12.OE = !BA;
+
+GA13.OE = !BA;
+
+GA14.OE = !BA;
+
+GA15.OE = !BA;
+
+D0.OE = (REG_ACCESS & Rw.PIN);
+
+D1.OE = (REG_ACCESS & Rw.PIN);
+
+D3.OE = (REG_ACCESS & Rw.PIN);
+
+D2.OE = (REG_ACCESS & Rw.PIN);
+
+D4.OE = (REG_ACCESS & Rw.PIN);
+
+D7.OE = (REG_ACCESS & Rw.PIN);
+
+D6.OE = (REG_ACCESS & Rw.PIN);
+
+
+TQFP100 Pin/Node Placement:
+------------------------------------
+Pin 1  = D6; /* MC 3 */
+Pin 2  = D7; /* MC 1 */
+Pin 4  = TDI; /* MC 32 */
+Pin 5  = CA0; /* MC 30 */
+Pin 6  = CA1; /* MC 29 */
+Pin 7  = CA2; /* MC 27 */
+Pin 8  = CA3; /* MC 25 */
+Pin 9  = CA4; /* MC 24 */
+Pin 10 = CA5; /* MC 22 */ 
+Pin 12 = CA6; /* MC 21 */ 
+Pin 13 = CA7; /* MC 19 */ 
+Pin 14 = CA8; /* MC 17 */ 
+Pin 15 = TMS; /* MC 48 */ 
+Pin 16 = CA9; /* MC 46 */ 
+Pin 17 = CA10; /* MC 45 */ 
+Pin 19 = CA11; /* MC 43 */ 
+Pin 20 = CA12; /* MC 41 */ 
+Pin 21 = CA13; /* MC 40 */ 
+Pin 22 = CA14; /* MC 38 */ 
+Pin 23 = CA15; /* MC 37 */ 
+Pin 24 = A_S_16; /* MC 35 */ 
+Pin 25 = B_S_16; /* MC 33 */ 
+Pin 27 = A_HALT; /* MC 64 */ 
+Pin 28 = B_HALT; /* MC 62 */ 
+Pin 29 = A_READ; /* MC 61 */ 
+Pin 30 = B_READ; /* MC 59 */ 
+Pin 31 = A_SHARE_DIRTY; /* MC 57 */ 
+Pin 32 = B_SHARE_DIRTY; /* MC 56 */ 
+Pin 33 = A_SHARE_GRANTED; /* MC 54 */ 
+Pin 35 = B_SHARE_GRANTED; /* MC 53 */ 
+Pin 36 = A_SHARE_REQUEST; /* MC 51 */ 
+Pin 37 = B_SHARE_REQUEST; /* MC 49 */ 
+Pin 40 = A_S_SELECT; /* MC 65 */ 
+Pin 41 = B_S_SELECT; /* MC 67 */ 
+Pin 42 = A_S_READ; /* MC 69 */ 
+Pin 44 = B_S_READ; /* MC 70 */ 
+Pin 45 = A_S_WRITE; /* MC 72 */ 
+Pin 46 = B_S_WRITE; /* MC 73 */ 
+Pin 47 = A_G_ENABLE; /* MC 75 */ 
+Pin 48 = B_G_ENABLE; /* MC 77 */ 
+Pin 49 = A_G_A_DIR; /* MC 78 */ 
+Pin 50 = B_G_A_DIR; /* MC 80 */ 
+Pin 52 = A_G_D_DIR; /* MC 81 */ 
+Pin 53 = B_G_D_DIR; /* MC 83 */ 
+Pin 54 = A_SHARE_SELECT; /* MC 85 */ 
+Pin 55 = B_SHARE_SELECT; /* MC 86 */ 
+Pin 56 = GA16; /* MC 88 */ 
+Pin 57 = GA15; /* MC 89 */ 
+Pin 58 = GA14; /* MC 91 */ 
+Pin 60 = GA13; /* MC 93 */ 
+Pin 61 = GA12; /* MC 94 */ 
+Pin 62 = TCK; /* MC 96 */ 
+Pin 63 = Read; /* MC 97 */ 
+Pin 64 = Write; /* MC 99 */ 
+Pin 65 = ROM; /* MC 101 */ 
+Pin 67 = RAM; /* MC 102 */ 
+Pin 68 = Dev_Sel_1; /* MC 104 */ 
+Pin 69 = Dev_Sel_2; /* MC 105 */ 
+Pin 70 = Dev_Sel_3; /* MC 107 */ 
+Pin 71 = Dev_Sel_4; /* MC 109 */ 
+Pin 72 = Dev_Sel_5; /* MC 110 */ 
+Pin 73 = TDO; /* MC 112 */ 
+Pin 75 = Dev_Sel_6; /* MC 113 */ 
+Pin 76 = Dev_Sel_7; /* MC 115 */ 
+Pin 84 = BootSrc; /* MC 126 */ 
+Pin 85 = RomMapped; /* MC 128 */ 
+Pin 87 = E;
+Pin 88 = BA;
+Pin 89 = Reset;
+Pin 90 = Q;
+Pin 92 = HALT; /* MC 16 */ 
+Pin 93 = Rw; /* MC 14 */ 
+Pin 94 = D0; /* MC 13 */ 
+Pin 96 = D1; /* MC 11 */ 
+Pin 97 = D2; /* MC  9 */
+Pin 98 = D3; /* MC  8 */
+Pin 99 = D4; /* MC  6 */
+Pin 100 = D5; /* MC  5 */
+PINNODE 313 = FB_351; /* MC 13 Foldback */
+PINNODE 314 = EMS2_is_MHFA; /* MC 14 Foldback */
+PINNODE 316 = EMS1_is_MHFA; /* MC 16 Foldback */
+PINNODE 319 = MR1; /* MC 19 Foldback */
+PINNODE 331 = MR0; /* MC 31 Foldback */
+PINNODE 345 = MR1; /* MC 45 Foldback */
+PINNODE 346 = MR0; /* MC 46 Foldback */
+PINNODE 359 = EMS2_is_MHFA; /* MC 59 Foldback */
+PINNODE 360 = EMS1_is_MHFA; /* MC 60 Foldback */
+PINNODE 395 = MR1; /* MC 95 Foldback */
+PINNODE 396 = MR0; /* MC 96 Foldback */
+PINNODE 604 = CHIPA_Dc; /* MC 4 Feedback */
+PINNODE 607 = XXL_305; /* MC 7 Feedback */
+PINNODE 610 = CHIPA_C; /* MC 10 Feedback */
+PINNODE 612 = CHIPA_A; /* MC 12 Feedback */
+PINNODE 615 = XXL_353; /* MC 15 Feedback */
+PINNODE 617 = EMS1_B0; /* MC 17 Feedback */
+PINNODE 618 = EMS_WINDOW; /* MC 18 Feedback */
+PINNODE 619 = EMS2_B0; /* MC 19 Feedback */
+PINNODE 620 = ACTIVE_PAGE_A1; /* MC 20 Feedback */
+PINNODE 621 = EMS2_A0; /* MC 21 Feedback */
+PINNODE 622 = EMS2_B2; /* MC 22 Feedback */
+PINNODE 623 = EMS2_B1; /* MC 23 Feedback */
+PINNODE 624 = EMS2_A1; /* MC 24 Feedback */
+PINNODE 625 = EMS2_B4; /* MC 25 Feedback */
+PINNODE 626 = B_S_16.OE; /* MC 26 Feedback */
+PINNODE 627 = A_S_16.OE; /* MC 27 Feedback */
+PINNODE 628 = EMS1_B3; /* MC 28 Feedback */
+PINNODE 629 = EMS2_B3; /* MC 29 Feedback */
+PINNODE 630 = ACTIVE_PAGE_A0; /* MC 30 Feedback */
+PINNODE 631 = XXL_301; /* MC 31 Feedback */
+PINNODE 632 = XXL_303; /* MC 32 Feedback */
+PINNODE 637 = EMS1_A0; /* MC 37 Feedback */
+PINNODE 638 = CHIPB_Dc; /* MC 38 Feedback */
+PINNODE 639 = EMS1_B1; /* MC 39 Feedback */
+PINNODE 640 = EMS1_A1; /* MC 40 Feedback */
+PINNODE 641 = EMS1_B2; /* MC 41 Feedback */
+PINNODE 642 = EMS1_B4; /* MC 42 Feedback */
+PINNODE 644 = REG_ACCESS; /* MC 44 Feedback */
+PINNODE 645 = XXL_358; /* MC 45 Feedback */
+PINNODE 646 = RAM.OE; /* MC 46 Feedback */
+PINNODE 647 = XXL_356; /* MC 47 Feedback */
+PINNODE 648 = XXL_352; /* MC 48 Feedback */
+PINNODE 655 = XXL_362; /* MC 55 Feedback */
+PINNODE 658 = CHIPA_Dm; /* MC 58 Feedback */
+PINNODE 659 = CHIPB_Dm; /* MC 59 Feedback */
+PINNODE 660 = XXL_367; /* MC 60 Feedback */
+PINNODE 662 = XXL_357; /* MC 62 Feedback */
+PINNODE 663 = XXL_359; /* MC 63 Feedback */
+PINNODE 664 = XXL_366; /* MC 64 Feedback */
+PINNODE 671 = ROM_SIZE2; /* MC 71 Feedback */
+PINNODE 674 = ROM_SIZE0; /* MC 74 Feedback */
+PINNODE 676 = ROM_SIZE1; /* MC 76 Feedback */
+PINNODE 679 = XXL_365; /* MC 79 Feedback */
+PINNODE 695 = CHIPB_A; /* MC 95 Feedback */
+PINNODE 696 = CHIPB_C; /* MC 96 Feedback */
+PINNODE 698 = REG2; /* MC 98 Feedback */
+PINNODE 700 = REG0; /* MC 100 Feedback */
+PINNODE 703 = REG4; /* MC 103 Feedback */
+PINNODE 706 = REG1; /* MC 106 Feedback */
+PINNODE 708 = REG3; /* MC 108 Feedback */
+PINNODE 711 = XXL_355; /* MC 111 Feedback */
+PINNODE 712 = XXL_360; /* MC 112 Feedback */
+PINNODE 714 = REG6; /* MC 114 Feedback */
+PINNODE 716 = MR3; /* MC 116 Feedback */
+PINNODE 717 = REG5; /* MC 117 Feedback */
+PINNODE 719 = XXL_363; /* MC 119 Feedback */
+PINNODE 720 = XXL_361; /* MC 120 Feedback */
+PINNODE 722 = XXL_364; /* MC 122 Feedback */
+PINNODE 726 = XXL_354; /* MC 126 Feedback */
+PINNODE 727 = MR2; /* MC 127 Feedback */
+
+** Resource Usage **
+
+
+DCERP Field = Summary of Allocations.
+|||||
+|||||_Preset [p,-]       ==  p = PT preset, - No Preset.
+||||
+||||__Reset [g,r,-]      ==  g= Global AR, r = PT reset, - No reset.
+|||
+|||___Clock Enable [e,-] ==  e = Product Term, - always enabled, - none.
+||
+||____Clock [c,g,-],     ==  c = Product term, g = Global term, - No Clock.
+|
+|_____Type [C,D,L,T],    ==  Register type C= combin, D=dff, L=latch, T=tff.
+
+For input only = INPUT.
+
+MCell Pin# Oe   PinDrive        DCERP  FBDrive        DCERP  Foldback     CascadeOut     TotPT output_slew
+MC1   2    PT   D7              C----  --                    --           --             4     slow
+MC2   0         --                     --                    --           --             0     slow
+MC3   1    PT   D6              C----  --                    --           --             4     slow
+MC4   0         --                     CHIPA_Dc       Dg---  --           --             2     slow
+MC5   100  PT   D5              C----  --                    --           --             1     slow
+MC6   99   PT   D4              C----  --                    --           --             3     slow
+MC7   0    PT   --                     XXL_305        C----  --           --             2     slow
+MC8   98   PT   D3              C----  --                    NA           --             5     slow
+MC9   97   PT   D2              C----  --                    --           --             3     slow
+MC10  0         --                     CHIPA_C        Dc-g-  --           --             3     slow
+MC11  96   PT   D1              C----  --                    --           --             2     slow
+MC12  0         --                     CHIPA_A        Dc-g-  --           --             3     slow
+MC13  94   PT   D0              C----  --                    FB_351       --             5     slow
+MC14  93   OE0  Rw              C----  --                    EMS2_is_MHFA --             3     slow
+MC15  0         --                     XXL_353        C----  NA           --             5     slow
+MC16  92   on   HALT            C----  --                    EMS1_is_MHFA --             2     slow
+MC17  14   --   CA8             INPUT  EMS1_B0        Dgeg-  --           --             2     slow
+MC18  0         --                     EMS_WINDOW     C----  --           --             2     slow
+MC19  13   --   CA7             INPUT  EMS2_B0        Dge-p  MR1          --             4     slow
+MC20  0         --                     ACTIVE_PAGE_A1 C----  --           --             2     slow
+MC21  12   --   CA6             INPUT  EMS2_A0        Dgeg-  --           --             2     slow
+MC22  10   --   CA5             INPUT  EMS2_B2        Dgeg-  --           --             2     slow
+MC23  0         --                     EMS2_B1        Dgeg-  --           --             2     slow
+MC24  9    --   CA4             INPUT  EMS2_A1        Dgeg-  --           --             2     slow
+MC25  8    --   CA3             INPUT  EMS2_B4        Dgeg-  --           --             2     slow
+MC26  0         --                     B_S_16.OE      C----  --           --             2     slow
+MC27  7    --   CA2             INPUT  A_S_16.OE      C----  --           --             2     slow
+MC28  0         --                     EMS1_B3        Dge-p  --           --             3     slow
+MC29  6    --   CA1             INPUT  EMS2_B3        Dge-p  --           --             3     slow
+MC30  5    --   CA0             INPUT  ACTIVE_PAGE_A0 C----  --           --             2     slow
+MC31  0    on   --                     XXL_301        C----  MR0          --             4     slow
+MC32  4    PT   TDI             INPUT  XXL_303        C----  NA           --             5     slow
+MC33  25   PT   B_S_16          C----  --                    --           --             3     slow
+MC34  0         --                     --                    --           --             0     slow
+MC35  24   PT   A_S_16          C----  --                    --           --             3     slow
+MC36  0         --                     --                    --           --             0     slow
+MC37  23   --   CA15            INPUT  EMS1_A0        Dgeg-  --           --             2     slow
+MC38  22   --   CA14            INPUT  CHIPB_Dc       Dg---  --           --             2     slow
+MC39  0         --                     EMS1_B1        Dgeg-  --           --             2     slow
+MC40  21   --   CA13            INPUT  EMS1_A1        Dgeg-  --           --             2     slow
+MC41  20   --   CA12            INPUT  EMS1_B2        Dgeg-  --           --             2     slow
+MC42  0         --                     EMS1_B4        Dgeg-  --           --             2     slow
+MC43  19   --   CA11            INPUT  --                    --           --             0     slow
+MC44  0         --                     REG_ACCESS     C----  --           --             3     slow
+MC45  17   --   CA10            INPUT  XXL_358        C----  MR1          --             4     slow
+MC46  16   --   CA9             INPUT  RAM.OE         C----  MR0          --             4     slow
+MC47  0         --                     XXL_356        C----  NA           --             5     slow
+MC48  15   --   TMS             INPUT  XXL_352        C----  NA           --             5     slow
+MC49  37   --   B_SHARE_REQUEST INPUT  --                    --           --             0     slow
+MC50  0         --                     --                    --           --             0     slow
+MC51  36   --   A_SHARE_REQUEST INPUT  --                    --           --             0     slow
+MC52  0         --                     --                    --           --             0     slow
+MC53  35   on   B_SHARE_GRANTED C----  --                    --           --             1     slow
+MC54  33   on   A_SHARE_GRANTED C----  --                    --           --             1     slow
+MC55  0         --                     XXL_362        C----  NA           --             5     slow
+MC56  32   on   B_SHARE_DIRTY   C----  --                    --           --             4     slow
+MC57  31   on   A_SHARE_DIRTY   C----  --                    --           --             2     slow
+MC58  0         --                     CHIPA_Dm       Dg---  --           --             2     slow
+MC59  30   --   B_READ          INPUT  CHIPB_Dm       Dg---  EMS2_is_MHFA --             3     slow
+MC60  0         --                     XXL_367        C----  EMS1_is_MHFA --             5     slow
+MC61  29   --   A_READ          INPUT  --                    --           --             0     slow
+MC62  28   --   B_HALT          INPUT  XXL_357        C----  NA           --             5     slow
+MC63  0         --                     XXL_359        C----  NA           --             5     slow
+MC64  27   --   A_HALT          INPUT  XXL_366        C----  NA           --             5     slow
+MC65  40   on   A_S_SELECT      C----  --                    --           --             2     slow
+MC66  0         --                     --                    --           --             0     slow
+MC67  41   on   B_S_SELECT      C----  --                    --           --             2     slow
+MC68  0         --                     --                    --           --             0     slow
+MC69  42   on   A_S_READ        C----  --                    --           --             2     slow
+MC70  44   on   B_S_READ        C----  --                    --           --             2     slow
+MC71  0         --                     ROM_SIZE2      Dgeg-  --           --             2     slow
+MC72  45   on   A_S_WRITE       C----  --                    --           --             2     slow
+MC73  46   on   B_S_WRITE       C----  --                    --           --             2     slow
+MC74  0         --                     ROM_SIZE0      Dgeg-  --           --             2     slow
+MC75  47   on   A_G_ENABLE      C----  --                    --           --             2     slow
+MC76  0         --                     ROM_SIZE1      Dgeg-  --           --             2     slow
+MC77  48   on   B_G_ENABLE      C----  --                    --           --             2     slow
+MC78  49   on   A_G_A_DIR       C----  --                    --           --             1     slow
+MC79  0         --                     XXL_365        C----  NA           --             5     slow
+MC80  50   on   B_G_A_DIR       C----  --                    --           --             1     slow
+MC81  52   on   A_G_D_DIR       C----  --                    --           --             2     slow
+MC82  0         --                     --                    --           --             0     slow
+MC83  53   on   B_G_D_DIR       C----  --                    --           --             2     slow
+MC84  0         --                     --                    --           --             0     slow
+MC85  54   --   A_SHARE_SELECT  INPUT  --                    --           --             0     slow
+MC86  55   --   B_SHARE_SELECT  INPUT  --                    --           --             0     slow
+MC87  0         --                     --                    --           --             0     slow
+MC88  56   on   GA16            C----  --                    --           --             4     slow
+MC89  57   PT   GA15            C----  --                    --           --             4     slow
+MC90  0         --                     --                    --           --             0     slow
+MC91  58   PT   GA14            C----  --                    --           --             4     slow
+MC92  0         --                     --                    --           --             0     slow
+MC93  60   PT   GA13            C----  --                    --           --             4     slow
+MC94  61   PT   GA12            C----  --                    --           --             4     slow
+MC95  0         --                     CHIPB_A        Dc-g-  MR1          --             3     slow
+MC96  62   --   TCK             INPUT  CHIPB_C        Dc-g-  MR0          --             3     slow
+MC97  63   on   Read            C----  --                    --           --             1     slow
+MC98  0         --                     REG2           C----  --           --             2     slow
+MC99  64   on   Write           C----  --                    --           --             1     slow
+MC100 0         --                     REG0           C----  --           --             2     slow
+MC101 65   on   ROM             C----  --                    --           --             1     slow
+MC102 67   on   RAM             C----  --                    --           --             1     slow
+MC103 0         --                     REG4           C----  --           --             2     slow
+MC104 68   on   Dev_Sel_1       C----  --                    --           --             1     slow
+MC105 69   on   Dev_Sel_2       C----  --                    --           --             1     slow
+MC106 0         --                     REG1           C----  --           --             2     slow
+MC107 70   on   Dev_Sel_3       C----  --                    --           --             1     slow
+MC108 0         --                     REG3           C----  --           --             2     slow
+MC109 71   on   Dev_Sel_4       C----  --                    --           --             1     slow
+MC110 72   on   Dev_Sel_5       C----  --                    --           --             1     slow
+MC111 0         --                     XXL_355        C----  NA           --             5     slow
+MC112 73   --   TDO             INPUT  XXL_360        C----  NA           --             5     slow
+MC113 75   on   Dev_Sel_6       C----  --                    --           --             1     slow
+MC114 0         --                     REG6           C----  --           --             2     slow
+MC115 76   on   Dev_Sel_7       C----  --                    --           --             1     slow
+MC116 0         --                     MR3            C----  NA           --             5     slow
+MC117 77        --                     REG5           C----  --           --             2     slow
+MC118 78        --                     --                    --           --             0     slow
+MC119 0         --                     XXL_363        C----  NA           --             5     slow
+MC120 79        --                     XXL_361        C----  NA           --             5     slow
+MC121 80        --                     --                    --           --             0     slow
+MC122 0         --                     XXL_364        C----  NA           --             5     slow
+MC123 81        --                     --                    --           --             0     slow
+MC124 0         --                     --                    --           --             0     slow
+MC125 83        --                     --                    --           --             0     slow
+MC126 84   --   BootSrc         INPUT  XXL_354        C----  NA           --             5     slow
+MC127 0         --                     MR2            C----  NA           --             5     slow
+MC128 85   on   RomMapped       Dgerp  --                    --           --             4     slow
+MC0   90        Q               INPUT  --                    --           --             0     slow
+MC0   89        Reset           INPUT  --                    --           --             0     slow
+MC0   88        BA              INPUT  --                    --           --             0     slow
+MC0   87        E               INPUT  --                    --           --             0     slow
+
+Logic Array Block	Logic Cells	I/O Pins	Foldbacks	TotalPT		FanIN	Cascades
+A: LC1	- LC16		15/16(93%)	10/16(62%)	3/16(18%)	47/80(58%)	(37)	0
+B: LC17	- LC32		16/16(100%)	10/16(62%)	2/16(12%)	41/80(51%)	(26)	0
+C: LC33	- LC48		13/16(81%)	10/16(62%)	2/16(12%)	39/80(48%)	(37)	0
+D: LC49	- LC64		11/16(68%)	10/16(62%)	2/16(12%)	38/80(47%)	(37)	0
+E: LC65	- LC80		14/16(87%)	10/16(62%)	0/16(0%)	29/80(36%)	(37)	0
+F: LC81	- LC96		9/16(56%)	10/16(62%)	2/16(12%)	30/80(37%)	(37)	0
+G: LC97	- LC112		16/16(100%)	10/16(62%)	0/16(0%)	29/80(36%)	(28)	0
+H: LC113- LC128		11/16(68%)	4/16(25%)	0/16(0%)	40/80(50%)	(36)	0
+
+Total dedicated input used:	4/4 	(100%)
+Total I/O pins used		74/80 	(92%)
+Total Logic cells used 		105/128 	(82%)
+Total Flip-Flop used 		26/128 	(20%)
+Total Foldback logic used 	11/128 	(8%)
+Total Nodes+FB/MCells 		116/128 	(90%)
+Total cascade used 		0
+Total input pins 		33
+Total output pins 		45
+Total Pts 			293
+Creating pla file Z:\ATF3_V2.CUPL.tt3 with 0 inputs 0 outputs, 0 pins 0 nodes and 0 pterms...
+
+----------------  End fitter, Design FITS
+$Device TQFP100 fits 
+FIT1508 completed in 0.00 seconds
