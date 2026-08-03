@@ -6,7 +6,7 @@
 	
 	 am building GLUE logic for 6039 retrocomputer (called CPU), to connect MHF cards into EMS windows (4kB each, at $8000 and $9000). 
 	
-	I am using wincupl and atf1504. Here is code for address decoder (ATF1) and EMS manager (ATF2). Comments are part in English and part in Czech language.
+	I am using wincupl and atf1508. Here is code for address decoder and EMS manager. Comments are part in English and part in Czech language.
 	
 	On the CPU PCB is SystemRAM(SysRAM 128kB) and EEPROM(ROM up to 32kB), on each MHF_A and MHF_B are 74HC245 gates for Address[0..15] and Data[0..7] busses that guards SharedRam (A/B 128kB).
 	
@@ -14,7 +14,7 @@
 	
 	and then let CPU boot (and manage system bus, BA inactive ) from the filled values, or from ROM, depending on external switch BootSrc.
 	
-	CPU can map 4k part of (SysRAM,ROM,SharedRAM_A,SharedRAM_B) into EMS1 and/or EMS2 window (which is managed by ATF2).
+	CPU can map 4k part of (SysRAM,ROM,SharedRAM_A,SharedRAM_B) into EMS1 and/or EMS2 window.
 	
 	SharedRAM serve for sending blocks of data between CPU (4 Mhz) and MHF cards (driven each by ATmega2560 at 16 MHz and different style of RAM communication).
 	
@@ -98,8 +98,8 @@
 	
 	PIN  24 = A_S_16;		/* IO connected to SharedRAM.A16 and MHF MCU */
 	PIN  25 = B_S_16;		/* IO connected to SharedRAM.A16 and MHF MCU */
-	PIN  27 = !A_HALT;		/* I MHF request 0=HALT active */
-	PIN  28 = !B_HALT;		/* I MHF request 0=HALT active */
+	PIN  27 = !A_HALT;		/* I MHF request 0=HALT active, PCB 50k pullup, MHF 5k pulldown */
+	PIN  28 = !B_HALT;		/* I MHF request 0=HALT active, PCB 50k pullup, MHF 5k pulldown */
 	PIN  29 = A_READ;		/* I MHF request 1=Read, 0=Write */
 	PIN  30 = B_READ;		/* I MHF request 1=Read, 0=Write */
 	PIN  31 = A_SHARE_DIRTY;	/* O Dirty+Wanted: if(SHARE_GRANTED){WANTS:1=CPU wants SharedRAM}else{DIRTY:1=CPU already got SharedRAM} */
@@ -133,7 +133,7 @@
 	PIN 61 = GA12;
 	/* }}} */
 	/************************************************************/
-	/* Dev_Sel_Bus                                63..76 OK {{{ */
+	/* Dev_Sel_Bus (PCB 10k pullup)               63..76 OK {{{ */
 	/************************************************************/
 	PIN  76 = !Dev_Sel_7;
 	PIN  75 = !Dev_Sel_6;
@@ -152,16 +152,16 @@
 	/************************************************************/
 	/* I   HD6309 CPU signals                     77..93 OK {{{ */
 	/************************************************************/
-	PIN  77 = BS;			/* x  future use Bus Status */
-	PIN  78 = MRDY;			/* x  future use  */
-	PIN  79 = DMA_BREQ;		/* x  future use  */
-	PIN  80 = Dev_FIRQ;		/* x  future use  */
-	PIN  81 = Dev_IRQ;		/* x  future use  */
-	PIN  83 = Dev_NMI;		/* x  future use  */
-	PIN  84 = BootSrc;		/* I 1=ROM, 0=RAM */
+	PIN  77 = BS;			/* x  future use, CPU: Bus Status */
+	PIN  78 = MRDY;			/* x  future use, PCB 10k pullup  */
+	PIN  79 = DMA_BREQ;		/* x  future use, PCB 10k pullup  */
+	PIN  80 = Dev_FIRQ;		/* x  future use, PCB 10k pullup  */
+	PIN  81 = Dev_IRQ;		/* x  future use, PCB 10k pullup  */
+	PIN  83 = Dev_NMI;		/* x  future use, PCB 10k pullup  */
+	PIN  84 = BootSrc;		/* I 1=ROM, 0=RAM, PCB pinheader switch */
 	/* I  Bus Avaiable, 1= CPU released bus */
 	/* 85..90 is Input Only Block */
-	PIN  92 = !HALT;		/* O  CPU HALT */
+	PIN  92 = !HALT;		/* O  CPU HALT, PCB 3k3 pullup */
 	PIN  93 = Rw;			/* OH CPU Rw, also used in HALT mode by MHF */
 	/* }}} */
 	/************************************************************/
@@ -233,6 +233,18 @@
 	/* CHIPx_A      is set  in 0.75 tact  Q (dep: CHIPx_C)      */
 	/* CHIPx_Dx     is set  in 0.0  tact  E (dep: CHIPx_A)      */
 	
+	/************************************************************/
+	/* HD6309 TIMING & STATE MACHINE PHASES                     */
+	/************************************************************/
+	/*
+	  HD6309 Q falls exactly in the middle of E (0.25 tact).
+	  
+	  We use 4 phases to avoid race conditions:
+	  Phase 0.25 (E=1, !Q raising): Read CPU Data bus, latch into registers (REG0..6)
+	  Phase 0.50 (Q=0, !E raising): Evaluate CPU requests, latch CHIPx_C (CPU ownership)
+	  Phase 0.75 (E=0,  Q raising): Evaluate MHF requests, latch CHIPx_A (MHF ownership)
+	  Phase 0.00 (Q=1,  E raising): Latch Dirty flags (Dc/Dm), drive register data to bus
+	*/
 	
 	FIELD CA = [CA15..CA0];
 	
@@ -392,7 +404,7 @@
 	NODE REG5;
 	NODE REG6;
 	
-	/* ATF registry NOTE: Dev_Sel_1 & Dev_Sel_2 is FALSE (different addresses), used to FORCE NODES via #  */
+	/* ATF registry CHEAT: README: NOTE: Dev_Sel_1 & Dev_Sel_2 is FALSE (different addresses), used to FORCE NODES via #  */
 	REG0 = Dev_Sel_1 & Dev_Sel_2 # (CA:A000); /* EMS1_PAGE */
 	REG1 = Dev_Sel_1 & Dev_Sel_2 # (CA:A001); /* EMS1_STATUS */
 	REG2 = Dev_Sel_1 & Dev_Sel_2 # (CA:A002); /* EMS2_PAGE */
@@ -560,17 +572,6 @@
 	
 
 	
-	/*
-	NOTE to AI about syntax: in "PIN xx = !NAME" the exclamation mark means, that signal is active low (0V) and inactive high (+5V), so
-	PIN 6 = !A;
-	PIN 8 = !B;
-	Pin 9 = !C; // = 3 active low signals 
-	C = A & B; // means C is active (=0V) when (and only when) A is active (=0V) AND B is active (=0V) and the compiler translates it to formula PIN 9 = PIN 6 # PIN 8
-	It makes easy to works with active low signals (like Chip Enable), where the equation goes stright Chip is Enable = true mean it is enabled ...
-	*/
-	/*
-	Skutecna jmena signalu a cisla pinu, pokud je pred jmenem !, je signal aktivni v LOW:
-	*/
 	/************************************************************/
 	/* SOME DECLARATION - need to check {{{                     */
 	/************************************************************/
@@ -655,12 +656,6 @@
 	NODE CHIPA_W;
 	NODE CHIPB_W;
 	
-	NODE CPU_WANTS_A;
-	NODE CPU_WANTS_B;
-	
-	NODE CPU_USES_A;
-	NODE CPU_USES_B;
-	
 	NODE HALT_MODE;
 	
 	NODE REG_ACCESS;
@@ -679,6 +674,21 @@
 	NODE ACTIVE_B2;
 	NODE ACTIVE_B1;
 	NODE ACTIVE_B0;
+	
+	NODE ACTIVE_SYS;
+	NODE ACTIVE_MHFA;
+	NODE ACTIVE_MHFB;
+	NODE ACTIVE_ROM;
+	
+	NODE CPU_REQ_A;
+	NODE CPU_REQ_B;
+	NODE MHF_REQ_A;
+	NODE MHF_REQ_B;
+	
+	NODE EMS1_C;
+	NODE EMS2_C;
+	NODE EMS1_W;
+	NODE EMS2_W;
 	
 	/* }}} */
 	/************************************************************/
@@ -768,6 +778,7 @@
 	EMS1_A0.AR = Reset;
 	
 	/* EMS1_B4.AR = Reset;	 default $8000 */
+	/* B3..B0 map to A15..A12, so default $8000 needs B3=1 (.AP), B2..B0=0 (.AR) */
 	EMS1_B4.AR = Reset;
 	EMS1_B3.AP = Reset;
 	EMS1_B2.AR = Reset;
@@ -808,7 +819,7 @@
 	00 System RAM
 	01 MHF_A
 	10 MHF_B
-	11 invalid/ROM TODO
+	11 ROM
 	*/
 	
 	EMS2_A1.CK = !Q;
@@ -823,6 +834,7 @@
 	EMS2_A1.AR = Reset;
 	EMS2_A0.AR = Reset;
 	
+	/* B3..B0 map to A15..A12, so default $9000 needs B3=1 (.AP), B2..B0=1 (.AP) */
 	EMS2_B4.AR = Reset;	/* default $9000 */
 	EMS2_B3.AP = Reset;
 	EMS2_B2.AR = Reset;
@@ -840,7 +852,20 @@
 	
 	
 	/* }}} */
-	/* SUPERVISED part BEGIN {{{ */
+	/************************************************************/
+	/* BUS OWNERSHIP CHEAT SHEET                                */
+	/************************************************************/
+	/*
+	 * NORMAL MODE (BA=0, CPU owns bus):
+	 *   Addr: CPU -> SysRAM/ROM/MHF_x (via GA12..16)
+	 *   Data: CPU <-> SysRAM/ROM/MHF_Gates
+	 *   Rw:   CPU
+	 * 
+	 * HALT MODE (BA=1, MHF owns bus):
+	 *   Addr: MHF -> SysRAM (via 74HC245 + GA12..15, A_S_16/B_S_16 -> GA16)
+	 *   Data: MHF <-> SysRAM (via 74HC245)
+	 *   Rw:   GLUE generates Rw based on MHF_A_READ / MHF_B_READ
+	 */
 	/************************************************************/
 	/* HALT mode                                                */
 	/************************************************************/
@@ -881,7 +906,7 @@
 	
 	/*  IO connected to SharedRAM.A16 and MHF MCU */
 			/* pokud CPU vlastni shared RAM, je to Output a ovlada jeji A16 */
-			/* pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */ /* TODO GA16 */
+			/* pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */
 	A_S_16 = 	  (MR:1) & EMS1_is_MHFA & CHIPA_C & EMS1_B4
 			# (MR:2) & EMS2_is_MHFA & CHIPA_C & EMS2_B4
 			;
@@ -891,7 +916,7 @@
 	
 	/*  IO connected to SharedRAM.A16 and MHF MCU */
 			/* pokud CPU vlastni shared RAM, je to Output a ovlada jeji A16 */
-			/* pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */ /* TODO GA16 */
+			/* pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */
 	B_S_16 = 	  (MR:1) & EMS1_is_MHFB & CHIPB_C & EMS1_B4
 			# (MR:2) & EMS2_is_MHFB & CHIPB_C & EMS2_B4
 			;
@@ -903,6 +928,11 @@
 	 * if SHARE_GRANTED 1= CPU already wants SharedRAM (=please release it soon)
 	 * if !SHARE_GRANTED 1 = CPU already got SharedRAM (=and maybe modified it)
 	 * 0 = nothing special
+	 */
+	/* AI NOTE: Asymmetrical HALT priority!
+	 * During boot (HALT mode), MHF_A has strict priority over MHF_B.
+	 * A_SHARE_DIRTY signals BA immediately. 
+	 * B_SHARE_DIRTY only signals BA if A_HALT is released (!A_HALT).
 	 */
 	A_SHARE_DIRTY =	  BA
 			# A_SHARE_GRANTED & ( EMS1_is_MHFA # EMS2_is_MHFA )
@@ -1213,6 +1243,7 @@
 	/* EMS ACCESS                                               */
 	/************************************************************/
 	
+	/* EMS_ACCESS is UNUSED */
 	EMS_ACCESS = /* jestli CPU ma pristup do EMS nebo neni spravne namapovana ... nevim, jestli to chci TODO nechci, ale viz -> */
 	/* uvaha, kdyz CPU chce cist a nema pravo, tak dostane cokoli a nemusim se starat co. Kdyz chce psat a nema pravo, tak nezapise nikam. */
 	/* uvaha2, kdyz CPU chce cist/psat do EMS, tak je cilovy chip vybran, ale pokud je to karta a nema pravo, tak jsou GATES zavrene, a neni obslouzeno, viz o kus nize */
@@ -1242,10 +1273,6 @@
 	GA12.OE = !BA;
 	
 	/* }}} */
-	/************************************************************/
-	/* SUPERVISED part ENDS }}}                                 */
-	/************************************************************/
-	
 	/************************************************************/
 	/* SHARED CHIP SELECT                                {{{ OK */
 	/************************************************************/
