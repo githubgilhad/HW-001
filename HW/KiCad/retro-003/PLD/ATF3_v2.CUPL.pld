@@ -246,6 +246,8 @@
 	  Phase 0.00 (Q=1,  E raising): Latch Dirty flags (Dc/Dm), drive register data to bus
 	*/
 	
+	NODE Nothing;
+	Nothing = Dev_Sel_1 & Dev_Sel_2;
 	FIELD CA = [CA15..CA0];
 	
 	NODE   MR3;
@@ -405,13 +407,13 @@
 	NODE REG6;
 	
 	/* ATF registry CHEAT: README: NOTE: Dev_Sel_1 & Dev_Sel_2 is FALSE (different addresses), used to FORCE NODES via #  */
-	REG0 = Dev_Sel_1 & Dev_Sel_2 # (CA:A000); /* EMS1_PAGE */
-	REG1 = Dev_Sel_1 & Dev_Sel_2 # (CA:A001); /* EMS1_STATUS */
-	REG2 = Dev_Sel_1 & Dev_Sel_2 # (CA:A002); /* EMS2_PAGE */
-	REG3 = Dev_Sel_1 & Dev_Sel_2 # (CA:A003); /* EMS2_STATUS */
-	REG4 = Dev_Sel_1 & Dev_Sel_2 # (CA:A004); /* CHIPA_STATUS */
-	REG5 = Dev_Sel_1 & Dev_Sel_2 # (CA:A005); /* CHIPB_STATUS */
-	REG6 = Dev_Sel_1 & Dev_Sel_2 # (CA:A006); /* ROM_STATUS + ROM_SIZE MBxxSSSS */
+	REG0 = Nothing # (CA:A000); /* EMS1_PAGE */
+	REG1 = Nothing # (CA:A001); /* EMS1_STATUS */
+	REG2 = Nothing # (CA:A002); /* EMS2_PAGE */
+	REG3 = Nothing # (CA:A003); /* EMS2_STATUS */
+	REG4 = Nothing # (CA:A004); /* CHIPA_STATUS */
+	REG5 = Nothing # (CA:A005); /* CHIPB_STATUS */
+	REG6 = Nothing # (CA:A006); /* ROM_STATUS + ROM_SIZE MBxxSSSS */
 	
 	REG_RESERVED = CA:[A007..A01F]; 
 	
@@ -434,7 +436,7 @@
 		)
 		;
 	
-	NATIVE_RAM_HI = ROM_24K & !ROM_AREA;
+/*	NATIVE_RAM_HI = ROM_24K & !ROM_AREA; */
 	
 	
 	
@@ -678,7 +680,7 @@
 	NODE ACTIVE_SYS;
 	NODE ACTIVE_MHFA;
 	NODE ACTIVE_MHFB;
-	NODE ACTIVE_ROM;
+	/* NODE ACTIVE_ROM;*/
 	
 	NODE CPU_REQ_A;
 	NODE CPU_REQ_B;
@@ -902,7 +904,7 @@
 		# (MR:2) & EMS2_is_ROM
 		/* or FALSE in HALT/BA */
 		;
-	ROM.OE =  TRUE;	/* valid allways */
+	ROM.OE =  TRUE;	/* valid always */
 	
 	/*  IO connected to SharedRAM.A16 and MHF MCU */
 			/* pokud CPU vlastni shared RAM, je to Output a ovlada jeji A16 */
@@ -1234,24 +1236,24 @@
 	/************************************************************/
 	/* ACTIVE SOURCE                                            */
 	/************************************************************/
-	ACTIVE_SYS  = !ACTIVE_PAGE_A1 & !ACTIVE_PAGE_A0;
+	/* ACTIVE_SYS  = !ACTIVE_PAGE_A1 & !ACTIVE_PAGE_A0; */
 	ACTIVE_MHFA = !ACTIVE_PAGE_A1 &  ACTIVE_PAGE_A0;
 	ACTIVE_MHFB =  ACTIVE_PAGE_A1 & !ACTIVE_PAGE_A0;
-	ACTIVE_ROM  =  ACTIVE_PAGE_A1 &  ACTIVE_PAGE_A0;
+	/* ACTIVE_ROM  =  ACTIVE_PAGE_A1 &  ACTIVE_PAGE_A0; */
 	
 	/************************************************************/
 	/* EMS ACCESS                                               */
 	/************************************************************/
 	
 	/* EMS_ACCESS is UNUSED */
-	EMS_ACCESS = /* jestli CPU ma pristup do EMS nebo neni spravne namapovana ... nevim, jestli to chci TODO nechci, ale viz -> */
+	/* EMS_ACCESS = /* jestli CPU ma pristup do EMS nebo neni spravne namapovana ... nevim, jestli to chci TODO nechci, ale viz -> */
 	/* uvaha, kdyz CPU chce cist a nema pravo, tak dostane cokoli a nemusim se starat co. Kdyz chce psat a nema pravo, tak nezapise nikam. */
 	/* uvaha2, kdyz CPU chce cist/psat do EMS, tak je cilovy chip vybran, ale pokud je to karta a nema pravo, tak jsou GATES zavrene, a neni obslouzeno, viz o kus nize */
-		  ACTIVE_SYS
+	/*	  ACTIVE_SYS
 		# ACTIVE_ROM
 		# (ACTIVE_MHFA & CHIPA_C)
 		# (ACTIVE_MHFB & CHIPB_C);
-	
+	*/
 	/************************************************************/
 	/* EMS ADDRESS                                              */
 	/************************************************************/
