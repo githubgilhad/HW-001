@@ -1,0 +1,360 @@
+Atmel ATF1508AS Fitter Version 1.8.7.8 ,running Wed Aug 05 06:44:38 2026
+
+
+fit1508 Z:\BX.tt2 -CUPL -dev P1508T100 -JTAG ON -preassign keep
+
+
+****** Initial fitting strategy and property ******
+ Pla_in_file = BX.tt2
+ Pla_out_file = BX.tt3
+ Jedec_file = BX.jed
+ Vector_file = BX.tmv
+ verilog_file = BX.vt
+ Time_file = 
+ Log_file = BX.fit
+ err_file = 
+ Device_name = TQFP100
+ Module_name = 
+ Package_type = TQFP
+ Preassign_file = 
+ Property_file = 
+ Sleep_mode = 
+ Preassignment = 
+ Security_mode = OFF
+ Pin_keep_mode = ON
+ Dedicated_input_clock = 
+ Dedicated_input_reset = 
+ Dedicated_input_oe = 
+ supporter = CUPL
+ optimize = ON
+ Soft_buffer = 
+ Xor_synthesis = OFF
+ Foldback_logic =  on
+ Expander = 
+ Cascade_logic = OFF
+ Dedicated_input = 
+ Output_fast = OFF
+ *******************************
+ Power down pin 1 = OFF
+ Power down pin 2 = OFF
+ power_reset = OFF
+ JTAG = ON
+ TDI pullup = OFF
+ TMS pullup = OFF
+ MC_power = OFF
+ Open_collector = OFF
+ ITD0 = ON
+ ITD1 = ON
+ ITD2 = ON
+ Fast_inlatch = off
+ *******************************
+---------------------------------------------------------
+ Fitter_Pass 1, Preassign = KEEP, LOGIC_DOUBLING : OFF 
+ ... 
+
+Performing global Output Enable pin assignments ...
+
+Performing global pin assignments ...
+--------------------------------------
+
+
+
+Final global control pins assignment (if applicable)...
+-------------------------------------------------------
+Q assigned to pin  90
+
+
+
+Performing input pin pre-assignments ...
+------------------------------------
+Q assigned to pin  90
+
+Attempt to place floating signals ...
+------------------------------------
+D2 is placed at pin 97 (MC 9)
+D1 is placed at pin 96 (MC 11)
+D0 is placed at pin 94 (MC 13)
+TDI is placed at pin 4 (MC 32)
+TMS is placed at pin 15 (MC 48)
+rom_sz0 is placed at feedback node 680 (MC 80)
+rom_sz1 is placed at feedback node 681 (MC 81)
+rom_sz2 is placed at feedback node 682 (MC 82)
+TCK is placed at pin 62 (MC 96)
+TDO is placed at pin 73 (MC 112)
+
+                                                                                             
+                                                                                             
+                                                                                             
+                                                                                             
+                              G       V         G       V                                    
+                          D D N D     C         N       C                                    
+                          2 1 D 0     C Q       D       C                                    
+                  ------------------------------------------------------                     
+                 / 100  98  96  94  92  90  88  86  84  82  80  78  76  \                   
+                /     99  97  95  93  91  89  87  85  83  81  79  77     \                  
+               | 1                                                     75 |                  
+               | 2                                                     74 | GND              
+           VCC | 3                                                     73 | TDO              
+           TDI | 4                                                     72 |                  
+               | 5                                                     71 |                  
+               | 6                                                     70 |                  
+               | 7                                                     69 |                  
+               | 8                                                     68 |                  
+               | 9                                                     67 |                  
+               | 10                                                    66 | VCC              
+           GND | 11                                                    65 |                  
+               | 12                     ATF1508                        64 |                  
+               | 13                  100-Lead TQFP                     63 |                  
+               | 14                                                    62 | TCK              
+           TMS | 15                                                    61 |                  
+               | 16                                                    60 |                  
+               | 17                                                    59 | GND              
+           VCC | 18                                                    58 |                  
+               | 19                                                    57 |                  
+               | 20                                                    56 |                  
+               | 21                                                    55 |                  
+               | 22                                                    54 |                  
+               | 23                                                    53 |                  
+               | 24                                                    52 |                  
+               | 25                                                    51 | VCC              
+                \     27  29  31  33  35  37  39  41  43  45   47  49    /                  
+                 \  26  28  30  32  34  36  38  40  42  44  46  48   50 /                   
+                  ------------------------------------------------------                     
+                    G               V       G V       G                                      
+                    N               C       N C       N                                      
+                    D               C       D C       D                                      
+
+
+
+VCC = Supply Voltage pin which must be connected to (5.0V or 3.0V)
+
+GND = GND pin which must be connected to ground
+
+TMS,TDI,TDO,TDI = JTAG pins which must reserved for the JTAG interface
+
+NC = Unused I/O pins which must be unconnected on the board
+
+Universal-Interconnect-Multiplexer assignments
+------------------------------------------------
+FanIn assignment for block E [1]
+{
+D0,
+}
+Multiplexer assignment for block E
+D0			(MC1	P)   : MUX 0		Ref (A13p)
+
+FanIn assignment for block F [2]
+{
+D2,D1,
+}
+Multiplexer assignment for block F
+D2			(MC2	P)   : MUX 0		Ref (A9p)
+D1			(MC1	P)   : MUX 6		Ref (A11p)
+
+Creating JEDEC file Z:\BX.jed ...
+
+TQFP100 programmed logic:
+-----------------------------------
+rom_sz1.D = D1;
+
+rom_sz0.D = D0;
+
+rom_sz2.D = D2;
+
+rom_sz1.C = Q;
+
+rom_sz0.C = Q;
+
+rom_sz2.C = Q;
+
+
+TQFP100 Pin/Node Placement:
+------------------------------------
+Pin 4  = TDI; /* MC 32 */
+Pin 15 = TMS; /* MC 48 */ 
+Pin 62 = TCK; /* MC 96 */ 
+Pin 73 = TDO; /* MC 112 */ 
+Pin 90 = Q;
+Pin 94 = D0; /* MC 13 */ 
+Pin 96 = D1; /* MC 11 */ 
+Pin 97 = D2; /* MC  9 */
+PINNODE 680 = rom_sz0; /* MC 80 Feedback */
+PINNODE 681 = rom_sz1; /* MC 81 Feedback */
+PINNODE 682 = rom_sz2; /* MC 82 Feedback */
+
+** Resource Usage **
+
+
+DCERP Field = Summary of Allocations.
+|||||
+|||||_Preset [p,-]       ==  p = PT preset, - No Preset.
+||||
+||||__Reset [g,r,-]      ==  g= Global AR, r = PT reset, - No reset.
+|||
+|||___Clock Enable [e,-] ==  e = Product Term, - always enabled, - none.
+||
+||____Clock [c,g,-],     ==  c = Product term, g = Global term, - No Clock.
+|
+|_____Type [C,D,L,T],    ==  Register type C= combin, D=dff, L=latch, T=tff.
+
+For input only = INPUT.
+
+MCell Pin# Oe   PinDrive  DCERP  FBDrive  DCERP  Foldback  CascadeOut     TotPT output_slew
+MC1   2         --               --              --        --             0     slow
+MC2   0         --               --              --        --             0     slow
+MC3   1         --               --              --        --             0     slow
+MC4   0         --               --              --        --             0     slow
+MC5   100       --               --              --        --             0     slow
+MC6   99        --               --              --        --             0     slow
+MC7   0         --               --              --        --             0     slow
+MC8   98        --               --              --        --             0     slow
+MC9   97   --   D2        INPUT  --              --        --             0     slow
+MC10  0         --               --              --        --             0     slow
+MC11  96   --   D1        INPUT  --              --        --             0     slow
+MC12  0         --               --              --        --             0     slow
+MC13  94   --   D0        INPUT  --              --        --             0     slow
+MC14  93        --               --              --        --             0     slow
+MC15  0         --               --              --        --             0     slow
+MC16  92        --               --              --        --             0     slow
+MC17  14        --               --              --        --             0     slow
+MC18  0         --               --              --        --             0     slow
+MC19  13        --               --              --        --             0     slow
+MC20  0         --               --              --        --             0     slow
+MC21  12        --               --              --        --             0     slow
+MC22  10        --               --              --        --             0     slow
+MC23  0         --               --              --        --             0     slow
+MC24  9         --               --              --        --             0     slow
+MC25  8         --               --              --        --             0     slow
+MC26  0         --               --              --        --             0     slow
+MC27  7         --               --              --        --             0     slow
+MC28  0         --               --              --        --             0     slow
+MC29  6         --               --              --        --             0     slow
+MC30  5         --               --              --        --             0     slow
+MC31  0         --               --              --        --             0     slow
+MC32  4    --   TDI       INPUT  --              --        --             0     slow
+MC33  25        --               --              --        --             0     slow
+MC34  0         --               --              --        --             0     slow
+MC35  24        --               --              --        --             0     slow
+MC36  0         --               --              --        --             0     slow
+MC37  23        --               --              --        --             0     slow
+MC38  22        --               --              --        --             0     slow
+MC39  0         --               --              --        --             0     slow
+MC40  21        --               --              --        --             0     slow
+MC41  20        --               --              --        --             0     slow
+MC42  0         --               --              --        --             0     slow
+MC43  19        --               --              --        --             0     slow
+MC44  0         --               --              --        --             0     slow
+MC45  17        --               --              --        --             0     slow
+MC46  16        --               --              --        --             0     slow
+MC47  0         --               --              --        --             0     slow
+MC48  15   --   TMS       INPUT  --              --        --             0     slow
+MC49  37        --               --              --        --             0     slow
+MC50  0         --               --              --        --             0     slow
+MC51  36        --               --              --        --             0     slow
+MC52  0         --               --              --        --             0     slow
+MC53  35        --               --              --        --             0     slow
+MC54  33        --               --              --        --             0     slow
+MC55  0         --               --              --        --             0     slow
+MC56  32        --               --              --        --             0     slow
+MC57  31        --               --              --        --             0     slow
+MC58  0         --               --              --        --             0     slow
+MC59  30        --               --              --        --             0     slow
+MC60  0         --               --              --        --             0     slow
+MC61  29        --               --              --        --             0     slow
+MC62  28        --               --              --        --             0     slow
+MC63  0         --               --              --        --             0     slow
+MC64  27        --               --              --        --             0     slow
+MC65  40        --               --              --        --             0     slow
+MC66  0         --               --              --        --             0     slow
+MC67  41        --               --              --        --             0     slow
+MC68  0         --               --              --        --             0     slow
+MC69  42        --               --              --        --             0     slow
+MC70  44        --               --              --        --             0     slow
+MC71  0         --               --              --        --             0     slow
+MC72  45        --               --              --        --             0     slow
+MC73  46        --               --              --        --             0     slow
+MC74  0         --               --              --        --             0     slow
+MC75  47        --               --              --        --             0     slow
+MC76  0         --               --              --        --             0     slow
+MC77  48        --               --              --        --             0     slow
+MC78  49        --               --              --        --             0     slow
+MC79  0         --               --              --        --             0     slow
+MC80  50        --               rom_sz0  Dg---  --        --             1     slow
+MC81  52        --               rom_sz1  Dg---  --        --             1     slow
+MC82  0         --               rom_sz2  Dg---  --        --             1     slow
+MC83  53        --               --              --        --             0     slow
+MC84  0         --               --              --        --             0     slow
+MC85  54        --               --              --        --             0     slow
+MC86  55        --               --              --        --             0     slow
+MC87  0         --               --              --        --             0     slow
+MC88  56        --               --              --        --             0     slow
+MC89  57        --               --              --        --             0     slow
+MC90  0         --               --              --        --             0     slow
+MC91  58        --               --              --        --             0     slow
+MC92  0         --               --              --        --             0     slow
+MC93  60        --               --              --        --             0     slow
+MC94  61        --               --              --        --             0     slow
+MC95  0         --               --              --        --             0     slow
+MC96  62   --   TCK       INPUT  --              --        --             0     slow
+MC97  63        --               --              --        --             0     slow
+MC98  0         --               --              --        --             0     slow
+MC99  64        --               --              --        --             0     slow
+MC100 0         --               --              --        --             0     slow
+MC101 65        --               --              --        --             0     slow
+MC102 67        --               --              --        --             0     slow
+MC103 0         --               --              --        --             0     slow
+MC104 68        --               --              --        --             0     slow
+MC105 69        --               --              --        --             0     slow
+MC106 0         --               --              --        --             0     slow
+MC107 70        --               --              --        --             0     slow
+MC108 0         --               --              --        --             0     slow
+MC109 71        --               --              --        --             0     slow
+MC110 72        --               --              --        --             0     slow
+MC111 0         --               --              --        --             0     slow
+MC112 73   --   TDO       INPUT  --              --        --             0     slow
+MC113 75        --               --              --        --             0     slow
+MC114 0         --               --              --        --             0     slow
+MC115 76        --               --              --        --             0     slow
+MC116 0         --               --              --        --             0     slow
+MC117 77        --               --              --        --             0     slow
+MC118 78        --               --              --        --             0     slow
+MC119 0         --               --              --        --             0     slow
+MC120 79        --               --              --        --             0     slow
+MC121 80        --               --              --        --             0     slow
+MC122 0         --               --              --        --             0     slow
+MC123 81        --               --              --        --             0     slow
+MC124 0         --               --              --        --             0     slow
+MC125 83        --               --              --        --             0     slow
+MC126 84        --               --              --        --             0     slow
+MC127 0         --               --              --        --             0     slow
+MC128 85        --               --              --        --             0     slow
+MC0   90        Q         INPUT  --              --        --             0     slow
+MC0   89        --               --              --        --             0     slow
+MC0   88        --               --              --        --             0     slow
+MC0   87        --               --              --        --             0     slow
+
+Logic Array Block	Logic Cells	I/O Pins	Foldbacks	TotalPT		FanIN	Cascades
+A: LC1	- LC16		0/16(0%)	3/16(18%)	0/16(0%)	0/80(0%)	(1)	0
+B: LC17	- LC32		0/16(0%)	1/16(6%)	0/16(0%)	0/80(0%)	(2)	0
+C: LC33	- LC48		0/16(0%)	1/16(6%)	0/16(0%)	0/80(0%)	(0)	0
+D: LC49	- LC64		0/16(0%)	0/16(0%)	0/16(0%)	0/80(0%)	(0)	0
+E: LC65	- LC80		1/16(6%)	0/16(0%)	0/16(0%)	1/80(1%)	(0)	0
+F: LC81	- LC96		2/16(12%)	1/16(6%)	0/16(0%)	2/80(2%)	(0)	0
+G: LC97	- LC112		0/16(0%)	1/16(6%)	0/16(0%)	0/80(0%)	(0)	0
+H: LC113- LC128		0/16(0%)	0/16(0%)	0/16(0%)	0/80(0%)	(0)	0
+
+Total dedicated input used:	1/4 	(25%)
+Total I/O pins used		7/80 	(8%)
+Total Logic cells used 		3/128 	(2%)
+Total Flip-Flop used 		3/128 	(2%)
+Total Foldback logic used 	0/128 	(0%)
+Total Nodes+FB/MCells 		3/128 	(2%)
+Total cascade used 		0
+Total input pins 		8
+Total output pins 		0
+Total Pts 			3
+Creating pla file Z:\BX.tt3 with 0 inputs 0 outputs, 0 pins 0 nodes and 0 pterms...
+
+----------------  End fitter, Design FITS
+$Device TQFP100 fits 
+FIT1508 completed in 0.00 seconds

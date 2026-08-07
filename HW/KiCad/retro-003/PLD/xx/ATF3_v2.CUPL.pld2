@@ -1,0 +1,1355 @@
+	/* vim: ft=cupl showbreak=-->>\  noexpandtab fileencoding=utf-8 nomodified   wrap textwidth=0 foldmethod=marker foldmarker={{{,}}} foldcolumn=4 ruler showcmd lcs=tab\:|- list tabstop=8 noexpandtab nosmarttab softtabstop=0 shiftwidth=0 linebreak  
+	*/
+
+	/*
+	                  PREFACE: 
+	
+	 am building GLUE logic for 6039 retrocomputer (called CPU), to connect MHF cards into EMS windows (4kB each, at $8000 and $9000). 
+	
+	I am using wincupl and atf1508. Here is code for address decoder and EMS manager. Comments are part in English and part in Czech language.
+	
+	On the CPU PCB is SystemRAM(SysRAM 128kB) and EEPROM(ROM up to 32kB), on each MHF_A and MHF_B are 74HC245 gates for Address[0..15] and Data[0..7] busses that guards SharedRam (A/B 128kB).
+	
+	On boot HW keeps CPU in HALT mode, until the MHF cards start manage it. They may fill SysRAM with system/data at start (while MHF manage system bus, BA active)
+	
+	and then let CPU boot (and manage system bus, BA inactive ) from the filled values, or from ROM, depending on external switch BootSrc.
+	
+	CPU can map 4k part of (SysRAM,ROM,SharedRAM_A,SharedRAM_B) into EMS1 and/or EMS2 window.
+	
+	SharedRAM serve for sending blocks of data between CPU (4 Mhz) and MHF cards (driven each by ATmega2560 at 16 MHz and different style of RAM communication).
+	
+	HALT is mainly driven by external pullup for possible extending.
+	
+	DIRTY is really bad name, should be like "the other side cooperated/cooperate just now". Who writes SharedRAM, set it 0 and when the other read/write it, it is set 1 as sign,
+	
+	that the data was used and can be rewritten next turn. (Typically command like PRINT "XYZ" or info like KEYS_ENTERED="abcd" do not need reply.)
+	
+	Default ROM size at boot is A100..FFFF, ROM/system may it change and/or map ROM later at will.
+	
+	CHIPx_C and CHIPx_A ensure, that who got ownership, keeps it, until explicitly release, the other have to wait. (Be it CPU or MHF_x.)
+	
+	ATF1504 was too small, so ATF1508 with 80 pins was use as single GLUE chip instead
+	
+	*/
+	
+	
+	
+	Name     ATF3_GLUE;
+	PartNo   0003;
+	Date     2026-07-23;
+	Revision 0.2;
+	Designer Gilhad;
+	Company  None ;
+	Assembly None ;
+	Location ;
+	Device  f1508isptqfp100;
+	
+	/************************************************************/
+	/* OUTPUTS                                                  */
+	/************************************************************/
+	
+	/*
+	NOTE to AI about syntax: in "PIN xx = !NAME" the exclamation mark means, that signal is active low (0V) and inactive high (+5V), so
+	PIN 6 = !A;
+	PIN 8 = !B;
+	Pin 9 = !C; // = 3 active low signals 
+	C = A & B; // means C is active (=0V) when (and only when) A is active (=0V) AND B is active (=0V) and the compiler translates it to formula PIN 9 = PIN 6 # PIN 8
+	It makes easy to works with active low signals (like Chip Enable), where the equation goes stright Chip is Enable = true mean it is enabled ...
+	*/
+	/*
+	Skutecna jmena signalu a cisla pinu, pokud je pred jmenem !, je signal aktivni v LOW:
+	*/
+	/************************************************************/
+	/* I is Input, O is output, H is 3state HiZ         {{{     */
+	/************************************************************/
+	
+	/* IOH Data for everything */
+	/************************************************************/
+	/* BIDIRECTIONAL  (data)                                    */
+	/************************************************************/
+	/* Pin [94,96,97,98, 99,100,1,2] = [D0..7]; */
+	
+	
+	/************************************************************/
+	/* I   CPU Address lines                       5..23 OK {{{ */
+	/************************************************************/
+	PIN   5 = CA0;
+	PIN   6 = CA1;
+	PIN   7 = CA2;
+	PIN   8 = CA3;
+	PIN   9 = CA4;
+	PIN  10 = CA5;
+	PIN  12 = CA6;
+	PIN  13 = CA7;
+	PIN  14 = CA8;
+	PIN  16 = CA9;
+	PIN  17 = CA10;
+	PIN  19 = CA11;
+	PIN  20 = CA12; /* I CA12..15 is connected to CPU.A12..15 */
+	PIN  21 = CA13;
+	PIN  22 = CA14;
+	PIN  23 = CA15;
+	/* }}} */
+	/************************************************************/
+	/* mix MHF_A/MHF_B lines                      24..55 OK {{{ */
+	/************************************************************/
+			/* X_S_16: pokud CPU vlastni shared RAM, je to Output a ovlada jeji A16 */
+			/* X_S_16: pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */
+	
+	PIN  24 = A_S_16;		/* IO connected to SharedRAM.A16 and MHF MCU */
+	PIN  25 = B_S_16;		/* IO connected to SharedRAM.A16 and MHF MCU */
+	PIN  27 = !A_HALT;		/* I MHF request 0=HALT active, PCB 50k pullup, MHF 5k pulldown */
+	PIN  28 = !B_HALT;		/* I MHF request 0=HALT active, PCB 50k pullup, MHF 5k pulldown */
+	PIN  29 = A_READ;		/* I MHF request 1=Read, 0=Write */
+	PIN  30 = B_READ;		/* I MHF request 1=Read, 0=Write */
+	PIN  31 = A_SHARE_DIRTY;	/* O Dirty+Wanted: if(SHARE_GRANTED){WANTS:1=CPU wants SharedRAM}else{DIRTY:1=CPU already got SharedRAM} */
+	PIN  32 = B_SHARE_DIRTY;	/* O Dirty+Wanted: if(SHARE_GRANTED){WANTS:1=CPU wants SharedRAM}else{DIRTY:1=CPU already got SharedRAM} */
+	PIN  33 = A_SHARE_GRANTED;	/* O MHF owns SharedRAM 1=Active */
+	PIN  35 = B_SHARE_GRANTED;	/* O MHF owns SharedRAM 1=Active */
+	PIN  36 = A_SHARE_REQUEST;	/* I MHF wants own SharedRAM 1=Active */
+	PIN  37 = B_SHARE_REQUEST;	/* I MHF wants own SharedRAM 1=Active */
+	PIN  40 = !A_S_SELECT;		/* O SharedRAM ~{CS} 0=Active */
+	PIN  41 = !B_S_SELECT;		/* O SharedRAM ~{CS} 0=Active */
+	PIN  42 = !A_S_READ;		/* O SharedRAM ~{OE} 0=Active */
+	PIN  44 = !B_S_READ;		/* O SharedRAM ~{OE} 0=Active */
+	PIN  45 = !A_S_WRITE;		/* O SharedRAM ~{WE} 0=Active */
+	PIN  46 = !B_S_WRITE;		/* O SharedRAM ~{WE} 0=Active */
+	PIN  47 = !A_G_ENABLE;		/* O Gate enabled 0=Enabled 1=HiZ */
+	PIN  48 = !B_G_ENABLE;		/* O Gate enabled 0=Enabled 1=HiZ */
+	PIN  49 = A_G_A_DIR;		/* O Address dir 1=MHF->CPU 0=CPU->MHF */
+	PIN  50 = B_G_A_DIR;		/* O Address dir 1=MHF->CPU 0=CPU->MHF */
+	PIN  52 = A_G_D_DIR;		/* O Data dir 1=MHF->CPU 0=CPU->MHF */
+	PIN  53 = B_G_D_DIR;		/* O Data dir 1=MHF->CPU 0=CPU->MHF */
+	PIN  54 = A_SHARE_SELECT;	/* I MHF request 1=manage SharedRAM 0=manage (BA?SystemRAM:nothing) */
+	PIN  55 = B_SHARE_SELECT;	/* I MHF request 1=manage SharedRAM 0=manage (BA?SystemRAM:nothing) */
+	/* }}} */
+	/************************************************************/
+	/* OH GA12..16 is connected to SystemRAM.A12..16 and SysBus.A12..15  56..61 {{{ OK */
+	/************************************************************/
+	PIN 56 = GA16;
+	PIN 57 = GA15;
+	PIN 58 = GA14;
+	PIN 60 = GA13;
+	PIN 61 = GA12;
+	/* }}} */
+	/************************************************************/
+	/* Dev_Sel_Bus (PCB 10k pullup)               63..76 OK {{{ */
+	/************************************************************/
+	PIN  76 = !Dev_Sel_7;
+	PIN  75 = !Dev_Sel_6;
+	PIN  72 = !Dev_Sel_5;
+	PIN  71 = !Dev_Sel_4;
+	PIN  70 = !Dev_Sel_3;
+	PIN  69 = !Dev_Sel_2;
+	PIN  68 = !Dev_Sel_1;
+	
+	PIN  65 = !ROM;		/* O CS for ROM */
+	PIN  67 = !RAM;		/* O CS for RAM */
+	
+	PIN  64 = !Write;
+	PIN  63 = !Read;
+	/* }}} */
+	/************************************************************/
+	/* I   HD6309 CPU signals                     77..93 OK {{{ */
+	/************************************************************/
+	PIN  77 = BS;			/* x  future use, CPU: Bus Status */
+	PIN  78 = MRDY;			/* x  future use, PCB 10k pullup  */
+	PIN  79 = DMA_BREQ;		/* x  future use, PCB 10k pullup  */
+	PIN  80 = Dev_FIRQ;		/* x  future use, PCB 10k pullup  */
+	PIN  81 = Dev_IRQ;		/* x  future use, PCB 10k pullup  */
+	PIN  83 = Dev_NMI;		/* x  future use, PCB 10k pullup  */
+	PIN  84 = BootSrc;		/* I 1=ROM, 0=RAM, PCB pinheader switch */
+	/* I  Bus Avaiable, 1= CPU released bus */
+	/* 85..90 is Input Only Block */
+	PIN  92 = !HALT;		/* O  CPU HALT, PCB 3k3 pullup */
+	PIN  93 = Rw;			/* OH CPU Rw, also used in HALT mode by MHF */
+	/* }}} */
+	/************************************************************/
+	/***** Input Only Block                  85..90  *** OK {{{ */
+	/************************************************************/
+	
+	Pin 85 = RomMapped;   /* I/O/GCLK3 */			 /* O 1 = ROM is mapped in */
+	Pin 87 = E;           /* INPUT/GCLK1 */
+	Pin 88 = BA;          /* INPUT/OE1 - 12V Vpp */		/* I  Bus Avaiable, 1= CPU released bus */
+	Pin 89 = !Reset;      /* INPUT/GCLR */
+	Pin 90 = Q;           /* INPUT/OE2/GCLK2 */
+	/* }}} */
+	/************************************************************/
+	/* IOH Data for everything             94..100, 1..2 OK {{{ */
+	/************************************************************/
+	PIN  94 = D0;
+	PIN  96 = D1;
+	PIN  97 = D2;
+	PIN  98 = D3;
+	PIN  99 = D4;
+	PIN 100 = D5;	
+	PIN   1 = D6;
+	PIN   2 = D7;
+	/* }}} */
+	/************************************************************/
+
+	/* }}} */
+	/* {{{ HD6309 Memory Regions OK
+	 +-----------------------------------------------------------------------------+
+	 |   HD6309 Memory Regions                                                     |
+	 +---------------+---------------+---------------------------------------------+
+	 |   TYP     hex | RANGE         | CONTENT                                     |
+	 +---------------+---------------+---------------------------------------------+
+	 |   0000     0  | 0000..FFFF    | HALT / BA 128 kB System RAM for free use    |
+	 +---------------+---------------+---------------------------------------------+
+	 |   0000     0  | 0000..7FFF    | Native RAM 32K (or more)                    |
+	 +---------------+---------------+---------------------------------------------+
+	 |   0001     1  | 8000..8FFF    | EMS1 4K                                     |
+	 +---------------+---------------+---------------------------------------------+
+	 |   0010     2  | 9000..9FFF    | EMS2 4K                                     |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1rrr     8+ | A000..A006    | 7 GLUE registers ( rrr = regnum )           |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1000     8  | A000          | RW GLUE register 000 EMS1.Page AAxBBBBB     |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1001     9  | A001          | R  GLUE register 001 EMS1.Status xxxxxWxC   |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1010     A  | A002          | RW GLUE register 002 EMS2.Page AAxBBBBB     |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1011     B  | A003          | R  GLUE register 003 EMS2.Status xxxxxWxC   |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1100     C  | A004          | R  GLUE register 004 ChipA.Status xxxxDWAC  |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1101     D  | A005          | R  GLUE register 005 ChipB.Status xxxxDWAC  |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1110     E  | A006          | RW GLUE register 006 ROM.stat+size MBxxSSSS |
+	 +---------------+---------------+---------------------------------------------+
+	 |   1111     F  | A007..A01F    | GLUE registers reserved                     |
+	 +---------------+---------------+---------------------------------------------+
+	 |   0100     4  | A020..A0FF    | Memory mapped devices [1..7] x 32 B         |
+	 +---------------+---------------+---------------------------------------------+
+	 |   0011     3  | A100..FFFF    | Native ROM 23.75K (or less)                 |
+	 +---------------+---------------+---------------------------------------------+
+	}}} */
+	/* registers D are read in 0.25 tact !Q (CPU cycle)         */
+	/* EMSx_Ax      is set  in 0.25 tact !Q (from D[])          */
+	/* EMSx_is_MHFx is set  in 0.25 tact !Q (logic of EMSx_x)   */
+	/* CHIPx_C      is set  in 0.5  tact !E (dep: EMSx_is_MHFx) */
+	/* CHIPx_A      is set  in 0.75 tact  Q (dep: CHIPx_C)      */
+	/* CHIPx_Dx     is set  in 0.0  tact  E (dep: CHIPx_A)      */
+	
+	/************************************************************/
+	/* HD6309 TIMING & STATE MACHINE PHASES                     */
+	/************************************************************/
+	/*
+	  HD6309 Q falls exactly in the middle of E (0.25 tact).
+	  
+	  We use 4 phases to avoid race conditions:
+	  Phase 0.25 (E=1, !Q raising): Read CPU Data bus, latch into registers (REG0..6)
+	  Phase 0.50 (Q=0, !E raising): Evaluate CPU requests, latch CHIPx_C (CPU ownership)
+	  Phase 0.75 (E=0,  Q raising): Evaluate MHF requests, latch CHIPx_A (MHF ownership)
+	  Phase 0.00 (Q=1,  E raising): Latch Dirty flags (Dc/Dm), drive register data to bus
+	*/
+	
+	NODE Nothing;
+	Nothing = Dev_Sel_1 & Dev_Sel_2;
+	FIELD CA = [CA15..CA0];
+	
+	NODE   MR3;
+	NODE   MR2;
+	NODE   MR1;
+	NODE   MR0;
+	
+	
+	
+	/*  {{{ ATF1508 pin numbers
+	
+	***** PWR, JTAG *****
+	
+	Pin  3 = VCC;
+	Pin  4 = TDI; 
+	Pin 11 = GND;
+	Pin 15 = TMS;  
+	Pin 18 = VCC;
+	Pin 26 = GND;
+	Pin 34 = VCC;
+	Pin 38 = GND;
+	Pin 39 = VCC;
+	Pin 43 = GND;
+	Pin 51 = VCC;
+	Pin 59 = GND;
+	Pin 62 = TCK;  
+	Pin 66 = VCC;
+	Pin 73 = TDO;  
+	Pin 74 = GND;
+	Pin 82 = VCC;
+	Pin 86 = GND;
+	Pin 91 = VCC;
+	Pin 95 = GND;
+	
+	***** I/O pins *****
+	
+
+	Pin   1 = IO_1;
+	Pin   2 = IO_2;
+	Pin   5 = IO_3;
+	Pin   6 = IO_4;
+	Pin   7 = IO_5;
+	Pin   8 = IO_6;
+	Pin   9 = IO_7;
+	Pin  10 = IO_8;
+	Pin  12 = IO_9;
+	Pin  13 = IO_10;
+	Pin  14 = IO_11;
+	Pin  16 = IO_12;
+	Pin  17 = IO_13;
+	Pin  19 = IO_14;
+	Pin  20 = IO_15;
+	Pin  21 = IO_16;
+	Pin  22 = IO_17;
+	Pin  23 = IO_18;
+	Pin  24 = IO_19;
+	Pin  25 = IO_20;
+	Pin  27 = IO_21;
+	Pin  28 = IO_22;
+	Pin  29 = IO_23;
+	Pin  30 = IO_24;
+	Pin  31 = IO_25;
+	Pin  32 = IO_26;
+	Pin  33 = IO_27;
+	Pin  35 = IO_28;
+	Pin  36 = IO_29;
+	Pin  37 = IO_30;
+	Pin  40 = IO_31;
+	Pin  41 = IO_32;
+	Pin  42 = IO_33;
+	Pin  44 = IO_34;
+	Pin  45 = IO_35;
+	Pin  46 = IO_36;
+	Pin  47 = IO_37;
+	Pin  48 = IO_38;
+	Pin  49 = IO_39;
+	Pin  50 = IO_40;
+	Pin  52 = IO_41;
+	Pin  53 = IO_42;
+	Pin  54 = IO_43;
+	Pin  55 = IO_44;
+	Pin  56 = IO_45;
+	Pin  57 = IO_46;
+	Pin  58 = IO_47;
+	Pin  60 = IO_48;
+	Pin  61 = IO_49;
+	Pin  63 = IO_50;
+	Pin  64 = IO_51;
+	Pin  65 = IO_52;
+	Pin  67 = IO_53;
+	Pin  68 = IO_54;
+	Pin  69 = IO_55;
+	Pin  70 = IO_56;
+	Pin  71 = IO_57;
+	Pin  72 = IO_58;
+	Pin  75 = IO_59;
+	Pin  76 = IO_60;
+	Pin  77 = IO_61;
+	Pin  78 = IO_62;
+	Pin  79 = IO_63;
+	Pin  80 = IO_64;
+	Pin  81 = IO_65;
+	Pin  83 = IO_66;
+	Pin  84 = IO_67;
+	Pin  92 = IO_68;
+	Pin  93 = IO_69;
+	Pin  94 = IO_70;
+	Pin  96 = IO_71;
+	Pin  97 = IO_72;
+	Pin  98 = IO_73;
+	Pin  99 = IO_74;
+	Pin 100 = IO_75;
+	
+	***** Input Only ****
+	
+	Pin 85 = IO_76;  /* I/O/GCLK3
+	Pin 87 = xIO_61; /* INPUT/GCLK1
+	Pin 88 = xIO_62; /* INPUT/OE1 - 12V Vpp
+	Pin 89 = xIO_63; /* INPUT/GCLR
+	Pin 90 = xIO_64; /* INPUT/OE2/GCLK2
+	
+	 }}} */
+	
+	/************************************************************/
+	/* REG7 ROM_SIZE                                            */
+	/************************************************************/
+	NODE [ROM_SIZE2..0];
+	FIELD ROM_SIZE = [ROM_SIZE2..0];
+	
+	/* 
+	
+	4+ = vypnuto
+	3 = 4k
+	2 = 8k
+	1 = 16k
+	0 = 24.75 kB
+	*/
+	/************************************************************/
+	
+	
+	/************************************************************/
+	/* ADDRESS DECODE                                           */
+	/************************************************************/
+	
+	NATIVE_RAM_LO = CA:[0000..7FFF];
+	
+	EMS1_WINDOW = CA:[8000..8FFF];
+	
+	EMS2_WINDOW = CA:[9000..9FFF];
+	
+	PINNODE 414 = REG0;
+	PINNODE 416 = REG1;
+	PINNODE 419 = REG2;
+	PINNODE 420 = REG3;
+	PINNODE 421 = REG4;
+	PINNODE 423 = REG5;
+	PINNODE 425 = REG6;
+	
+	/* ATF registry CHEAT: README: NOTE: Dev_Sel_1 & Dev_Sel_2 is FALSE (different addresses), used to FORCE NODES via #  */
+	REG0 = Nothing # (CA:A000); /* EMS1_PAGE */
+	REG1 = Nothing # (CA:A001); /* EMS1_STATUS */
+	REG2 = Nothing # (CA:A002); /* EMS2_PAGE */
+	REG3 = Nothing # (CA:A003); /* EMS2_STATUS */
+	REG4 = Nothing # (CA:A004); /* CHIPA_STATUS */
+	REG5 = Nothing # (CA:A005); /* CHIPB_STATUS */
+	REG6 = Nothing # (CA:A006); /* ROM_STATUS + ROM_SIZE MBxxSSSS */
+	
+	REG_RESERVED = CA:[A007..A01F]; 
+	
+	DEVICE_AREA = CA:[A020..A0FF];
+	
+	ROM_24K = CA:[A100..FFFF];
+	ROM_16K = CA:[C000..FFFF];
+	ROM_8K  = CA:[E000..FFFF];
+	ROM_4K  = CA:[F000..FFFF];
+	
+	
+	ROM_AREA = 
+		RomMapped & 
+		(
+			  ((ROM_SIZE:0) & ROM_24K)
+			# ((ROM_SIZE:1) & ROM_16K)
+			# ((ROM_SIZE:2) & ROM_8K)
+			# ((ROM_SIZE:3) & ROM_4K)
+			/* ROM_SIZE 4+ == zadna ROM */
+		)
+		;
+	
+/*	NATIVE_RAM_HI = ROM_24K & !ROM_AREA; */
+	
+	
+	
+	
+	
+	/************************************************************/
+	/* MEMORY REGION BUS                                        */
+	/************************************************************/
+	
+	MR0 = !BA & (
+		  EMS1_WINDOW
+		# ROM_AREA
+		# REG1
+		# REG3
+		# REG5
+		# REG_RESERVED
+		);
+	
+	MR1 = !BA & (
+		  EMS2_WINDOW
+		# ROM_AREA
+		# REG2
+		# REG3
+		# REG6
+		# REG_RESERVED
+		);
+	
+	MR2 = !BA & (
+		  DEVICE_AREA
+		# REG4
+		# REG5
+		# REG6
+		# REG_RESERVED
+		);
+	
+	MR3 = !BA & (
+		  REG0
+		# REG1
+		# REG2
+		# REG3
+		# REG4
+		# REG5
+		# REG_RESERVED
+		);
+	
+	/*
+		HALT/BA active	MR = 0; 	0000  // pri HALTu je vsechno RAM
+	
+		NATIVE_RAM_LO	MR = 0; 	0000
+		NATIVE_RAM_HI	MR = 0; 	0000
+		EMS1_WINDOW	MR = 1; 	0001
+		EMS2_WINDOW	MR = 2; 	0010
+		
+		REG0		MR = 8; 	1000
+		REG1		MR = 9; 	1001
+		REG2		MR = A; 	1010
+		REG3		MR = B; 	1011
+		REG4		MR = C; 	1100
+		REG5		MR = D; 	1101
+		REG6		MR = E; 	1110
+		
+		REG_RESERVED	MR = 15; 	1111
+		
+		DEVICE_AREA	MR = 4; 	0100
+		
+		ROM_AREA	MR = 3; 	0011
+	*/
+	
+	/************************************************************/
+	/* READ / WRITE                                             */
+	/************************************************************/
+	
+	Read  = E &  Rw;
+	Write = E & !Rw;
+	
+	/************************************************************/
+	/* DEVICE SELECTS                                           */
+	/************************************************************/
+	
+	/*
+	 * EMS windows:
+	 *   ATF1 releases DEV0
+	 *   ATF2 drives DEV0
+	 */
+	
+
+	
+	/************************************************************/
+	/* DEVICE BLOCK                                             */
+	/************************************************************/
+	
+	Dev_Sel_1 = CA:[A020..A03F] & !BA;
+	Dev_Sel_2 = CA:[A040..A05F] & !BA;
+	Dev_Sel_3 = CA:[A060..A07F] & !BA;
+	Dev_Sel_4 = CA:[A080..A09F] & !BA;
+	Dev_Sel_5 = CA:[A0A0..A0BF] & !BA;
+	Dev_Sel_6 = CA:[A0C0..A0DF] & !BA;
+	Dev_Sel_7 = CA:[A0E0..A0FF] & !BA;
+	
+	
+	/************************************************************/
+	/* ATF1 Registers Write                                     */
+	/************************************************************/
+	
+	/************************************************************/
+	/* REG6 ROM_STATUS  MBxxSSSS                                */
+	/************************************************************/
+	
+	/* RomMapped se pri resetu nastavi na BootSrc,
+		pri zapisu zmeni hodnotu na zapsanou */
+	/*
+	RomMapped.d =
+	       Reset & BootSrc
+	    # !Reset & D7;
+	
+	RomMapped.CK = E;
+	RomMapped.CE =    Reset 
+			# REG6 & !Rw;
+	
+	*/
+	
+	RomMapped.d = D7;
+	
+	RomMapped.CK = !Q;
+	RomMapped.AR = Reset & !BootSrc;
+	RomMapped.AP = Reset & BootSrc;
+	RomMapped.CE = REG6 & !Rw & !BA;
+	
+	ROM_SIZE.d=[D2..D0];
+	
+	ROM_SIZE.CK=!Q;
+	ROM_SIZE.AR=Reset;
+	ROM_SIZE.CE = REG6 & !Rw & !BA;
+	
+	
+
+	
+	/************************************************************/
+	/* SOME DECLARATION - need to check {{{                     */
+	/************************************************************/
+	
+	
+	TRUE = E # !E;
+	FALSE = E & !E;
+	
+	/************************************************************/
+	/* FIELDS                                                   */
+	/************************************************************/
+	
+	FIELD MR = [MR3..MR0];
+	
+	FIELD EMS1_PAGE = [EMS1_A1, EMS1_A0, EMS1_B4, EMS1_B3, EMS1_B2, EMS1_B1, EMS1_B0];
+	FIELD EMS2_PAGE = [EMS2_A1, EMS2_A0, EMS2_B4, EMS2_B3, EMS2_B2, EMS2_B1, EMS2_B0];
+	
+	
+	/************************************************************/
+	/* INTERNAL NODES                                           */
+	/************************************************************/
+	
+	/* EMS1 mapping */
+	
+	NODE EMS1_A1;
+	NODE EMS1_A0;
+	
+	NODE EMS1_B4;
+	NODE EMS1_B3;
+	NODE EMS1_B2;
+	NODE EMS1_B1;
+	NODE EMS1_B0;
+	
+	/* EMS2 mapping */
+	
+	NODE EMS2_A1;
+	NODE EMS2_A0;
+	
+	NODE EMS2_B4;
+	NODE EMS2_B3;
+	NODE EMS2_B2;
+	NODE EMS2_B1;
+	NODE EMS2_B0;
+	
+	
+	/************************************************************/
+	/* Chip ownership/state                                     */
+	/************************************************************/
+	
+	/*
+	A = owned by MHF
+	C = owned by CPU
+	Dc, Dm = dirty (from viewpoint of CPU or MHF)
+	*/
+	
+	NODE CHIPA_A;
+	NODE CHIPA_C;
+	NODE CHIPA_Dc;
+	NODE CHIPA_Dm;
+	
+	NODE CHIPB_A;
+	NODE CHIPB_C;
+	NODE CHIPB_Dc;
+	NODE CHIPB_Dm;
+	
+	
+	/************************************************************/
+	/* Derived signals                                          */
+	/************************************************************/
+	
+	NODE EMS1_is_SYS;
+	NODE EMS1_is_MHFA;
+	NODE EMS1_is_MHFB;
+	NODE EMS1_is_ROM;
+	
+	NODE EMS2_is_SYS;
+	NODE EMS2_is_MHFA;
+	NODE EMS2_is_MHFB;
+	NODE EMS2_is_ROM;
+	
+	
+	NODE CHIPA_W;
+	NODE CHIPB_W;
+	
+	NODE HALT_MODE;
+	
+	NODE REG_ACCESS;
+	NODE REG_READ;
+	NODE REG_WRITE;
+	
+	NODE EMS_WINDOW;
+	NODE ROM_WINDOW;
+	NODE RAM_WINDOW;
+	
+	NODE ACTIVE_PAGE_A1;
+	NODE ACTIVE_PAGE_A0;
+	
+	NODE ACTIVE_B4;
+	NODE ACTIVE_B3;
+	NODE ACTIVE_B2;
+	NODE ACTIVE_B1;
+	NODE ACTIVE_B0;
+	
+	/* NODE ACTIVE_SYS;*/
+	NODE ACTIVE_MHFA;
+	NODE ACTIVE_MHFB;
+	/* NODE ACTIVE_ROM;*/
+	
+	NODE CPU_REQ_A;
+	NODE CPU_REQ_B;
+	NODE MHF_REQ_A;
+	NODE MHF_REQ_B;
+	
+	NODE EMS1_C;
+	NODE EMS2_C;
+	NODE EMS1_W;
+	NODE EMS2_W;
+	
+	/* }}} */
+	/************************************************************/
+	/* CONSTANT DECODE - need to check {{{                      */
+	/************************************************************/
+	
+	RAM_WINDOW =
+	       (MR:0);
+	
+	EMS_WINDOW =
+	       (MR:1)
+	    #  (MR:2);
+	
+	ROM_WINDOW =
+	       (MR:3);
+	
+	/* MR:8 .. MR:E - registers */
+	REG_ACCESS = 		/* MR != 0 means !BA  */
+		   (MR:[8..E])
+		 &  E; 
+	REG_READ = 
+		REG_ACCESS 
+		& Rw ; 
+	REG_WRITE = 
+		REG_ACCESS 
+		& !Rw ;
+	
+	/************************************************************/
+	/* Decode current mapping                                   */
+	/************************************************************/
+	
+	EMS1_is_SYS  = !EMS1_A1 & !EMS1_A0;
+	EMS1_is_MHFA = !EMS1_A1 &  EMS1_A0;
+	EMS1_is_MHFB =  EMS1_A1 & !EMS1_A0;
+	EMS1_is_ROM  =  EMS1_A1 &  EMS1_A0;
+	
+	EMS2_is_SYS  = !EMS2_A1 & !EMS2_A0;
+	EMS2_is_MHFA = !EMS2_A1 &  EMS2_A0;
+	EMS2_is_MHFB =  EMS2_A1 & !EMS2_A0;
+	EMS2_is_ROM  =  EMS2_A1 &  EMS2_A0;
+	
+	
+	/* }}} */
+	/************************************************************/
+	/* REG0 EMS1 PAGE {{{   (A[1..0] x B[4..0])              OK */
+	/************************************************************/
+	/*
+	D7 D6 = AA
+	D5 = reserved
+	D4..D0 = BBBBB
+	*/
+	
+	EMS1_A1.D = D7;
+	EMS1_A0.D = D6;
+	
+	EMS1_B4.D = D4;
+	EMS1_B3.D = D3;
+	EMS1_B2.D = D2;
+	EMS1_B1.D = D1;
+	EMS1_B0.D = D0;
+	/*
+	AA:
+	
+	00 System RAM
+	01 MHF_A
+	10 MHF_B
+	11 invalid/ROM TODO
+	*/
+	
+	
+	/* spolecne rizeni 0.25 tact */
+	
+	EMS1_A1.CK = !Q;
+	EMS1_A0.CK = !Q;
+	
+	EMS1_B4.CK = !Q;
+	EMS1_B3.CK = !Q;
+	EMS1_B2.CK = !Q;
+	EMS1_B1.CK = !Q;
+	EMS1_B0.CK = !Q;
+	
+	EMS1_A1.AR = Reset;
+	EMS1_A0.AR = Reset;
+	
+	/* EMS1_B4.AR = Reset;	 default $8000 */
+	/* B3..B0 map to A15..A12, so default $8000 needs B3=1 (.AP), B2..B0=0 (.AR) */
+	EMS1_B4.AR = Reset;
+	EMS1_B3.AP = Reset;
+	EMS1_B2.AR = Reset;
+	EMS1_B1.AR = Reset;
+	EMS1_B0.AR = Reset;
+	
+	EMS1_A1.CE = REG_WRITE & (MR:8);
+	EMS1_A0.CE = REG_WRITE & (MR:8);
+	
+	EMS1_B4.CE = REG_WRITE & (MR:8);
+	EMS1_B3.CE = REG_WRITE & (MR:8);
+	EMS1_B2.CE = REG_WRITE & (MR:8);
+	EMS1_B1.CE = REG_WRITE & (MR:8);
+	EMS1_B0.CE = REG_WRITE & (MR:8);
+	
+	/* }}} */
+	/************************************************************/
+	/* REG2 EMS2 PAGE {{{ (A[1..0] x B[4..0])               OK  */
+	/************************************************************/
+	
+	/*
+	D7 D6 = AA
+	D5 = reserved
+	D4..D0 = BBBBB
+	*/
+	
+	EMS2_A1.D = D7;
+	EMS2_A0.D = D6;
+	
+	EMS2_B4.D = D4;
+	EMS2_B3.D = D3;
+	EMS2_B2.D = D2;
+	EMS2_B1.D = D1;
+	EMS2_B0.D = D0;
+	/*
+	AA:
+	
+	00 System RAM
+	01 MHF_A
+	10 MHF_B
+	11 ROM
+	*/
+	
+	EMS2_A1.CK = !Q;
+	EMS2_A0.CK = !Q;
+	
+	EMS2_B4.CK = !Q;
+	EMS2_B3.CK = !Q;
+	EMS2_B2.CK = !Q;
+	EMS2_B1.CK = !Q;
+	EMS2_B0.CK = !Q;
+	
+	EMS2_A1.AR = Reset;
+	EMS2_A0.AR = Reset;
+	
+	/* B3..B0 map to A15..A12, so default $9000 needs B3=1 (.AP), B2..B0=1 (.AP) */
+	EMS2_B4.AR = Reset;	/* default $9000 */
+	EMS2_B3.AP = Reset;
+	EMS2_B2.AR = Reset;
+	EMS2_B1.AR = Reset;
+	EMS2_B0.AP = Reset;
+	
+	EMS2_A1.CE = REG_WRITE & (MR:A);
+	EMS2_A0.CE = REG_WRITE & (MR:A);
+	
+	EMS2_B4.CE = REG_WRITE & (MR:A);
+	EMS2_B3.CE = REG_WRITE & (MR:A);
+	EMS2_B2.CE = REG_WRITE & (MR:A);
+	EMS2_B1.CE = REG_WRITE & (MR:A);
+	EMS2_B0.CE = REG_WRITE & (MR:A);
+	
+	
+	/* }}} */
+	/************************************************************/
+	/* BUS OWNERSHIP CHEAT SHEET                                */
+	/************************************************************/
+	/*
+	 * NORMAL MODE (BA=0, CPU owns bus):
+	 *   Addr: CPU -> SysRAM/ROM/MHF_x (via GA12..16)
+	 *   Data: CPU <-> SysRAM/ROM/MHF_Gates
+	 *   Rw:   CPU
+	 * 
+	 * HALT MODE (BA=1, MHF owns bus):
+	 *   Addr: MHF -> SysRAM (via 74HC245 + GA12..15, A_S_16/B_S_16 -> GA16)
+	 *   Data: MHF <-> SysRAM (via 74HC245)
+	 *   Rw:   GLUE generates Rw based on MHF_A_READ / MHF_B_READ
+	 */
+	/************************************************************/
+	/* HALT mode                                                */
+	/************************************************************/
+	
+	HALT =	   A_HALT # B_HALT;
+	HALT.OE =  A_HALT # B_HALT; /* enabled if driven by us */
+	
+	/* nasledne se aktivuje BA behem nekolika taktu a tim se odpoji sbernice od CPU */
+	
+	/* Rw je ovladan CPU, vyjma HALT rezimu, kdy to prevezme ATF2 a ridi se dle MHF_x */
+	Rw =	  !A_READ & A_HALT
+		# !B_READ & B_HALT & !A_HALT; /* directed by A primary, or B secondary */
+	Rw.OE =	  BA; /* driven only in HALT mode */
+	
+	/************************************************************/
+	/* SYSTEM RAM SELECT                                        */
+	/************************************************************/
+	
+	
+	RAM =	  BA                   /* v HALT rezimu je RAM vybrana permanentne */
+		# (MR:0)               /* normal RAM */
+		# (MR:1) & EMS1_is_SYS /* Sys RAM selected in EMS1 */
+		# (MR:2) & EMS2_is_SYS /* Sys RAM selected in EMS2 */
+		;
+	/* RAM chip enable driven all the time
+	RAM.OE =   BA
+		# (MR:0) 
+		# (MR:1)
+		# (MR:2)
+		;
+	*/
+	/* ROM je  bezne ovladan ATF1, s vyjimkou HALT rezimu (kde vybran neni) a EMS oken, kdy to prevezme ATF2 a ridi se dle MHF_x a nastaveni EMS  */
+	ROM = 	  (MR:3)		/* native ROM */
+		# (MR:1) & EMS1_is_ROM 
+		# (MR:2) & EMS2_is_ROM
+		/* or FALSE in HALT/BA */
+		;
+	ROM.OE =  TRUE;	/* valid always */
+	
+	/*  IO connected to SharedRAM.A16 and MHF MCU */
+			/* pokud CPU vlastni shared RAM, je to Output a ovlada jeji A16 */
+			/* pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */
+	A_S_16 = 	  (MR:1) & EMS1_is_MHFA & CHIPA_C & EMS1_B4
+			# (MR:2) & EMS2_is_MHFA & CHIPA_C & EMS2_B4
+			;
+	A_S_16.OE = 	  (MR:1) & EMS1_is_MHFA & CHIPA_C 
+			# (MR:2) & EMS2_is_MHFA & CHIPA_C 
+			;
+	
+	/*  IO connected to SharedRAM.A16 and MHF MCU */
+			/* pokud CPU vlastni shared RAM, je to Output a ovlada jeji A16 */
+			/* pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */
+	B_S_16 = 	  (MR:1) & EMS1_is_MHFB & CHIPB_C & EMS1_B4
+			# (MR:2) & EMS2_is_MHFB & CHIPB_C & EMS2_B4
+			;
+	B_S_16.OE = 	  (MR:1) & EMS1_is_MHFB & CHIPB_C 
+			# (MR:2) & EMS2_is_MHFB & CHIPB_C 
+			;
+	/* O Dirty+Wanted+BA: BA?1:if(SHARE_GRANTED){WANTS:1=CPU wants SharedRAM}else{DIRTY:1=CPU already got SharedRAM} */
+	/* in HALT state 1= writing SystemRAM is possible
+	 * if SHARE_GRANTED 1= CPU already wants SharedRAM (=please release it soon)
+	 * if !SHARE_GRANTED 1 = CPU already got SharedRAM (=and maybe modified it)
+	 * 0 = nothing special
+	 */
+	/* AI NOTE: Asymmetrical HALT priority!
+	 * During boot (HALT mode), MHF_A has strict priority over MHF_B.
+	 * A_SHARE_DIRTY signals BA immediately. 
+	 * B_SHARE_DIRTY only signals BA if A_HALT is released (!A_HALT).
+	 */
+	A_SHARE_DIRTY =	  BA
+			# A_SHARE_GRANTED & ( EMS1_is_MHFA # EMS2_is_MHFA )
+			# !A_SHARE_GRANTED & CHIPA_Dm
+			;
+	B_SHARE_DIRTY =	  BA & !A_HALT /* write if MHF_A released it alredy */
+			# B_SHARE_GRANTED & ( EMS1_is_MHFB # EMS2_is_MHFB )
+			# !B_SHARE_GRANTED & CHIPB_Dm
+			;
+	A_SHARE_GRANTED =	A_SHARE_REQUEST & CHIPA_A;
+	B_SHARE_GRANTED =	B_SHARE_REQUEST & CHIPB_A;
+	
+	/************************************************************/
+	/* OWNERSHIP CHIP_xx FIXME: dole je lepsi {{{            OK */
+	/************************************************************/
+	/*
+	CHIPA_C.d =
+			  EMS1_is_MHFA & !CHIPA_A
+			# EMS2_is_MHFA & !CHIPA_A 
+			# EMS1_is_MHFA &  CHIPA_C
+			# EMS2_is_MHFA &  CHIPA_C
+			;
+	CHIPB_C.d =
+			  EMS1_is_MHFB & !CHIPB_A
+			# EMS2_is_MHFB & !CHIPB_A
+			# EMS1_is_MHFB &  CHIPB_C
+			# EMS2_is_MHFB &  CHIPB_C
+			;
+	
+	CHIPA_C.CK = !E;
+	CHIPB_C.CK = !E; 
+	
+	CHIPA_A.d =
+			  A_SHARE_REQUEST & !CHIPA_C 
+			# A_SHARE_REQUEST &  CHIPA_A
+			;
+	CHIPB_A.d =
+			  B_SHARE_REQUEST & !CHIPB_C
+			# B_SHARE_REQUEST &  CHIPB_A
+			;
+	CHIPA_A.CK = Q;
+	CHIPB_A.CK = Q; 
+	*/
+	/* }}} */
+	/************************************************************/
+	/* Dirty flags                                       {{{ OK */
+	/************************************************************/
+	
+	CHIPA_Dc.d = 
+			  CHIPA_A
+			# CHIPA_Dc & !CHIPA_C;
+	CHIPA_Dc.CK = E; /* 0.0 tact, az po CHIPA_A a CHIPA_C, a pred zapisem registru, na pocatku cteni, takze CPU uz cte pripadne novou hodnotu  */ 
+	
+	CHIPA_Dm.d = 
+			  CHIPA_C
+			# CHIPA_Dm & !CHIPA_A;
+	CHIPA_Dm.CK = E; /* 0.0 tact, az po CHIPA_A a CHIPA_C, a pred zapisem registru, na pocatku cteni, takze CPU uz cte pripadne novou hodnotu  */ 
+	
+	CHIPB_Dc.d = 
+			  CHIPB_A
+			# CHIPB_Dc & !CHIPB_C;
+	CHIPB_Dc.CK = E; /* 0.0 tact, az po CHIPB_A a CHIPB_C, a pred zapisem registru, na pocatku cteni, takze CPU uz cte pripadne novou hodnotu  */ 
+	
+	CHIPB_Dm.d = 
+			  CHIPB_C
+			# CHIPB_Dm & !CHIPB_A;
+	CHIPB_Dm.CK = E; /* 0.0 tact, az po CHIPB_A a CHIPB_C, a pred zapisem registru, na pocatku cteni, takze CPU uz cte pripadne novou hodnotu  */ 
+	
+	/* }}} */
+	/************************************************************/
+	/* REGISTERS READ  {{{                                OK    */
+	/************************************************************/
+	/************************************************************/
+	/* ATF1 Registers Read                                      */
+	/************************************************************/
+	
+	[D7..D0].OE = REG_READ; /* write full D REG_xx means !BA & E & ... */
+	
+	D7 =  REG_READ & (
+		  REG0 & EMS1_A1
+		# REG2 & EMS2_A1
+		# REG6 & RomMapped
+		);
+	
+	D6 =  REG_READ & (
+		  REG0 & EMS1_A0
+		# REG2 & EMS2_A0
+		# REG6 & BootSrc
+		);
+	
+	D5 =  REG_READ & (	/* D5 is not used anywhere, so returns 0 == FALSE everytime */
+		FALSE
+		);
+	
+	D4 =  REG_READ & (
+		  REG0 & EMS1_B4
+		# REG2 & EMS2_B4
+		);
+	D3 =  REG_READ & (
+		  REG0 & EMS1_B3
+		# REG2 & EMS2_B3
+		# REG4 & CHIPA_Dc
+		# REG5 & CHIPB_Dc
+		);
+	D2 =  REG_READ & (
+		  REG0 & EMS1_B2
+		# REG1 & EMS1_W
+		# REG2 & EMS2_B2
+		# REG3 & EMS2_W
+		# REG4 & CHIPA_W
+		# REG5 & CHIPB_W
+		# REG6 & ROM_SIZE2
+		);
+	D1 =  REG_READ & (
+		  REG0 & EMS1_B1
+		# REG2 & EMS2_B1
+		# REG4 & CHIPA_A
+		# REG5 & CHIPB_A
+		# REG6 & ROM_SIZE1
+		);
+	D0 =  REG_READ & (
+		  REG0 & EMS1_B0
+		# REG1 & EMS1_C
+		# REG2 & EMS2_B0
+		# REG3 & EMS2_C
+		# REG4 & CHIPA_C
+		# REG5 & CHIPB_C
+		# REG6 & ROM_SIZE0
+		);
+	/* }}} */
+
+
+	/************************************************************/
+	/* EMS STATUS                                        OK {{{ */
+	/************************************************************/
+	
+	EMS1_C = /* owned by CPU */
+		  EMS1_is_SYS
+		# EMS1_is_MHFA & CHIPA_C
+		# EMS1_is_MHFB & CHIPB_C
+		# EMS1_is_ROM
+		;
+	
+	
+	EMS2_C =
+		  EMS2_is_SYS
+		# EMS2_is_MHFA & CHIPA_C
+		# EMS2_is_MHFB & CHIPB_C
+		# EMS2_is_ROM
+		;
+	
+	EMS1_W = /* Wanted by card */
+		  EMS1_is_MHFA & A_SHARE_REQUEST
+		# EMS1_is_MHFB & B_SHARE_REQUEST
+		;
+	
+	EMS2_W = /* Wanted by card */
+		  EMS2_is_MHFA & A_SHARE_REQUEST
+		# EMS2_is_MHFB & B_SHARE_REQUEST
+		;
+	/* }}} */
+	/************************************************************/
+	/* MHF wants which chip                              OK {{{ */
+	/************************************************************/
+	
+	CHIPA_W = A_SHARE_REQUEST;
+	CHIPB_W = B_SHARE_REQUEST;
+	
+	/* }}} */
+	/************************************************************/
+	/* CPU / MHF requests                                OK {{{ */
+	/************************************************************/
+	
+	CPU_REQ_A = 
+	      EMS1_is_MHFA
+	   #  EMS2_is_MHFA;
+	CPU_REQ_B = 
+	      EMS1_is_MHFB
+	   #  EMS2_is_MHFB;
+	
+	
+	MHF_REQ_A = A_SHARE_REQUEST;
+	MHF_REQ_B = B_SHARE_REQUEST;
+	
+	/* }}} */
+	/************************************************************/
+	/* CHIP A ownership                                  {{{ OK */
+	/************************************************************/
+	
+	/*
+	Pravidla:
+	
+	00 -> nikdo
+	
+	10 -> CPU
+	
+	01 -> MHF
+	
+	11 -> zakazany stav
+	
+	Pokud chteji oba:
+	
+	- vlastnik zustava
+	- pokud nebyl zadny -> CPU
+	*/
+	
+	
+	CHIPA_C.D =
+	
+	      ( CPU_REQ_A & !MHF_REQ_A )
+	
+	   #  ( CPU_REQ_A &  MHF_REQ_A & CHIPA_C )
+	
+	   #  ( CPU_REQ_A &  MHF_REQ_A & !CHIPA_C & !CHIPA_A );
+	
+	
+	
+	CHIPA_A.D =
+	
+	      ( MHF_REQ_A & !CPU_REQ_A )
+	
+	   #  ( CPU_REQ_A &  MHF_REQ_A & CHIPA_A );
+	
+	
+	CHIPA_C.CK = !E; /* 0.5 tact */
+	CHIPA_C.AR = Reset;
+	CHIPA_C.CE = E # !E;
+	
+	CHIPA_A.CK = Q; /* 0.75 tact */
+	CHIPA_A.AR = Reset;
+	CHIPA_A.CE = E # !E;
+	
+	/* }}} */
+	/************************************************************/
+	/* CHIP B ownership                                  {{{ OK */
+	/************************************************************/
+	
+	CHIPB_C.D =
+	
+	      ( CPU_REQ_B & !MHF_REQ_B )
+	
+	   #  ( CPU_REQ_B &  MHF_REQ_B & CHIPB_C )
+	
+	   #  ( CPU_REQ_B &  MHF_REQ_B & !CHIPB_C & !CHIPB_A );
+	
+	
+	
+	CHIPB_A.D =
+	
+	      ( MHF_REQ_B & !CPU_REQ_B )
+	
+	   #  ( CPU_REQ_B &  MHF_REQ_B & CHIPB_A );
+	
+	
+	
+	CHIPB_C.CK = !E; /* 0.5 tact */
+	CHIPB_C.AR = Reset;
+	CHIPB_C.CE = E # !E;
+	
+	CHIPB_A.CK = Q; /* 0.75 tact */
+	CHIPB_A.AR = Reset;
+	CHIPB_A.CE = E # !E;
+	
+	/* }}} */
+	/************************************************************/
+	/* EMS + GA <-> CA BLOK                              {{{ OK */
+	/************************************************************/
+	
+	ACTIVE_PAGE_A1 =
+	      (MR:1 & EMS1_A1)
+	   #  (MR:2 & EMS2_A1);
+	
+	ACTIVE_PAGE_A0 =
+	      (MR:1 & EMS1_A0)
+	   #  (MR:2 & EMS2_A0);
+	
+	ACTIVE_B4 =
+	      (MR:1 & EMS1_B4)
+	   #  (MR:2 & EMS2_B4);
+	
+	ACTIVE_B3 =
+	      (MR:1 & EMS1_B3)
+	   #  (MR:2 & EMS2_B3);
+	
+	ACTIVE_B2 =
+	      (MR:1 & EMS1_B2)
+	   #  (MR:2 & EMS2_B2);
+	
+	ACTIVE_B1 =
+	      (MR:1 & EMS1_B1)
+	   #  (MR:2 & EMS2_B1);
+	
+	ACTIVE_B0 =
+	      (MR:1 & EMS1_B0)
+	   #  (MR:2 & EMS2_B0);
+	
+	
+	/* Vyhodnoceni typu stranky */
+	/************************************************************/
+	/* ACTIVE SOURCE                                            */
+	/************************************************************/
+	/* ACTIVE_SYS  = !ACTIVE_PAGE_A1 & !ACTIVE_PAGE_A0; */
+	ACTIVE_MHFA = !ACTIVE_PAGE_A1 &  ACTIVE_PAGE_A0;
+	ACTIVE_MHFB =  ACTIVE_PAGE_A1 & !ACTIVE_PAGE_A0;
+	/* ACTIVE_ROM  =  ACTIVE_PAGE_A1 &  ACTIVE_PAGE_A0; */
+	
+	/************************************************************/
+	/* EMS ACCESS                                               */
+	/************************************************************/
+	
+	/* EMS_ACCESS is UNUSED */
+	/* EMS_ACCESS = /* jestli CPU ma pristup do EMS nebo neni spravne namapovana ... nevim, jestli to chci TODO nechci, ale viz -> */
+	/* uvaha, kdyz CPU chce cist a nema pravo, tak dostane cokoli a nemusim se starat co. Kdyz chce psat a nema pravo, tak nezapise nikam. */
+	/* uvaha2, kdyz CPU chce cist/psat do EMS, tak je cilovy chip vybran, ale pokud je to karta a nema pravo, tak jsou GATES zavrene, a neni obslouzeno, viz o kus nize */
+	/*	  ACTIVE_SYS
+		# ACTIVE_ROM
+		# (ACTIVE_MHFA & CHIPA_C)
+		# (ACTIVE_MHFB & CHIPB_C);
+	*/
+	/************************************************************/
+	/* EMS ADDRESS                                              */
+	/************************************************************/
+	
+	GA16 = 
+		  !BA &  ACTIVE_B4
+		#  BA &  A_HALT & A_S_16 
+		#  BA & !A_HALT & B_HALT & B_S_16 ; /* mimo EMS/boot nelze sahnout nad 64kB, a tedy GA16=0  */
+
+	GA15 = EMS_WINDOW & ACTIVE_B3 # !EMS_WINDOW & CA15;
+	GA14 = EMS_WINDOW & ACTIVE_B2 # !EMS_WINDOW & CA14;
+	GA13 = EMS_WINDOW & ACTIVE_B1 # !EMS_WINDOW & CA13;
+	GA12 = EMS_WINDOW & ACTIVE_B0 # !EMS_WINDOW & CA12;
+	
+/*	GA16.OE = !BA; */
+	GA15.OE = !BA;
+	GA14.OE = !BA;
+	GA13.OE = !BA;
+	GA12.OE = !BA;
+	
+	/* }}} */
+	/************************************************************/
+	/* SHARED CHIP SELECT                                {{{ OK */
+	/************************************************************/
+	
+	A_S_SELECT =
+		  CHIPA_C & EMS_WINDOW & ACTIVE_MHFA /* for CPU */
+		# CHIPA_A & A_SHARE_SELECT           /* for MHF */
+		;
+	
+	B_S_SELECT =
+		  CHIPB_C & EMS_WINDOW & ACTIVE_MHFB /* for CPU */
+		# CHIPB_A & B_SHARE_SELECT           /* for MHF */
+		;
+	
+	/* }}} */
+	/************************************************************/
+	/* SHARED READ                                       {{{ OK */
+	/************************************************************/
+	
+	A_S_READ =
+		  CHIPA_C & EMS_WINDOW & ACTIVE_MHFA & E & Rw /* for CPU */
+		# CHIPA_A & A_READ                            /* for MHF */
+		;
+	
+	B_S_READ =
+		  CHIPB_C & EMS_WINDOW & ACTIVE_MHFB & E & Rw /* for CPU */
+		# CHIPB_A & B_READ                            /* for MHF */
+		;
+	
+	/* }}} */
+	/************************************************************/
+	/* SHARED WRITE                                      {{{ OK */
+	/************************************************************/
+	
+	A_S_WRITE =
+		  CHIPA_C & EMS_WINDOW & ACTIVE_MHFA & E & !Rw /* for CPU */
+		# CHIPA_A & !A_READ                            /* for MHF */
+		;
+	
+	B_S_WRITE =
+		  CHIPB_C & EMS_WINDOW & ACTIVE_MHFB & E & !Rw /* for CPU */
+		# CHIPB_A & !B_READ                            /* for MHF */
+		;
+	
+	/* }}} */
+	/************************************************************/
+	/* GATE ADDRESS DIRECTION                                   */
+	/************************************************************/
+	
+	A_G_A_DIR = BA; /* V HALT rezimu MHF-> CPU */
+	B_G_A_DIR = BA;
+	
+	/* }}} */
+	/************************************************************/
+	/* DATA DIRECTION                                           */
+	/************************************************************/
+	
+	A_G_D_DIR =
+		  !BA & CHIPA_C & Rw                   /* mimo EMS je nezajimave protoze gate je zavrena */
+		#  BA & A_HALT  & !A_READ              /* in BA A_READ means MHF want read FROM CPU's SysRAM, so Data goes CPU side -> MHF side */
+		;
+	
+	B_G_D_DIR =
+		  !BA & CHIPB_C & Rw                   /* mimo EMS je nezajimave protoze gate je zavrena */
+		#  BA & !A_HALT & B_HALT & !B_READ     /* in BA B_READ means MHF want read FROM CPU's SysRAM, so Data goes CPU side -> MHF side */
+		;
+	
+	/* }}} */
+	/************************************************************/
+	/* ENABLE GATES                                             */
+	/************************************************************/
+	
+	A_G_ENABLE = CHIPA_C & EMS_WINDOW & ACTIVE_MHFA & E
+		# BA & A_HALT;
+	B_G_ENABLE = CHIPB_C & EMS_WINDOW & ACTIVE_MHFB & E
+		# BA & !A_HALT & B_HALT;
+	
+	/* }}} */
+	
+	
+	

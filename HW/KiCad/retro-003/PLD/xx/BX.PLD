@@ -1,0 +1,35 @@
+
+	Name     ATF3_GLUE;
+	PartNo   0003;
+	Date     2026-07-23;
+	Revision 0.2;
+	Designer Gilhad;
+	Company  None ;
+	Assembly None ;
+	Location ;
+	Device  f1508isptqfp100;
+	
+PROPERTY ATMEL { preassign=keep };
+
+PIN  90 = Q;
+PIN  94 = D0;
+PIN  96 = D1;
+PIN  97 = D2;
+PIN  98 = D3;
+PIN  99 = D4;
+PIN 100 = D5;    
+PIN   1 = D6;
+PIN   2 = D7;
+
+
+PINNODE 680 = rom_sz0;
+PINNODE 681 = rom_sz1;
+PINNODE 682 = rom_sz2;
+
+
+rom_sz0.d = D0;
+rom_sz0.ck = Q;
+rom_sz1.d = D1;
+rom_sz1.ck = Q;
+rom_sz2.d = D2;
+rom_sz2.ck = Q;

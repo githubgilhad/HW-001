@@ -1,0 +1,33 @@
+#$ TOOL CUPL
+# Berkeley PLA format generated using CUPL(WM) 5.0a
+# Serial#  MW-10400000
+# Created  Wed Aug 05 06:44:36 2026
+#
+#    Name        ATF3_GLUE
+#    Partno      0003
+#    Revision    0.2
+#    Date        2026-07-23
+#    Designer    Gilhad
+#    Company     None
+#    Assembly    None
+#    Location    
+#
+#$ TITLE  ATF3_GLUE
+#$ PROPERTY ATMEL preassign = keep
+#$ MODULE  ATF3_GLU
+#$ JEDECFILE  ATF3_GLU
+#$ DEVICE  f1508isptqfp100
+#$ PINS   9 D0+:94 D1+:96 D2+:97 D3+:98 D4+:99 D5+:100 D6+:1 D7+:2 Q+:90 
+#$ NODES  3 rom_sz0+:680 rom_sz1+:681 rom_sz2+:682 
+.i 4
+.o 6
+.type f
+.ilb  D0 D1 D2 Q 
+.ob   rom_sz0.REG rom_sz0.C rom_sz1.REG rom_sz1.C rom_sz2.REG rom_sz2.C 
+.phase 111111
+.p 4
+1--- 100000
+---1 010101
+-1-- 001000
+--1- 000010
+.e

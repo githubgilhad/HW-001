@@ -1,0 +1,12 @@
+CHIP "Z:\BX" ASSIGNED TO AN TQFP100
+D2					: 97
+D1					: 96
+D0					: 94
+TDI					: 4
+TMS					: 15
+rom_sz0					: 680
+rom_sz1					: 681
+rom_sz2					: 682
+TCK					: 62
+TDO					: 73
+Q					: 90

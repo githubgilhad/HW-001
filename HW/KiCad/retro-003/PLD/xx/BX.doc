@@ -1,0 +1,73 @@
+
+*******************************************************************************
+                                   ATF3_GLUE
+*******************************************************************************
+
+CUPL(WM)        5.0a Serial# MW-10400000
+Device          f1508isptqfp100  Library DLIB-h-40-2
+Created         Wed Aug 05 06:44:36 2026
+Name            ATF3_GLUE
+Partno          0003
+Revision        0.2
+Date            2026-07-23
+Designer        Gilhad
+Company         None 
+Assembly        None 
+Location        
+
+===============================================================================
+                            Expanded Product Terms
+===============================================================================
+
+rom_sz0.d  =>
+    D0
+
+rom_sz0.ck  =>
+    Q
+
+rom_sz1.d  =>
+    D1
+
+rom_sz1.ck  =>
+    Q
+
+rom_sz2.d  =>
+    D2
+
+rom_sz2.ck  =>
+    Q
+
+
+===============================================================================
+                                 Symbol Table
+===============================================================================
+
+Pin Variable                                    Pterms   Max     Min    
+Pol   Name              Ext     Pin     Type     Used   Pterms  Level   
+--- --------            ---     ---     ----    ------  ------  -----   
+
+    D0                          94       V        -       -       -     
+    D1                          96       V        -       -       -     
+    D2                          97       V        -       -       -     
+    D3                          98       V        -       -       -     
+    D4                          99       V        -       -       -     
+    D5                          100      V        -       -       -     
+    D6                          1        V        -       -       -     
+    D7                          2        V        -       -       -     
+    Q                           90       V        -       -       -     
+    rom_sz0                     680      N        -       -       -     
+    rom_sz0             d       680      M        1       0       1     
+    rom_sz0             ck      680      M        1       0       1     
+    rom_sz1                     681      N        -       -       -     
+    rom_sz1             d       681      M        1       0       1     
+    rom_sz1             ck      681      M        1       0       1     
+    rom_sz2                     682      N        -       -       -     
+    rom_sz2             d       682      M        1       0       1     
+    rom_sz2             ck      682      M        1       0       1     
+
+
+LEGEND    D : default variable         F : field      G : group
+          I : intermediate variable    N : node       M : extended node
+          U : undefined                V : variable   X : extended variable
+          T : function
+

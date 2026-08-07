@@ -1,0 +1,16 @@
+#$ TOOL CUPL Atmel 1508 1.8.7.8
+#$ MODULE BX
+#$ JEDECFILE BX
+#$ PINS 4 D0:94 D1:96 D2:97 Q:90 
+#$ NODES 3 rom_sz1:681 rom_sz0:680 rom_sz2:682 
+.type fr
+.i 4
+.o 6
+.ilb D0 D1 D2 Q
+.ob rom_sz1.D rom_sz1.C rom_sz0.D rom_sz0.C rom_sz2.D rom_sz2.C
+.p 4
+-1--	1~~~~~
+1---	~~1~~~
+--1-	~~~~1~
+---1	~1~1~1
+.end
