@@ -366,11 +366,51 @@
 	/************************************************************/
 	
 	NODE [ROM_SIZE2..0];
-	PINNODE 637 = addr_in_REGS; /* */
+	PINNODE  = addr_in_REGS; /* 637 */
 /*	NODE addr_in_REGS; /* */
 /*	MIN addr_in_REGS = 1; /* 0 = no reduction */ 
 	PROPERTY ATMEL {Soft_Buffer=addr_in_REGS};
 	
+	/* EMS1 mapping */
+	
+	NODE EMS1_A1;
+	NODE EMS1_A0;
+	
+	NODE EMS1_B4;
+	NODE EMS1_B3;
+	NODE EMS1_B2;
+	NODE EMS1_B1;
+	NODE EMS1_B0;
+	
+	/* EMS2 mapping */
+	
+	NODE EMS2_A1;
+	NODE EMS2_A0;
+	
+	NODE EMS2_B4;
+	NODE EMS2_B3;
+	NODE EMS2_B2;
+	NODE EMS2_B1;
+	NODE EMS2_B0;
+	/************************************************************/
+	/* Chip ownership/state                                     */
+	/************************************************************/
+	
+	/*
+	A = owned by MHF
+	C = owned by CPU
+	Dc, Dm = dirty (from viewpoint of CPU or MHF)
+	*/
+	
+	NODE CHIPA_A;
+	NODE CHIPA_C;
+	NODE CHIPA_Dc;
+	NODE CHIPA_Dm;
+	
+	NODE CHIPB_A;
+	NODE CHIPB_C;
+	NODE CHIPB_Dc;
+	NODE CHIPB_Dm;
 	/* }}} */
 	/************************************************************/
 	/* FIELDs                                               {{{ */
@@ -389,6 +429,20 @@
 	0 = 24.75 kB
 	*/
 	/* }}} */
+	/************************************************************/
+	/* HALT mode                                            {{{ */
+	/************************************************************/
+	
+	HALT =	   A_HALT # B_HALT;
+	HALT.OE =  A_HALT # B_HALT; /* enabled if driven by us */
+	
+	/* nasledne se aktivuje BA behem nekolika taktu a tim se odpoji sbernice od CPU */
+	/* na druhou stranu HALT muze prijit i od jinud a pak to neni HALT_mode, sbernici ridi nekdo jiny */
+	in_HALT_mode = BA & (A_HALT # B_HALT);
+	/* }}} */
+	/************************************************************/
+	/* addr_in_XXX                                          {{{ */
+	/************************************************************/
 	
 	addr_in_DEVICE_AREA = CA:[A020..A0FF];
 	
@@ -418,31 +472,324 @@
 	REG4 =  addr_in_REGS & REG_SEL:4; /* CHIPA_STATUS */
 	REG5 =  addr_in_REGS & REG_SEL:5; /* CHIPB_STATUS */
 	REG6 =  addr_in_REGS & REG_SEL:6; /* ROM_STATUS + ROM_SIZE MBxxSSSS */
+	
+	REG_ACCESS = addr_in_REGS & E & !in_HALT_mode;
+	REG_READ = 
+		REG_ACCESS 
+		& Rw ; 
+	REG_WRITE = 
+		REG_ACCESS 
+		& !Rw ;
+	
+	/* }}} */
 	/************************************************************/
-	/* HALT mode                                                */
+	/* MHF wants which chip                              OK {{{ */
 	/************************************************************/
 	
-	HALT =	   A_HALT # B_HALT;
-	HALT.OE =  A_HALT # B_HALT; /* enabled if driven by us */
+	CHIPA_W = A_SHARE_REQUEST;
+	CHIPB_W = B_SHARE_REQUEST;
+	/* }}} */
+	/************************************************************/
+	/* Decode current mapping                                   */
+	/************************************************************/
 	
-	/* nasledne se aktivuje BA behem nekolika taktu a tim se odpoji sbernice od CPU */
-	in_HALT_mode = BA & (A_HALT # B_HALT);
+	EMS1_is_SYS  = !EMS1_A1 & !EMS1_A0;
+	EMS1_is_MHFA = !EMS1_A1 &  EMS1_A0;
+	EMS1_is_MHFB =  EMS1_A1 & !EMS1_A0;
+	EMS1_is_ROM  =  EMS1_A1 &  EMS1_A0;
+	
+	EMS2_is_SYS  = !EMS2_A1 & !EMS2_A0;
+	EMS2_is_MHFA = !EMS2_A1 &  EMS2_A0;
+	EMS2_is_MHFB =  EMS2_A1 & !EMS2_A0;
+	EMS2_is_ROM  =  EMS2_A1 &  EMS2_A0;
 	
 	
+	/* }}} */
+	/************************************************************/
+	/* EMS STATUS                                        OK {{{ */
+	/************************************************************/
 	
+	EMS1_C = /* owned by CPU */
+		  EMS1_is_SYS
+		# EMS1_is_MHFA & CHIPA_C
+		# EMS1_is_MHFB & CHIPB_C
+		# EMS1_is_ROM
+		;
+	
+	
+	EMS2_C =
+		  EMS2_is_SYS
+		# EMS2_is_MHFA & CHIPA_C
+		# EMS2_is_MHFB & CHIPB_C
+		# EMS2_is_ROM
+		;
+	
+	EMS1_W = /* Wanted by card */
+		  EMS1_is_MHFA & A_SHARE_REQUEST
+		# EMS1_is_MHFB & B_SHARE_REQUEST
+		;
+	
+	EMS2_W = /* Wanted by card */
+		  EMS2_is_MHFA & A_SHARE_REQUEST
+		# EMS2_is_MHFB & B_SHARE_REQUEST
+		;
+	/* }}} */
+	/************************************************************/
+	/* CPU / MHF requests                                OK {{{ */
+	/************************************************************/
+	
+	CPU_REQ_A = 
+	      EMS1_is_MHFA
+	   #  EMS2_is_MHFA;
+	CPU_REQ_B = 
+	      EMS1_is_MHFB
+	   #  EMS2_is_MHFB;
+	
+	
+	MHF_REQ_A = A_SHARE_REQUEST;
+	MHF_REQ_B = B_SHARE_REQUEST;
+	
+	/* }}} */
+	/************************************************************/
+	/* CHIP A ownership                                  {{{ OK */
+	/************************************************************/
+	
+	/*
+	Pravidla:
+	00 -> nikdo
+	10 -> CPU
+	01 -> MHF
+	11 -> zakazany stav
+	
+	Pokud chteji oba:
+	- vlastnik zustava
+	- pokud nebyl zadny -> CPU
+	*/
+	
+	CHIPA_C = !Reset & CPU_REQ_A & ( CHIPA_C # !CHIPA_A );
+	CHIPA_A = !Reset & MHF_REQ_A & ( CHIPA_A # !CHIPA_C );
+	
+	/* }}} */
+	/************************************************************/
+	/* CHIP B ownership                                  {{{ OK */
+	/************************************************************/
+	
+	CHIPB_C = !Reset & CPU_REQ_B & ( CHIPB_C # !CHIPB_A );
+	CHIPB_A = !Reset & MHF_REQ_B & ( CHIPB_A # !CHIPB_C );
+	
+	/* }}} */
+	/************************************************************/
+	/* Dirty flags                                       {{{ OK */
+	/************************************************************/
+	
+	CHIPA_Dc = !Reset & (
+		  CHIPA_A
+		# CHIPA_Dc & !CHIPA_C
+		);
+	
+	CHIPA_Dm = !Reset & (
+		  CHIPA_C
+		# CHIPA_Dm & !CHIPA_A
+		);
+	
+	CHIPB_Dc = !Reset & (
+		  CHIPB_A
+		# CHIPB_Dc & !CHIPB_C
+		);
+	
+	CHIPB_Dm = !Reset & ( 
+		  CHIPB_C
+		# CHIPB_Dm & !CHIPB_A
+		);
+	
+	/* }}} */
+	/************************************************************/
+	/*                                                          */
+	/************************************************************/
 	
 	
 	/************************************************************/
-	/* ATF Registers Write                                  {{{ */
+	/* ATF Registers                                        {{{ */
+	/************************************************************/
+	[D7..D0].OE = REG_READ;
+	[D7..D0] = 'b'0;
 	/************************************************************/
 	/************************************************************/
-	/* REG6 ROM_STATUS  MBxxSSSS                            {{{ */
+	/* REG0 EMS1 PAGE AAxBBBBB                              {{{ */
+	/************************************************************/
+	/*
+	D7 D6 = AA
+	D5 = reserved
+	D4..D0 = BBBBB
+	*/
+	
+	EMS1_A1.D = D7;
+	EMS1_A0.D = D6;
+	
+	EMS1_B4.D = D4;
+	EMS1_B3.D = D3;
+	EMS1_B2.D = D2;
+	EMS1_B1.D = D1;
+	EMS1_B0.D = D0;
+	/*
+	AA:
+	
+	00 System RAM
+	01 MHF_A
+	10 MHF_B
+	11 ROM
+	*/
+	
+	
+	/* spolecne rizeni 0.25 tact */
+	
+	EMS1_A1.CK = !Q;
+	EMS1_A0.CK = !Q;
+	
+	EMS1_B4.CK = !Q;
+	EMS1_B3.CK = !Q;
+	EMS1_B2.CK = !Q;
+	EMS1_B1.CK = !Q;
+	EMS1_B0.CK = !Q;
+	
+	EMS1_A1.AR = Reset;
+	EMS1_A0.AR = Reset;
+	
+	/* EMS1_B4.AR = Reset;	 default $8000 */
+	/* B3..B0 map to A15..A12, so default $8000 needs B3=1 (.AP), B2..B0=0 (.AR) */
+	EMS1_B4.AR = Reset;
+	EMS1_B3.AP = Reset;
+	EMS1_B2.AR = Reset;
+	EMS1_B1.AR = Reset;
+	EMS1_B0.AR = Reset;
+	
+	EMS1_A1.CE = REG0 & REG_WRITE;
+	EMS1_A0.CE = REG0 & REG_WRITE;
+	
+	EMS1_B4.CE = REG0 & REG_WRITE;
+	EMS1_B3.CE = REG0 & REG_WRITE;
+	EMS1_B2.CE = REG0 & REG_WRITE;
+	EMS1_B1.CE = REG0 & REG_WRITE;
+	EMS1_B0.CE = REG0 & REG_WRITE;
+	
+	APPEND D7 = REG0 & EMS1_A1;
+	APPEND D6 = REG0 & EMS1_A0;
+	
+	APPEND D4 = REG0 & EMS1_B4;
+	APPEND D3 = REG0 & EMS1_B3;
+	APPEND D2 = REG0 & EMS1_B2;
+	APPEND D1 = REG0 & EMS1_B1;
+	APPEND D0 = REG0 & EMS1_B0;
+	/* }}} */
+	/************************************************************/
+	/* REG1 EMS1 STATUS xxxx xWxC  (RO)                     {{{ */
+	/************************************************************/
+	
+	APPEND D2 = REG1 & EMS1_W;
+	
+	APPEND D0 = REG1 & EMS1_C;
+	/* }}} */
+	/************************************************************/
+	/* REG2 EMS2 PAGE AAxBBBBB                              {{{ */
+	/************************************************************/
+	/*
+	D7 D6 = AA
+	D5 = reserved
+	D4..D0 = BBBBB
+	*/
+	
+	EMS2_A1.D = D7;
+	EMS2_A0.D = D6;
+	
+	EMS2_B4.D = D4;
+	EMS2_B3.D = D3;
+	EMS2_B2.D = D2;
+	EMS2_B1.D = D1;
+	EMS2_B0.D = D0;
+	/*
+	AA:
+	
+	00 System RAM
+	01 MHF_A
+	10 MHF_B
+	11 ROM
+	*/
+	
+	
+	/* spolecne rizeni 0.25 tact */
+	
+	EMS2_A1.CK = !Q;
+	EMS2_A0.CK = !Q;
+	
+	EMS2_B4.CK = !Q;
+	EMS2_B3.CK = !Q;
+	EMS2_B2.CK = !Q;
+	EMS2_B1.CK = !Q;
+	EMS2_B0.CK = !Q;
+	
+	EMS2_A1.AR = Reset;
+	EMS2_A0.AR = Reset;
+	
+	/* EMS2_B4.AR = Reset;	 default $8000 */
+	/* B3..B0 map to A15..A12, so default $8000 needs B3=1 (.AP), B2..B0=0 (.AR) */
+	EMS2_B4.AR = Reset;
+	EMS2_B3.AP = Reset;
+	EMS2_B2.AR = Reset;
+	EMS2_B1.AR = Reset;
+	EMS2_B0.AR = Reset;
+	
+	EMS2_A1.CE = REG2 & REG_WRITE;
+	EMS2_A0.CE = REG2 & REG_WRITE;
+	
+	EMS2_B4.CE = REG2 & REG_WRITE;
+	EMS2_B3.CE = REG2 & REG_WRITE;
+	EMS2_B2.CE = REG2 & REG_WRITE;
+	EMS2_B1.CE = REG2 & REG_WRITE;
+	EMS2_B0.CE = REG2 & REG_WRITE;
+	
+	APPEND D7 = REG2 & EMS2_A1;
+	APPEND D6 = REG2 & EMS2_A0;
+	
+	APPEND D4 = REG2 & EMS2_B4;
+	APPEND D3 = REG2 & EMS2_B3;
+	APPEND D2 = REG2 & EMS2_B2;
+	APPEND D1 = REG2 & EMS2_B1;
+	APPEND D0 = REG2 & EMS2_B0;
+	/* }}} */
+	/************************************************************/
+	/* REG3 EMS2 STATUS xxxx xWxC  (RO)                     {{{ */
+	/************************************************************/
+	
+	APPEND D2 = REG3 & EMS2_W;
+	
+	APPEND D0 = REG3 & EMS2_C;
+	/* }}} */
+	/************************************************************/
+	/* REG4 CHIPA STATUS xxxx DWAC  (RO)                    {{{ */
+	/************************************************************/
+	
+	APPEND D3 = REG4 & CHIPA_Dc;
+	APPEND D2 = REG4 & CHIPA_W;
+	APPEND D1 = REG4 & CHIPA_A;
+	APPEND D0 = REG4 & CHIPA_C;
+	/* }}} */
+	/************************************************************/
+	/* REG5 CHIPB STATUS xxxx DWAC  (RO)                    {{{ */
+	/************************************************************/
+	
+	APPEND D3 = REG5 & CHIPB_Dc;
+	APPEND D2 = REG5 & CHIPB_W;
+	APPEND D1 = REG5 & CHIPB_A;
+	APPEND D0 = REG5 & CHIPB_C;
+	/* }}} */
+	/************************************************************/
+	/* REG6 ROM_STATUS  MBxxxSSS                            {{{ */
 	/************************************************************/
 	ROM_SIZE.d=[D2..D0];
 	
 	ROM_SIZE.CK=!Q;
 	ROM_SIZE.AR=Reset;
-	ROM_SIZE.CE = REG6 & !Rw & !BA;
+	ROM_SIZE.CE = REG6 & REG_WRITE;
 	
 	/* RomMapped se pri resetu nastavi na BootSrc,
 		pri zapisu zmeni hodnotu na zapsanou */
@@ -452,7 +799,14 @@
 	RomMapped.CK = !Q;
 	RomMapped.AR = Reset & !BootSrc;
 	RomMapped.AP = Reset & BootSrc;
-	RomMapped.CE = REG6 & !Rw & !BA;
+	RomMapped.CE = REG6 & REG_WRITE;
+	
+	APPEND D7 = REG6 & RomMapped;
+	APPEND D6 = REG6 & BootSrc;
+	
+	APPEND D2 = REG6 & ROM_SIZE2;
+	APPEND D1 = REG6 & ROM_SIZE1;
+	APPEND D0 = REG6 & ROM_SIZE0;
 	/* }}} */
 	/* }}} */
 
