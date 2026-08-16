@@ -370,6 +370,8 @@
 /*	NODE addr_in_REGS; /* */
 /*	MIN addr_in_REGS = 1; /* 0 = no reduction */ 
 	PROPERTY ATMEL {Soft_Buffer=addr_in_REGS};
+	PINNODE  = addr_in_DEVS; 
+	PROPERTY ATMEL {Soft_Buffer=addr_in_DEVS};
 	
 	/* EMS1 mapping */
 	
@@ -418,6 +420,7 @@
 	
 	FIELD CA = [CA15..CA0];
 	FIELD REG_SEL = [CA2..0];
+	FIELD DEV_SEL = [CA7..5];
 	FIELD ROM_SIZE = [ROM_SIZE2..0];
 	
 	/* 
@@ -444,7 +447,13 @@
 	/* addr_in_XXX                                          {{{ */
 	/************************************************************/
 	
-	addr_in_DEVICE_AREA = CA:[A020..A0FF];
+	addr_in_NATIVE_RAM_LO = CA:[0000..7FFF];
+	/* addr_in_DEVICE_AREA = CA:[A020..A0FF]; */
+	addr_in_EMS1_WINDOW =   CA:[8000..8FFF];
+	addr_in_EMS2_WINDOW =   CA:[9000..9FFF];
+	addr_in_REGS =          CA:[A000..A01F];
+	addr_in_DEVS =          CA:[A000..A0FF];
+	addr_in_MAYBE_RAM_HI =  CA:[A100..FFFF];
 	
 	addr_in_ROM_24K = CA:[A100..FFFF];
 	addr_in_ROM_16K = CA:[C000..FFFF];
@@ -462,8 +471,6 @@
 			/* ROM_SIZE 4+ == zadna ROM */
 		)
 		;
-	
-	addr_in_REGS = CA:[A000..A01F];
 	
 	REG0 =  addr_in_REGS & REG_SEL:0; /* EMS1_PAGE */
 	REG1 =  addr_in_REGS & REG_SEL:1; /* EMS1_STATUS */
@@ -490,7 +497,7 @@
 	CHIPB_W = B_SHARE_REQUEST;
 	/* }}} */
 	/************************************************************/
-	/* Decode current mapping                                   */
+	/* Decode current mapping                               {{{ */
 	/************************************************************/
 	
 	EMS1_is_SYS  = !EMS1_A1 & !EMS1_A0;
@@ -810,3 +817,283 @@
 	/* }}} */
 	/* }}} */
 
+	
+	/************************************************************/
+	/* READ / WRITE                                         {{{ */
+	/************************************************************/
+	
+	Read  = E &  Rw;
+	Write = E & !Rw;
+	
+	/* }}} */
+	
+	/************************************************************/
+	/* DEVICE BLOCK                                         {{{ */
+	/************************************************************/
+	
+	Dev_Sel_1 = addr_in_DEVS & DEV_SEL:1 & !in_HALT_mode;
+	Dev_Sel_2 = addr_in_DEVS & DEV_SEL:2 & !in_HALT_mode;
+	Dev_Sel_3 = addr_in_DEVS & DEV_SEL:3 & !in_HALT_mode;
+	Dev_Sel_4 = addr_in_DEVS & DEV_SEL:4 & !in_HALT_mode;
+	Dev_Sel_5 = addr_in_DEVS & DEV_SEL:5 & !in_HALT_mode;
+	Dev_Sel_6 = addr_in_DEVS & DEV_SEL:6 & !in_HALT_mode;
+	Dev_Sel_7 = addr_in_DEVS & DEV_SEL:7 & !in_HALT_mode;
+	
+	/* }}} */
+	/************************************************************/
+	/* BUS OWNERSHIP CHEAT SHEET / Rw                       {{{ */
+	/************************************************************/
+	/*
+	 * NORMAL MODE (BA=0, CPU owns bus):
+	 *   Addr: CPU -> SysRAM/ROM/MHF_x (via GA12..16)
+	 *   Data: CPU <-> SysRAM/ROM/MHF_Gates
+	 *   Rw:   CPU
+	 * 
+	 * HALT MODE (BA=1, MHF owns bus):
+	 *   Addr: MHF -> SysRAM (via 74HC245 + GA12..15, A_S_16/B_S_16 -> GA16)
+	 *   Data: MHF <-> SysRAM (via 74HC245)
+	 *   Rw:   GLUE generates Rw based on MHF_A_READ / MHF_B_READ
+	 */
+	
+	/* Rw je ovladan CPU, vyjma HALT rezimu, kdy to prevezme ATF2 a ridi se dle MHF_x */
+	Rw =	  !A_READ & A_HALT
+		# !B_READ & B_HALT & !A_HALT; /* directed by A primary, or B secondary */
+	Rw.OE =	  in_HALT_mode; /* driven only in HALT mode */
+	/* }}} */
+	/************************************************************/
+	/* SYSTEM RAM / ROM SELECT                              {{{ */
+	/************************************************************/
+	
+	
+	RAM =	  in_HALT_mode                              /* v HALT rezimu je RAM vybrana permanentne */
+		# addr_in_NATIVE_RAM_LO                     /* normal RAM */
+		# addr_in_EMS1_WINDOW & EMS1_is_SYS         /* Sys RAM selected in EMS1 */
+		# addr_in_EMS2_WINDOW & EMS2_is_SYS         /* Sys RAM selected in EMS2 */
+		# addr_in_MAYBE_RAM_HI & ! addr_in_ROM_AREA /* Hi RAM under ROM */
+		;
+	RAM.OE =   ! (BA & in_HALT_mode); /* somebody else is doing DMA or what */
+	
+	/* ROM je  bezne ovladan ATF1, s vyjimkou HALT rezimu (kde vybran neni) a EMS oken, kdy to prevezme ATF2 a ridi se dle MHF_x a nastaveni EMS  */
+	ROM = !in_HALT_mode & (
+		  addr_in_ROM_AREA              /* native ROM */
+		# addr_in_EMS1_WINDOW & EMS1_is_ROM
+		# addr_in_EMS2_WINDOW & EMS2_is_ROM
+		/* or FALSE in HALT/BA */
+		);
+	
+	/*  IO connected to SharedRAM.A16 and MHF MCU */
+			/* pokud CPU vlastni shared RAM, je to Output a ovlada jeji A16 */
+			/* pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */
+			/* pokud CPU NEvlastni shared RAM, MHF si jeji A16 ridi sam */
+	A_S_16 = 	  addr_in_EMS1_WINDOW & EMS1_is_MHFA & CHIPA_C & EMS1_B4
+			# addr_in_EMS2_WINDOW & EMS2_is_MHFA & CHIPA_C & EMS2_B4
+			;
+	A_S_16.OE = !in_HALT_mode & (
+			  addr_in_EMS1_WINDOW & EMS1_is_MHFA & CHIPA_C 
+			# addr_in_EMS2_WINDOW & EMS2_is_MHFA & CHIPA_C 
+			);
+	
+	/*  IO connected to SharedRAM.A16 and MHF MCU */
+			/* pokud CPU vlastni shared RAM, je to Output a ovlada jeji A16 */
+			/* pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */
+			/* pokud CPU NEvlastni shared RAM, MHF si jeji A16 ridi sam */
+	B_S_16 = 	  addr_in_EMS1_WINDOW & EMS1_is_MHFB & CHIPB_C & EMS1_B4
+			# addr_in_EMS2_WINDOW & EMS2_is_MHFB & CHIPB_C & EMS2_B4
+			;
+	B_S_16.OE = !in_HALT_mode & (
+			  addr_in_EMS1_WINDOW & EMS1_is_MHFB & CHIPB_C 
+			# addr_in_EMS2_WINDOW & EMS2_is_MHFB & CHIPB_C 
+			);
+	
+	/* }}} */
+	/************************************************************/
+	/* SYSTEM RAM / ROM SELECT                              {{{ */
+	/************************************************************/
+	/*
+	/* O Dirty+Wanted+BA: BA?1:if(SHARE_GRANTED){WANTS:1=CPU wants SharedRAM}else{DIRTY:1=CPU already got SharedRAM} */
+	/* in HALT state 1= writing SystemRAM is possible
+	 * if SHARE_GRANTED 1= CPU already wants SharedRAM (=please release it soon)
+	 * if !SHARE_GRANTED 1 = CPU already got SharedRAM (=and maybe modified it)
+	 * 0 = nothing special
+	 */
+	/* AI NOTE: Asymmetrical HALT priority!
+	 * During boot (HALT mode), MHF_A has strict priority over MHF_B.
+	 * A_SHARE_DIRTY signals BA immediately. 
+	 * B_SHARE_DIRTY only signals BA if A_HALT is released (!A_HALT).
+	 */
+	A_SHARE_DIRTY =	  in_HALT_mode
+			# A_SHARE_GRANTED & ( EMS1_is_MHFA # EMS2_is_MHFA )
+			# !A_SHARE_GRANTED & CHIPA_Dm
+			;
+	B_SHARE_DIRTY =	  in_HALT_mode & !A_HALT /* write if MHF_A released it alredy */
+			# B_SHARE_GRANTED & ( EMS1_is_MHFB # EMS2_is_MHFB )
+			# !B_SHARE_GRANTED & CHIPB_Dm
+			;
+	A_SHARE_GRANTED =	A_SHARE_REQUEST & CHIPA_A;
+	B_SHARE_GRANTED =	B_SHARE_REQUEST & CHIPB_A;
+	
+	
+	/* }}} */
+	/************************************************************/
+	/************************************************************/
+	/************************************************************/
+	/************************************************************/
+
+	/************************************************************/
+	/* EMS + GA <-> CA BLOK                              {{{ OK */
+	/************************************************************/
+	
+	ACTIVE_PAGE_A1 =
+	      (addr_in_EMS1_WINDOW & EMS1_A1)
+	   #  (addr_in_EMS2_WINDOW & EMS2_A1);
+	
+	ACTIVE_PAGE_A0 =
+	      (addr_in_EMS1_WINDOW & EMS1_A0)
+	   #  (addr_in_EMS2_WINDOW & EMS2_A0);
+	
+	ACTIVE_B4 =
+	      (addr_in_EMS1_WINDOW & EMS1_B4)
+	   #  (addr_in_EMS2_WINDOW & EMS2_B4);
+	
+	ACTIVE_B3 =
+	      (addr_in_EMS1_WINDOW & EMS1_B3)
+	   #  (addr_in_EMS2_WINDOW & EMS2_B3);
+	
+	ACTIVE_B2 =
+	      (addr_in_EMS1_WINDOW & EMS1_B2)
+	   #  (addr_in_EMS2_WINDOW & EMS2_B2);
+	
+	ACTIVE_B1 =
+	      (addr_in_EMS1_WINDOW & EMS1_B1)
+	   #  (addr_in_EMS2_WINDOW & EMS2_B1);
+	
+	ACTIVE_B0 =
+	      (addr_in_EMS1_WINDOW & EMS1_B0)
+	   #  (addr_in_EMS2_WINDOW & EMS2_B0);
+	
+	
+	/* Vyhodnoceni typu stranky */
+	/************************************************************/
+	/* ACTIVE SOURCE                                            */
+	/************************************************************/
+	/* ACTIVE_SYS  = !ACTIVE_PAGE_A1 & !ACTIVE_PAGE_A0; */
+	ACTIVE_MHFA = !ACTIVE_PAGE_A1 &  ACTIVE_PAGE_A0;
+	ACTIVE_MHFB =  ACTIVE_PAGE_A1 & !ACTIVE_PAGE_A0;
+	/* ACTIVE_ROM  =  ACTIVE_PAGE_A1 &  ACTIVE_PAGE_A0; */
+	
+	/************************************************************/
+	/* EMS ACCESS                                               */
+	/************************************************************/
+	
+	/* EMS_ACCESS is UNUSED */
+	/* EMS_ACCESS = /* jestli CPU ma pristup do EMS nebo neni spravne namapovana ... nevim, jestli to chci TODO nechci, ale viz -> */
+	/* uvaha, kdyz CPU chce cist a nema pravo, tak dostane cokoli a nemusim se starat co. Kdyz chce psat a nema pravo, tak nezapise nikam. */
+	/* uvaha2, kdyz CPU chce cist/psat do EMS, tak je cilovy chip vybran, ale pokud je to karta a nema pravo, tak jsou GATES zavrene, a neni obslouzeno, viz o kus nize */
+	/*	  ACTIVE_SYS
+		# ACTIVE_ROM
+		# (ACTIVE_MHFA & CHIPA_C)
+		# (ACTIVE_MHFB & CHIPB_C);
+	*/
+	/************************************************************/
+	/* EMS ADDRESS                                              */
+	/************************************************************/
+	EMS_WINDOW = addr_in_EMS1_WINDOW # addr_in_EMS2_WINDOW;
+	
+	GA16 = 
+		  !in_HALT_mode &  ACTIVE_B4
+		#  in_HALT_mode &  A_HALT & A_S_16 
+		#  in_HALT_mode & !A_HALT & B_HALT & B_S_16 ; /* mimo EMS/boot nelze sahnout nad 64kB, a tedy GA16=0  */
+
+	GA15 = EMS_WINDOW & ACTIVE_B3 # !EMS_WINDOW & CA15;
+	GA14 = EMS_WINDOW & ACTIVE_B2 # !EMS_WINDOW & CA14;
+	GA13 = EMS_WINDOW & ACTIVE_B1 # !EMS_WINDOW & CA13;
+	GA12 = EMS_WINDOW & ACTIVE_B0 # !EMS_WINDOW & CA12;
+	
+/*	GA16.OE = !in_HALT_mode; */
+	GA15.OE = !in_HALT_mode;
+	GA14.OE = !in_HALT_mode;
+	GA13.OE = !in_HALT_mode;
+	GA12.OE = !in_HALT_mode;
+	
+	/* }}} */
+	/************************************************************/
+	/* SHARED CHIP SELECT                                {{{ OK */
+	/************************************************************/
+	
+	A_S_SELECT =
+		  CHIPA_C & EMS_WINDOW & ACTIVE_MHFA /* for CPU */
+		# CHIPA_A & A_SHARE_SELECT           /* for MHF */
+		;
+	
+	B_S_SELECT =
+		  CHIPB_C & EMS_WINDOW & ACTIVE_MHFB /* for CPU */
+		# CHIPB_A & B_SHARE_SELECT           /* for MHF */
+		;
+	
+	/* }}} */
+	/************************************************************/
+	/* SHARED READ                                       {{{ OK */
+	/************************************************************/
+	
+	A_S_READ =
+		  CHIPA_C & EMS_WINDOW & ACTIVE_MHFA & E & Rw /* for CPU */
+		# CHIPA_A & A_READ                            /* for MHF */
+		;
+	
+	B_S_READ =
+		  CHIPB_C & EMS_WINDOW & ACTIVE_MHFB & E & Rw /* for CPU */
+		# CHIPB_A & B_READ                            /* for MHF */
+		;
+	
+	/* }}} */
+	/************************************************************/
+	/* SHARED WRITE                                      {{{ OK */
+	/************************************************************/
+	
+	A_S_WRITE =
+		  CHIPA_C & EMS_WINDOW & ACTIVE_MHFA & E & !Rw /* for CPU */
+		# CHIPA_A & !A_READ                            /* for MHF */
+		;
+	
+	B_S_WRITE =
+		  CHIPB_C & EMS_WINDOW & ACTIVE_MHFB & E & !Rw /* for CPU */
+		# CHIPB_A & !B_READ                            /* for MHF */
+		;
+	
+	/* }}} */
+	/************************************************************/
+	/* GATE ADDRESS DIRECTION                                   */
+	/************************************************************/
+	
+	A_G_A_DIR = in_HALT_mode; /* V HALT rezimu MHF-> CPU */
+	B_G_A_DIR = in_HALT_mode;
+	
+	/* }}} */
+	/************************************************************/
+	/* DATA DIRECTION                                           */
+	/************************************************************/
+	
+	A_G_D_DIR =
+		  !in_HALT_mode & CHIPA_C & Rw                   /* mimo EMS je nezajimave protoze gate je zavrena */
+		#  in_HALT_mode & A_HALT  & !A_READ              /* in in_HALT_mode A_READ means MHF want read FROM CPU's SysRAM, so Data goes CPU side -> MHF side */
+		;
+	
+	B_G_D_DIR =
+		  !in_HALT_mode & CHIPB_C & Rw                   /* mimo EMS je nezajimave protoze gate je zavrena */
+		#  in_HALT_mode & !A_HALT & B_HALT & !B_READ     /* in in_HALT_mode B_READ means MHF want read FROM CPU's SysRAM, so Data goes CPU side -> MHF side */
+		;
+	
+	/* }}} */
+	/************************************************************/
+	/* ENABLE GATES                                             */
+	/************************************************************/
+	
+	A_G_ENABLE = CHIPA_C & EMS_WINDOW & ACTIVE_MHFA & E
+		# in_HALT_mode & A_HALT;
+	B_G_ENABLE = CHIPB_C & EMS_WINDOW & ACTIVE_MHFB & E
+		# in_HALT_mode & !A_HALT & B_HALT;
+	
+	/* }}} */
+	
+	
+	
