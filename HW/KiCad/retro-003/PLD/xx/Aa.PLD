@@ -2,31 +2,18 @@
 	*/
 
 	/* {{{                  PREFACE: 
-	
-	 am building GLUE logic for 6039 retrocomputer (called CPU), to connect MHF cards into EMS windows (4kB each, at $8000 and $9000). 
-	
+	I am building GLUE logic for 6039 retrocomputer (called CPU), to connect MHF cards into EMS windows (4kB each, at $8000 and $9000). 
 	I am using wincupl and atf1508. Here is code for address decoder and EMS manager. Comments are part in English and part in Czech language.
-	
 	On the CPU PCB is SystemRAM(SysRAM 128kB) and EEPROM(ROM up to 32kB), on each MHF_A and MHF_B are 74HC245 gates for Address[0..15] and Data[0..7] busses that guards SharedRam (A/B 128kB).
-	
 	On boot HW keeps CPU in HALT mode, until the MHF cards start manage it. They may fill SysRAM with system/data at start (while MHF manage system bus, BA active)
-	
 	and then let CPU boot (and manage system bus, BA inactive ) from the filled values, or from ROM, depending on external switch BootSrc.
-	
 	CPU can map 4k part of (SysRAM,ROM,SharedRAM_A,SharedRAM_B) into EMS1 and/or EMS2 window.
-	
 	SharedRAM serve for sending blocks of data between CPU (4 Mhz) and MHF cards (driven each by ATmega2560 at 16 MHz and different style of RAM communication).
-	
 	HALT is mainly driven by external pullup for possible extending.
-	
-	DIRTY is really bad name, should be like "the other side cooperated/cooperate just now". Who writes SharedRAM, set it 0 and when the other read/write it, it is set 1 as sign,
-	
+	DIRTY is really bad name, should be like "the other side cooperated/cooperate just now". Who writes SharedRAM, set it 0 and when the other read/write/acquire it, it is set 1 as sign,
 	that the data was used and can be rewritten next turn. (Typically command like PRINT "XYZ" or info like KEYS_ENTERED="abcd" do not need reply.)
-	
 	Default ROM size at boot is A100..FFFF, ROM/system may it change and/or map ROM later at will.
-	
 	CHIPx_C and CHIPx_A ensure, that who got ownership, keeps it, until explicitly release, the other have to wait. (Be it CPU or MHF_x.)
-	
 	ATF1504 was too small, so ATF1508 with 80 pins was use as single GLUE chip instead
 	
 	}}} */
@@ -343,9 +330,9 @@
 	/* registers D are read in 0.25 tact !Q (CPU cycle)         */
 	/* EMSx_Ax      is set  in 0.25 tact !Q (from D[])          */
 	/* EMSx_is_MHFx is set  in 0.25 tact !Q (logic of EMSx_x)   */
-	/* CHIPx_C      is set  in 0.5  tact !E (dep: EMSx_is_MHFx) */
-	/* CHIPx_A      is set  in 0.75 tact  Q (dep: CHIPx_C)      */
-	/* CHIPx_Dx     is set  in 0.0  tact  E (dep: CHIPx_A)      */
+	/* CHIPx_C      is set  async           (dep: EMSx_is_MHFx) */
+	/* CHIPx_A      is set  async           (dep: CHIPx_C)      */
+	/* CHIPx_Dx     is set  async           (dep: CHIPx_A)      */
 	
 	/************************************************************/
 	/* HD6309 TIMING & STATE MACHINE PHASES                     */
@@ -353,11 +340,12 @@
 	/*
 	  HD6309 Q falls exactly in the middle of E (0.25 tact).
 	  
-	  We use 4 phases to avoid race conditions:
+	  We use 1 phase to avoid race conditions:
 	  Phase 0.25 (E=1, !Q raising): Read CPU Data bus, latch into registers (REG0..6)
-	  Phase 0.50 (Q=0, !E raising): Evaluate CPU requests, latch CHIPx_C (CPU ownership)
-	  Phase 0.75 (E=0,  Q raising): Evaluate MHF requests, latch CHIPx_A (MHF ownership)
-	  Phase 0.00 (Q=1,  E raising): Latch Dirty flags (Dc/Dm), drive register data to bus
+	  the rest of this comment is no longer true, it is evaluted async
+	  Phase 0.50 (Q=0, !E raising): --- Evaluate CPU requests, latch CHIPx_C (CPU ownership)
+	  Phase 0.75 (E=0,  Q raising): --- Evaluate MHF requests, latch CHIPx_A (MHF ownership)
+	  Phase 0.00 (Q=1,  E raising): --- Latch Dirty flags (Dc/Dm), drive register data to bus
 	*/
 	/* }}} */
 
@@ -413,13 +401,19 @@
 	NODE CHIPB_C;
 	NODE CHIPB_Dc;
 	NODE CHIPB_Dm;
+	/************************************************************/
+	/* TIMER_EN enable FIRQ timed ~0.01s                        */
+	/************************************************************/
+	NODE TIMER_EN;
+	NODE CNT11..CNT0;
+	NODE CNT_R8..11;
 	/* }}} */
 	/************************************************************/
 	/* FIELDs                                               {{{ */
 	/************************************************************/
 	
 	FIELD CA = [CA15..CA0];
-	FIELD REG_SEL = [CA2..0];
+	FIELD REG_SEL = [CA3..0];
 	FIELD DEV_SEL = [CA7..5];
 	FIELD ROM_SIZE = [ROM_SIZE2..0];
 	
@@ -451,8 +445,8 @@
 	/* addr_in_DEVICE_AREA = CA:[A020..A0FF]; */
 	addr_in_EMS1_WINDOW =   CA:[8000..8FFF];
 	addr_in_EMS2_WINDOW =   CA:[9000..9FFF];
-	addr_in_REGS =          CA:[A000..A01F];
-	addr_in_DEVS =          CA:[A000..A0FF];
+	addr_in_REGS =          CA:[A000..A01F]; /* Registers take address range of non existent Device_0 and are managed specially. Mirroring is OK. Garbage In = Garbage Out */
+	addr_in_DEVS =          CA:[A000..A0FF]; /* it is easier to cover also registers in place of Device_0 */
 	addr_in_MAYBE_RAM_HI =  CA:[A100..FFFF];
 	
 	addr_in_ROM_24K = CA:[A100..FFFF];
@@ -479,6 +473,8 @@
 	REG4 =  addr_in_REGS & REG_SEL:4; /* CHIPA_STATUS */
 	REG5 =  addr_in_REGS & REG_SEL:5; /* CHIPB_STATUS */
 	REG6 =  addr_in_REGS & REG_SEL:6; /* ROM_STATUS + ROM_SIZE MBxxSSSS */
+	REG7 =  addr_in_REGS & REG_SEL:7; /* TIMER LLLLLLLL (RO) */
+	REG8 =  addr_in_REGS & REG_SEL:8; /* TIMER TxxxxHHH */
 	
 	REG_ACCESS = addr_in_REGS & E & !in_HALT_mode;
 	REG_READ = 
@@ -792,7 +788,7 @@
 	/************************************************************/
 	/* REG6 ROM_STATUS  MBxxxSSS                            {{{ */
 	/************************************************************/
-	ROM_SIZE.d=[D2..D0];
+	ROM_SIZE.D=[D2..D0];
 	
 	ROM_SIZE.CK=!Q;
 	ROM_SIZE.AR=Reset;
@@ -814,6 +810,42 @@
 	APPEND D2 = REG6 & ROM_SIZE2;
 	APPEND D1 = REG6 & ROM_SIZE1;
 	APPEND D0 = REG6 & ROM_SIZE0;
+	/* }}} */
+	/************************************************************/
+	/* REG7 TIMER LLLLLLLL (Read first) (RO)                {{{ */
+	/************************************************************/
+	APPEND D0 = REG7 & CNT0;
+	APPEND D1 = REG7 & CNT1;
+	APPEND D2 = REG7 & CNT2;
+	APPEND D3 = REG7 & CNT3;
+	APPEND D4 = REG7 & CNT4;
+	APPEND D5 = REG7 & CNT5;
+	APPEND D6 = REG7 & CNT6;
+	APPEND D7 = REG7 & CNT7;
+
+	CNT_R8.D  = CNT8;
+	CNT_R9.D  = CNT9;
+	CNT_R10.D = CNT10;
+	CNT_R11.D = CNT11;
+	[CNT_R8..11].CK = !Q;
+	[CNT_R8..11].CE = REG7 & REG_READ;
+	[CNT_R8..11].AR = Reset;
+	/* }}} */
+	/************************************************************/
+	/* REG8 TIMER TxxxHHHH (Read next latched values)       {{{ */
+	/************************************************************/
+	TIMER_EN.D=D7;
+	
+	TIMER_EN.CK=!Q;
+	TIMER_EN.AR=Reset;
+	TIMER_EN.CE = REG8 & REG_WRITE;
+	
+	APPEND D0 = REG8 & CNT_R8;
+	APPEND D1 = REG8 & CNT_R9;
+	APPEND D2 = REG8 & CNT_R10;
+	APPEND D3 = REG8 & CNT_R11;
+
+	APPEND D7 = REG8 & TIMER_EN;
 	/* }}} */
 	/* }}} */
 
@@ -871,7 +903,7 @@
 		# addr_in_EMS2_WINDOW & EMS2_is_SYS         /* Sys RAM selected in EMS2 */
 		# addr_in_MAYBE_RAM_HI & ! addr_in_ROM_AREA /* Hi RAM under ROM */
 		;
-	RAM.OE =   ! (BA & in_HALT_mode); /* somebody else is doing DMA or what */
+	RAM.OE =   ! (BA & !in_HALT_mode); /* somebody else is doing DMA or what */
 	
 	/* ROM je  bezne ovladan ATF1, s vyjimkou HALT rezimu (kde vybran neni) a EMS oken, kdy to prevezme ATF2 a ridi se dle MHF_x a nastaveni EMS  */
 	ROM = !in_HALT_mode & (
@@ -1088,12 +1120,35 @@
 	/* ENABLE GATES                                             */
 	/************************************************************/
 	
-	A_G_ENABLE = CHIPA_C & EMS_WINDOW & ACTIVE_MHFA & E
+	A_G_ENABLE = !in_HALT_mode & CHIPA_C & EMS_WINDOW & ACTIVE_MHFA & E 
 		# in_HALT_mode & A_HALT;
-	B_G_ENABLE = CHIPB_C & EMS_WINDOW & ACTIVE_MHFB & E
+	B_G_ENABLE = !in_HALT_mode & CHIPB_C & EMS_WINDOW & ACTIVE_MHFB & E
 		# in_HALT_mode & !A_HALT & B_HALT;
 	
 	/* }}} */
 	
+
+	/************************************************************/
+	/* JIFFY CLOCK & FIRQ STRETCH                           {{{ */
+	/************************************************************/
+	/* Vsechny bity sdileji globalni hodiny E - zadne zpozdeni */
+	[CNT11..0].CK = E;
+	[CNT11..0].AR = Reset;
+	/* Toggle logika - kazdy bit se preklopi, POKUD vsechny nizsi bity jsou 1 */
+	CNT0.T  = 'b'1;
+	CNT1.T  = CNT0;
+
+	CNT2.T  = CNT1 & CNT0;
+	CNT3.T  = CNT2 & CNT1 & CNT0;
+	CNT4.T  = CNT3 & CNT2 & CNT1 & CNT0;
+	CNT5.T  = CNT4 & CNT3 & CNT2 & CNT1 & CNT0;
+	CNT6.T  = CNT5 & CNT4 & CNT3 & CNT2 & CNT1 & CNT0;
+	CNT7.T  = CNT6 & CNT5 & CNT4 & CNT3 & CNT2 & CNT1 & CNT0;
+	CNT8.T  = CNT7 & CNT6 & CNT5 & CNT4 & CNT3 & CNT2 & CNT1 & CNT0;
+	CNT9.T  = CNT8 & CNT7 & CNT6 & CNT5 & CNT4 & CNT3 & CNT2 & CNT1 & CNT0;
+	CNT10.T = CNT9 & CNT8 & CNT7 & CNT6 & CNT5 & CNT4 & CNT3 & CNT2 & CNT1 & CNT0;
+	CNT11.T = CNT10 & CNT9 & CNT8 & CNT7 & CNT6 & CNT5 & CNT4 & CNT3 & CNT2 & CNT1 & CNT0;
 	
-	
+	Dev_FIRQ = 'b'0;
+	Dev_FIRQ.OE = TIMER_EN & ([CNT11..3]:&) ;
+	/* }}} */

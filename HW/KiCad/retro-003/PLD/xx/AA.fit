@@ -1,4 +1,4 @@
-Atmel ATF1508AS Fitter Version 1.8.7.8 ,running Mon Aug 17 00:51:32 2026
+Atmel ATF1508AS Fitter Version 1.8.7.8 ,running Mon Aug 17 04:01:34 2026
 
 
 fit1508 Z:\Aa.tt2 -CUPL -dev P1508T100 -JTAG ON -preassign keep
@@ -70,6 +70,7 @@ Performing global pin assignments ...
 Final global control pins assignment (if applicable)...
 -------------------------------------------------------
 Q assigned to pin  90
+E assigned to pin  87
 Reset assigned to pin  89
 
 
@@ -81,9 +82,10 @@ E assigned to pin  87
 Reset assigned to pin  89
 BA assigned to pin  88
 Rw.OE equation needs patching.
-B_S_16.OE equation needs patching.
 A_S_16.OE equation needs patching.
-3 control equtions need patching
+B_S_16.OE equation needs patching.
+TIMER_EN.CE equation needs patching.
+4 control equtions need patching
 
 Attempt to place floating signals ...
 ------------------------------------
@@ -91,36 +93,40 @@ D7 is placed at pin 2 (MC 1)
 D6 is placed at pin 1 (MC 3)
 D5 is placed at pin 100 (MC 5)
 D4 is placed at pin 99 (MC 6)
+CNT0 is placed at feedback node 607 (MC 7)
 D3 is placed at pin 98 (MC 8)
 D2 is placed at pin 97 (MC 9)
+CNT1 is placed at feedback node 610 (MC 10)
 D1 is placed at pin 96 (MC 11)
-Rw.OE is placed at feedback node 612 (MC 12)
+Com_Ctrl_335 is placed at feedback node 612 (MC 12)
 D0 is placed at pin 94 (MC 13)
 Rw is placed at pin 93 (MC 14)
-Com_Ctrl_265 is placed at feedback node 615 (MC 15)
+Rw.OE is placed at feedback node 615 (MC 15)
 HALT is placed at pin 92 (MC 16)
 CA8 is placed at pin 14 (MC 17)
-addr_in_DEVS is placed at feedback node 618 (MC 18)
+addr_in_DEVS is placed at feedback node 617 (MC 17)
+XXL_276 is placed at feedback node 618 (MC 18)
 CA7 is placed at pin 13 (MC 19)
-Com_Ctrl_266 is placed at feedback node 619 (MC 19)
-XXL_220 is placed at feedback node 620 (MC 20)
+XXL_344 is placed at feedback node 619 (MC 19)
+CHIPA_C is placed at feedback node 620 (MC 20)
 CA6 is placed at pin 12 (MC 21)
-XXL_273 is placed at feedback node 621 (MC 21)
+A_S_16.OE is placed at feedback node 621 (MC 21)
 CA5 is placed at pin 10 (MC 22)
 B_S_16.OE is placed at feedback node 622 (MC 22)
-A_S_16.OE is placed at feedback node 623 (MC 23)
-FB_267 is placed at foldback expander node 325 (MC 25)
-XXL_275 is placed at feedback node 626 (MC 26)
+XXL_345 is placed at feedback node 623 (MC 23)
+FB_338 is placed at foldback expander node 324 (MC 24)
+FB_337 is placed at foldback expander node 325 (MC 25)
+XXL_346 is placed at feedback node 626 (MC 26)
 CA2 is placed at pin 7 (MC 27)
-XXL_274 is placed at feedback node 627 (MC 27)
-XXL_276 is placed at feedback node 628 (MC 28)
+XXL_347 is placed at feedback node 627 (MC 27)
+XXL_340 is placed at feedback node 628 (MC 28)
 CA1 is placed at pin 6 (MC 29)
-XXL_270 is placed at feedback node 629 (MC 29)
+XXL_341 is placed at feedback node 629 (MC 29)
 CA0 is placed at pin 5 (MC 30)
-XXL_269 is placed at feedback node 630 (MC 30)
-XXL_271 is placed at feedback node 631 (MC 31)
+XXL_343 is placed at feedback node 630 (MC 30)
+XXL_342 is placed at feedback node 631 (MC 31)
 TDI is placed at pin 4 (MC 32)
-XXL_272 is placed at feedback node 632 (MC 32)
+XXL_274 is placed at feedback node 632 (MC 32)
 B_S_16 is placed at pin 25 (MC 33)
 A_S_16 is placed at pin 24 (MC 35)
 CA15 is placed at pin 23 (MC 37)
@@ -130,86 +136,98 @@ CA12 is placed at pin 20 (MC 41)
 CA11 is placed at pin 19 (MC 43)
 addr_in_REGS is placed at feedback node 644 (MC 44)
 CA10 is placed at pin 17 (MC 45)
-CHIPB_C is placed at feedback node 645 (MC 45)
+CHIPB_A is placed at feedback node 645 (MC 45)
 CA9 is placed at pin 16 (MC 46)
-CHIPA_C is placed at feedback node 646 (MC 46)
-XXL_268 is placed at feedback node 647 (MC 47)
+CHIPB_C is placed at feedback node 646 (MC 46)
+XXL_348 is placed at feedback node 647 (MC 47)
 TMS is placed at pin 15 (MC 48)
-XXL_277 is placed at feedback node 648 (MC 48)
+XXL_351 is placed at feedback node 648 (MC 48)
 B_SHARE_REQUEST is placed at pin 37 (MC 49)
+CHIPA_A is placed at feedback node 650 (MC 50)
 A_SHARE_REQUEST is placed at pin 36 (MC 51)
-CHIPB_Dm is placed at feedback node 651 (MC 51)
-CHIPB_A is placed at feedback node 652 (MC 52)
+CHIPA_Dm is placed at feedback node 651 (MC 51)
+CHIPB_Dm is placed at feedback node 652 (MC 52)
 B_SHARE_GRANTED is placed at pin 35 (MC 53)
 A_SHARE_GRANTED is placed at pin 33 (MC 54)
-CHIPA_Dm is placed at feedback node 655 (MC 55)
+Com_Ctrl_334 is placed at feedback node 655 (MC 55)
 B_SHARE_DIRTY is placed at pin 32 (MC 56)
 A_SHARE_DIRTY is placed at pin 31 (MC 57)
-CHIPA_A is placed at feedback node 658 (MC 58)
+Com_Ctrl_333 is placed at feedback node 658 (MC 58)
 B_READ is placed at pin 30 (MC 59)
-Com_Ctrl_264 is placed at feedback node 659 (MC 59)
-Com_Ctrl_262 is placed at feedback node 660 (MC 60)
+Com_Ctrl_336 is placed at feedback node 659 (MC 59)
+Com_Ctrl_332 is placed at feedback node 660 (MC 60)
 A_READ is placed at pin 29 (MC 61)
-Com_Ctrl_263 is placed at feedback node 661 (MC 61)
+TIMER_EN.CE is placed at feedback node 661 (MC 61)
 B_HALT is placed at pin 28 (MC 62)
-XXL_281 is placed at feedback node 662 (MC 62)
-XXL_278 is placed at feedback node 663 (MC 63)
+XXL_352 is placed at feedback node 662 (MC 62)
+XXL_349 is placed at feedback node 663 (MC 63)
 A_HALT is placed at pin 27 (MC 64)
-XXL_280 is placed at feedback node 664 (MC 64)
+XXL_350 is placed at feedback node 664 (MC 64)
 A_S_SELECT is placed at pin 40 (MC 65)
+EMS1_A0 is placed at feedback node 666 (MC 66)
 B_S_SELECT is placed at pin 41 (MC 67)
+CHIPB_Dc is placed at feedback node 668 (MC 68)
 A_S_READ is placed at pin 42 (MC 69)
 B_S_READ is placed at pin 44 (MC 70)
+CHIPA_Dc is placed at feedback node 671 (MC 71)
 A_S_WRITE is placed at pin 45 (MC 72)
 B_S_WRITE is placed at pin 46 (MC 73)
-CHIPB_Dc is placed at feedback node 674 (MC 74)
+EMS1_B3 is placed at feedback node 674 (MC 74)
 A_G_ENABLE is placed at pin 47 (MC 75)
-CHIPA_Dc is placed at feedback node 676 (MC 76)
+EMS2_B3 is placed at feedback node 676 (MC 76)
 B_G_ENABLE is placed at pin 48 (MC 77)
 A_G_A_DIR is placed at pin 49 (MC 78)
-XXL_218 is placed at feedback node 679 (MC 79)
+XXL_339 is placed at feedback node 679 (MC 79)
 B_G_A_DIR is placed at pin 50 (MC 80)
 A_G_D_DIR is placed at pin 52 (MC 81)
+EMS2_B0 is placed at feedback node 682 (MC 82)
 B_G_D_DIR is placed at pin 53 (MC 83)
+EMS2_B1 is placed at feedback node 684 (MC 84)
 A_SHARE_SELECT is placed at pin 54 (MC 85)
+EMS2_A1 is placed at feedback node 685 (MC 85)
 B_SHARE_SELECT is placed at pin 55 (MC 86)
+EMS2_A0 is placed at feedback node 686 (MC 86)
+EMS1_B4 is placed at feedback node 687 (MC 87)
 GA16 is placed at pin 56 (MC 88)
 GA15 is placed at pin 57 (MC 89)
+EMS1_B2 is placed at feedback node 690 (MC 90)
 GA14 is placed at pin 58 (MC 91)
+EMS1_B0 is placed at feedback node 692 (MC 92)
 GA13 is placed at pin 60 (MC 93)
 GA12 is placed at pin 61 (MC 94)
+EMS1_A1 is placed at feedback node 695 (MC 95)
 TCK is placed at pin 62 (MC 96)
-XXL_279 is placed at feedback node 696 (MC 96)
+EMS1_B1 is placed at feedback node 696 (MC 96)
 Read is placed at pin 63 (MC 97)
-EMS1_B2 is placed at feedback node 698 (MC 98)
+CNT3 is placed at feedback node 698 (MC 98)
 Write is placed at pin 64 (MC 99)
-EMS1_B1 is placed at feedback node 700 (MC 100)
+ROM_SIZE2 is placed at feedback node 700 (MC 100)
 ROM is placed at pin 65 (MC 101)
 RAM is placed at pin 67 (MC 102)
-EMS1_B0 is placed at feedback node 703 (MC 103)
+TIMER_EN is placed at feedback node 703 (MC 103)
 Dev_Sel_1 is placed at pin 68 (MC 104)
 Dev_Sel_2 is placed at pin 69 (MC 105)
-EMS1_A1 is placed at feedback node 706 (MC 106)
+ROM_SIZE1 is placed at feedback node 706 (MC 106)
 Dev_Sel_3 is placed at pin 70 (MC 107)
-EMS1_A0 is placed at feedback node 708 (MC 108)
+ROM_SIZE0 is placed at feedback node 708 (MC 108)
 Dev_Sel_4 is placed at pin 71 (MC 109)
 Dev_Sel_5 is placed at pin 72 (MC 110)
-EMS2_B3 is placed at feedback node 711 (MC 111)
+EMS2_B4 is placed at feedback node 711 (MC 111)
 TDO is placed at pin 73 (MC 112)
-EMS1_B3 is placed at feedback node 712 (MC 112)
+EMS2_B2 is placed at feedback node 712 (MC 112)
 Dev_Sel_6 is placed at pin 75 (MC 113)
-EMS2_A0 is placed at feedback node 714 (MC 114)
+CNT10 is placed at feedback node 714 (MC 114)
 Dev_Sel_7 is placed at pin 76 (MC 115)
-EMS2_B0 is placed at feedback node 716 (MC 116)
-EMS1_B4 is placed at feedback node 719 (MC 119)
-EMS2_B4 is placed at feedback node 721 (MC 121)
-ROM_SIZE2 is placed at feedback node 722 (MC 122)
-EMS2_B2 is placed at feedback node 723 (MC 123)
-ROM_SIZE1 is placed at feedback node 724 (MC 124)
-EMS2_B1 is placed at feedback node 725 (MC 125)
+CNT9 is placed at feedback node 716 (MC 116)
+CNT7 is placed at feedback node 719 (MC 119)
+Dev_FIRQ is placed at pin 80 (MC 121)
+CNT8 is placed at feedback node 722 (MC 122)
+CNT2 is placed at feedback node 723 (MC 123)
+CNT6 is placed at feedback node 724 (MC 124)
+CNT11 is placed at feedback node 725 (MC 125)
 BootSrc is placed at pin 84 (MC 126)
-EMS2_A1 is placed at feedback node 726 (MC 126)
-ROM_SIZE0 is placed at feedback node 727 (MC 127)
+CNT5 is placed at feedback node 726 (MC 126)
+CNT4 is placed at feedback node 727 (MC 127)
 RomMapped is placed at pin 85 (MC 128)
 
                                                                                              
@@ -217,14 +235,14 @@ RomMapped is placed at pin 85 (MC 128)
                                                                                              
                                                                                              
                                                   R                 D                        
-                                                  o                 e                        
-                                                  m B               v                        
-                                                  M o               _                        
-                                          R       a o               S                        
-                                    H     e       p t               e                        
-                              G     A V   s     G p S   V           l                        
-                    D D D D D N D R L C   e B   N e r   C           _                        
-                    5 4 3 2 1 D 0 w T C Q t A E D d c   C           7                        
+                                                  o         D       e                        
+                                                  m B       e       v                        
+                                                  M o       v       _                        
+                                          R       a o       _       S                        
+                                    H     e       p t       F       e                        
+                              G     A V   s     G p S   V   I       l                        
+                    D D D D D N D R L C   e B   N e r   C   R       _                        
+                    5 4 3 2 1 D 0 w T C Q t A E D d c   C   Q       7                        
                   ------------------------------------------------------                     
                  / 100  98  96  94  92  90  88  86  84  82  80  78  76  \                   
                 /     99  97  95  93  91  89  87  85  83  81  79  77     \                  
@@ -282,367 +300,384 @@ NC = Unused I/O pins which must be unconnected on the board
 
 Universal-Interconnect-Multiplexer assignments
 ------------------------------------------------
-FanIn assignment for block A [29]
+FanIn assignment for block A [31]
 {
-A_HALT,A_READ,
-BA,B_READ,B_HALT,BootSrc,
-CA2,Com_Ctrl_266,CA0,CHIPA_Dc,CHIPB_Dc,CA1,
-EMS2_B4,EMS2_B3,EMS1_A1,EMS2_A1,EMS1_B3,EMS2_A0,EMS1_A0,EMS1_B4,
-Rw.OE,RomMapped,
-XXL_278,XXL_281,XXL_220,XXL_277,XXL_280,XXL_279,
+A_READ,A_HALT,
+BA,B_READ,BootSrc,B_HALT,
+CA2,CA0,CNT0,CHIPA_Dc,Com_Ctrl_336,CHIPB_Dc,CA1,
+EMS1_A1,EMS1_A0,EMS2_B4,EMS1_B3,EMS2_A1,EMS1_B4,EMS2_A0,EMS2_B3,
+RomMapped,Rw.OE,
+TIMER_EN,
+XXL_276,XXL_350,XXL_352,XXL_349,XXL_351,XXL_348,
 addr_in_REGS,
 }
 Multiplexer assignment for block A
-CA2			(MC26	P)   : MUX 0		Ref (B27p)
-Rw.OE			(MC1	FB)  : MUX 1		Ref (A12fb)
-BA			(MC23	FB)  : MUX 3		Ref (OE1)
-EMS2_B4			(MC18	FB)  : MUX 5		Ref (H121fb)
-A_HALT			(MC21	P)   : MUX 6		Ref (D64p)
-EMS2_B3			(MC14	FB)  : MUX 7		Ref (G111fb)
-A_READ			(MC27	P)   : MUX 8		Ref (D61p)
-XXL_278			(MC7	FB)  : MUX 9		Ref (D63fb)
-RomMapped		(MC20	P)   : MUX 10		Ref (H128p)
-B_READ			(MC28	P)   : MUX 12		Ref (D59p)
-XXL_281			(MC6	FB)  : MUX 13		Ref (D62fb)
-B_HALT			(MC22	P)   : MUX 14		Ref (D62p)
-EMS1_A1			(MC12	FB)  : MUX 15		Ref (G106fb)
-Com_Ctrl_266		(MC2	FB)  : MUX 16		Ref (B19fb)
-EMS2_A1			(MC19	FB)  : MUX 19		Ref (H126fb)
-XXL_220			(MC3	FB)  : MUX 20		Ref (B20fb)
-XXL_277			(MC5	FB)  : MUX 21		Ref (C48fb)
-CA0			(MC24	P)   : MUX 22		Ref (B30p)
-XXL_280			(MC8	FB)  : MUX 23		Ref (D64fb)
-XXL_279			(MC11	FB)  : MUX 25		Ref (F96fb)
-EMS1_B3			(MC15	FB)  : MUX 27		Ref (G112fb)
-BootSrc			(MC29	P)   : MUX 28		Ref (H126p)
-CHIPA_Dc		(MC10	FB)  : MUX 29		Ref (E76fb)
-CHIPB_Dc		(MC9	FB)  : MUX 33		Ref (E74fb)
-CA1			(MC25	P)   : MUX 34		Ref (B29p)
-EMS2_A0			(MC16	FB)  : MUX 36		Ref (H114fb)
-EMS1_A0			(MC13	FB)  : MUX 37		Ref (G108fb)
-EMS1_B4			(MC17	FB)  : MUX 38		Ref (H119fb)
+RomMapped		(MC22	P)   : MUX 0		Ref (H128p)
+CA2			(MC28	P)   : MUX 2		Ref (B27p)
+BA			(MC25	FB)  : MUX 3		Ref (OE1)
+CA0			(MC26	P)   : MUX 4		Ref (B30p)
+EMS1_A1			(MC19	FB)  : MUX 5		Ref (F95fb)
+XXL_276			(MC3	FB)  : MUX 6		Ref (B18fb)
+Rw.OE			(MC2	FB)  : MUX 7		Ref (A15fb)
+CNT0			(MC1	FB)  : MUX 8		Ref (A7fb)
+XXL_350			(MC10	FB)  : MUX 9		Ref (D64fb)
+CHIPA_Dc		(MC13	FB)  : MUX 10		Ref (E71fb)
+B_READ			(MC30	P)   : MUX 12		Ref (D59p)
+XXL_352			(MC8	FB)  : MUX 13		Ref (D62fb)
+EMS1_A0			(MC11	FB)  : MUX 14		Ref (E66fb)
+EMS2_B4			(MC21	FB)  : MUX 15		Ref (G111fb)
+BootSrc			(MC31	P)   : MUX 16		Ref (H126p)
+EMS1_B3			(MC14	FB)  : MUX 17		Ref (E74fb)
+EMS2_A1			(MC16	FB)  : MUX 18		Ref (F85fb)
+XXL_349			(MC9	FB)  : MUX 19		Ref (D63fb)
+TIMER_EN		(MC20	FB)  : MUX 20		Ref (G103fb)
+Com_Ctrl_336		(MC7	FB)  : MUX 21		Ref (D59fb)
+EMS1_B4			(MC18	FB)  : MUX 22		Ref (F87fb)
+CHIPB_Dc		(MC12	FB)  : MUX 24		Ref (E68fb)
+XXL_351			(MC6	FB)  : MUX 27		Ref (C48fb)
+B_HALT			(MC24	P)   : MUX 28		Ref (D62p)
+CA1			(MC27	P)   : MUX 32		Ref (B29p)
+XXL_348			(MC5	FB)  : MUX 33		Ref (C47fb)
+EMS2_A0			(MC17	FB)  : MUX 34		Ref (F86fb)
+EMS2_B3			(MC15	FB)  : MUX 35		Ref (E76fb)
+A_READ			(MC29	P)   : MUX 36		Ref (D61p)
+A_HALT			(MC23	P)   : MUX 38		Ref (D64p)
 addr_in_REGS		(MC4	FB)  : MUX 39		Ref (C44fb)
 
-FanIn assignment for block B [28]
+FanIn assignment for block B [31]
 {
 A_S_16,A_HALT,
 B_S_16,B_HALT,BA,
-CA15,CA10,CHIPB_C,CA13,CA9,CA8,CA12,CA14,CA11,CHIPA_C,
-EMS1_B4,EMS2_B4,EMS2_A1,EMS2_A0,E,EMS1_A1,EMS1_A0,
-RomMapped,Rw,ROM_SIZE2,ROM_SIZE1,ROM_SIZE0,
-addr_in_REGS,
+CA12,CA15,CA10,CA11,CA9,CHIPB_C,CHIPA_A,CA13,CHIPA_C,CA8,CA14,
+EMS1_A1,EMS2_A1,EMS1_A0,EMS1_B4,EMS2_A0,EMS2_B4,
+RomMapped,ROM_SIZE0,ROM_SIZE1,Reset,ROM_SIZE2,
+XXL_344,XXL_343,XXL_342,XXL_341,
 }
 Multiplexer assignment for block B
-RomMapped		(MC16	P)   : MUX 0		Ref (H128p)
-B_S_16			(MC2	P)   : MUX 1		Ref (C33p)
-CA15			(MC21	P)   : MUX 3		Ref (C37p)
-CA10			(MC27	P)   : MUX 4		Ref (C45p)
-CHIPB_C			(MC5	FB)  : MUX 5		Ref (C45fb)
-EMS1_B4			(MC10	FB)  : MUX 6		Ref (H119fb)
-addr_in_REGS		(MC4	FB)  : MUX 7		Ref (C44fb)
-Rw			(MC1	P)   : MUX 8		Ref (A14p)
-A_S_16			(MC3	P)   : MUX 9		Ref (C35p)
-CA13			(MC20	P)   : MUX 11		Ref (C40p)
-CA9			(MC26	P)   : MUX 12		Ref (C46p)
-CA8			(MC25	P)   : MUX 13		Ref (B17p)
-B_HALT			(MC18	P)   : MUX 14		Ref (D62p)
-BA			(MC19	FB)  : MUX 15		Ref (OE1)
-EMS2_B4			(MC11	FB)  : MUX 17		Ref (H121fb)
-EMS2_A1			(MC14	FB)  : MUX 19		Ref (H126fb)
-CA12			(MC23	P)   : MUX 20		Ref (C41p)
-ROM_SIZE2		(MC12	FB)  : MUX 21		Ref (H122fb)
-EMS2_A0			(MC9	FB)  : MUX 22		Ref (H114fb)
-E			(MC24	FB)  : MUX 23		Ref (GCLK)
-CA14			(MC22	P)   : MUX 25		Ref (C38p)
-CA11			(MC28	P)   : MUX 28		Ref (C43p)
-ROM_SIZE1		(MC13	FB)  : MUX 29		Ref (H124fb)
-A_HALT			(MC17	P)   : MUX 30		Ref (D64p)
-EMS1_A1			(MC7	FB)  : MUX 33		Ref (G106fb)
-ROM_SIZE0		(MC15	FB)  : MUX 35		Ref (H127fb)
-EMS1_A0			(MC8	FB)  : MUX 37		Ref (G108fb)
-CHIPA_C			(MC6	FB)  : MUX 39		Ref (C46fb)
+RomMapped		(MC19	P)   : MUX 0		Ref (H128p)
+B_S_16			(MC6	P)   : MUX 1		Ref (C33p)
+CA12			(MC27	P)   : MUX 2		Ref (C41p)
+CA15			(MC25	P)   : MUX 3		Ref (C37p)
+CA10			(MC30	P)   : MUX 4		Ref (C45p)
+EMS1_A1			(MC14	FB)  : MUX 5		Ref (F95fb)
+EMS2_A1			(MC11	FB)  : MUX 6		Ref (F85fb)
+EMS1_A0			(MC10	FB)  : MUX 8		Ref (E66fb)
+A_S_16			(MC7	P)   : MUX 9		Ref (C35p)
+CA11			(MC31	P)   : MUX 10		Ref (C43p)
+ROM_SIZE0		(MC17	FB)  : MUX 11		Ref (G108fb)
+CA9			(MC29	P)   : MUX 12		Ref (C46p)
+CHIPB_C			(MC8	FB)  : MUX 13		Ref (C46fb)
+CHIPA_A			(MC9	FB)  : MUX 16		Ref (D50fb)
+ROM_SIZE1		(MC16	FB)  : MUX 19		Ref (G106fb)
+XXL_344			(MC1	FB)  : MUX 20		Ref (B19fb)
+CA13			(MC26	P)   : MUX 21		Ref (C40p)
+EMS1_B4			(MC13	FB)  : MUX 22		Ref (F87fb)
+CHIPA_C			(MC2	FB)  : MUX 24		Ref (B20fb)
+EMS2_A0			(MC12	FB)  : MUX 26		Ref (F86fb)
+XXL_343			(MC4	FB)  : MUX 27		Ref (B30fb)
+EMS2_B4			(MC18	FB)  : MUX 29		Ref (G111fb)
+A_HALT			(MC20	P)   : MUX 30		Ref (D64p)
+XXL_342			(MC5	FB)  : MUX 31		Ref (B31fb)
+B_HALT			(MC21	P)   : MUX 32		Ref (D62p)
+CA8			(MC28	P)   : MUX 33		Ref (B17p)
+CA14			(MC24	P)   : MUX 35		Ref (C38p)
+Reset			(MC23	FB)  : MUX 36		Ref (GCLR)
+BA			(MC22	FB)  : MUX 37		Ref (OE1)
+ROM_SIZE2		(MC15	FB)  : MUX 38		Ref (G100fb)
+XXL_341			(MC3	FB)  : MUX 39		Ref (B29fb)
 
-FanIn assignment for block C [29]
+FanIn assignment for block C [31]
 {
-A_S_16.OE,A_S_16.OE,
-CA0,CA2,CA13,CA14,CA7,CA11,CHIPA_A,CHIPA_C,CA12,CA6,CHIPB_A,CA15,CA9,CA5,CA8,CA1,CA10,CHIPB_C,
-EMS1_A1,EMS2_B4,EMS1_B0,EMS2_A0,EMS2_A1,EMS2_B0,EMS1_A0,EMS1_B4,
+A_SHARE_REQUEST,A_S_16.OE,A_S_16.OE,
+B_SHARE_REQUEST,
+CA2,CA12,CA13,CA0,CA14,CA11,CA7,CA5,CA8,CA6,CHIPA_C,CA15,CA9,CHIPB_C,CA1,CA10,CHIPB_A,
+EMS2_B4,EMS2_A1,EMS1_A0,EMS2_A0,EMS1_B4,EMS1_B0,EMS1_A1,EMS2_B2,
 Reset,
+addr_in_REGS,
 }
 Multiplexer assignment for block C
-CA0			(MC16	P)   : MUX 0		Ref (B30p)
-EMS1_A1			(MC8	FB)  : MUX 1		Ref (G106fb)
-CA2			(MC18	P)   : MUX 2		Ref (B27p)
-CA13			(MC19	P)   : MUX 3		Ref (C40p)
-EMS2_B4			(MC13	FB)  : MUX 5		Ref (H121fb)
-CA14			(MC21	P)   : MUX 7		Ref (C38p)
-B_S_16.OE		(MC1	FB)  : MUX 8		Ref (B22fb)
-CA7			(MC25	P)   : MUX 9		Ref (B19p)
+CA2			(MC22	P)   : MUX 0		Ref (B27p)
+EMS2_B4			(MC13	FB)  : MUX 1		Ref (G111fb)
+CA12			(MC19	P)   : MUX 2		Ref (C41p)
+CA13			(MC18	P)   : MUX 3		Ref (C40p)
+CA0			(MC20	P)   : MUX 4		Ref (B30p)
+B_SHARE_REQUEST		(MC30	P)   : MUX 5		Ref (D49p)
+EMS2_A1			(MC8	FB)  : MUX 6		Ref (F85fb)
+CA14			(MC16	P)   : MUX 7		Ref (C38p)
+EMS1_A0			(MC7	FB)  : MUX 8		Ref (E66fb)
+A_SHARE_REQUEST		(MC31	P)   : MUX 9		Ref (D51p)
 CA11			(MC29	P)   : MUX 10		Ref (C43p)
-CHIPA_A			(MC6	FB)  : MUX 11		Ref (D58fb)
-CHIPA_C			(MC4	FB)  : MUX 13		Ref (C46fb)
-A_S_16.OE		(MC2	FB)  : MUX 14		Ref (B23fb)
-CA12			(MC22	P)   : MUX 16		Ref (C41p)
+CA7			(MC25	P)   : MUX 11		Ref (B19p)
+EMS2_A0			(MC9	FB)  : MUX 12		Ref (F86fb)
+CA5			(MC23	P)   : MUX 13		Ref (B22p)
+CA8			(MC26	P)   : MUX 15		Ref (B17p)
 CA6			(MC24	P)   : MUX 17		Ref (B21p)
-CHIPB_A			(MC5	FB)  : MUX 18		Ref (D52fb)
-EMS1_B0			(MC7	FB)  : MUX 20		Ref (G103fb)
-CA15			(MC20	P)   : MUX 21		Ref (C37p)
-EMS2_A0			(MC10	FB)  : MUX 22		Ref (H114fb)
+CHIPA_C			(MC1	FB)  : MUX 18		Ref (B20fb)
+CA15			(MC17	P)   : MUX 19		Ref (C37p)
+CA9			(MC27	P)   : MUX 20		Ref (C46p)
+EMS1_B4			(MC10	FB)  : MUX 22		Ref (F87fb)
+EMS1_B0			(MC11	FB)  : MUX 23		Ref (F92fb)
 Reset			(MC15	FB)  : MUX 24		Ref (GCLR)
-EMS2_A1			(MC14	FB)  : MUX 25		Ref (H126fb)
-CA9			(MC27	P)   : MUX 26		Ref (C46p)
-CA5			(MC23	P)   : MUX 27		Ref (B22p)
-EMS2_B0			(MC11	FB)  : MUX 30		Ref (H116fb)
-CA8			(MC26	P)   : MUX 31		Ref (B17p)
-CA1			(MC17	P)   : MUX 32		Ref (B29p)
+CHIPB_C			(MC6	FB)  : MUX 25		Ref (C46fb)
+EMS1_A1			(MC12	FB)  : MUX 29		Ref (F95fb)
+B_S_16.OE		(MC3	FB)  : MUX 30		Ref (B22fb)
+CA1			(MC21	P)   : MUX 32		Ref (B29p)
 CA10			(MC28	P)   : MUX 34		Ref (C45p)
-CHIPB_C			(MC3	FB)  : MUX 35		Ref (C45fb)
-EMS1_A0			(MC9	FB)  : MUX 37		Ref (G108fb)
-EMS1_B4			(MC12	FB)  : MUX 38		Ref (H119fb)
+CHIPB_A			(MC5	FB)  : MUX 35		Ref (C45fb)
+A_S_16.OE		(MC2	FB)  : MUX 36		Ref (B21fb)
+EMS2_B2			(MC14	FB)  : MUX 37		Ref (G112fb)
+addr_in_REGS		(MC4	FB)  : MUX 39		Ref (C44fb)
 
-FanIn assignment for block D [29]
+FanIn assignment for block D [31]
 {
-A_HALT,A_SHARE_GRANTED,A_SHARE_REQUEST,
-B_SHARE_GRANTED,B_HALT,B_SHARE_REQUEST,BA,
-CA2,CHIPB_C,CHIPA_C,CA1,CHIPB_A,CHIPA_A,CA0,CHIPB_Dm,CHIPA_Dm,
-EMS1_B2,EMS2_A0,EMS2_B0,E,EMS2_B2,EMS1_A0,EMS1_A1,EMS2_A1,
-Rw,ROM_SIZE2,ROM_SIZE0,Reset,
+A_SHARE_GRANTED,A_SHARE_REQUEST,A_HALT,
+B_SHARE_GRANTED,B_SHARE_REQUEST,B_HALT,BA,
+CA2,CHIPB_A,CHIPA_C,CHIPA_A,CA1,CHIPB_Dm,CA0,CHIPA_Dm,CHIPB_C,
+EMS1_A0,EMS2_A1,EMS1_B2,E,EMS2_B1,EMS1_B1,EMS2_A0,EMS1_A1,EMS2_B0,
+Rw,ROM_SIZE0,ROM_SIZE1,Reset,ROM_SIZE2,
 addr_in_REGS,
 }
 Multiplexer assignment for block D
-CA2			(MC26	P)   : MUX 0		Ref (B27p)
-CHIPB_C			(MC3	FB)  : MUX 1		Ref (C45fb)
-EMS1_B2			(MC11	FB)  : MUX 2		Ref (G98fb)
-B_SHARE_GRANTED		(MC7	P)   : MUX 3		Ref (D53p)
-EMS2_A0			(MC14	FB)  : MUX 4		Ref (H114fb)
-addr_in_REGS		(MC2	FB)  : MUX 5		Ref (C44fb)
-A_HALT			(MC20	P)   : MUX 6		Ref (D64p)
-A_SHARE_GRANTED		(MC8	P)   : MUX 7		Ref (D54p)
+CA2			(MC28	P)   : MUX 0		Ref (B27p)
+CHIPB_A			(MC4	FB)  : MUX 1		Ref (C45fb)
+CHIPA_C			(MC2	FB)  : MUX 2		Ref (B20fb)
+B_SHARE_GRANTED		(MC9	P)   : MUX 3		Ref (D53p)
+EMS1_A0			(MC11	FB)  : MUX 4		Ref (E66fb)
+addr_in_REGS		(MC3	FB)  : MUX 5		Ref (C44fb)
+EMS2_A1			(MC14	FB)  : MUX 6		Ref (F85fb)
+A_SHARE_GRANTED		(MC10	P)   : MUX 7		Ref (D54p)
 Rw			(MC1	P)   : MUX 8		Ref (A14p)
-A_SHARE_REQUEST		(MC28	P)   : MUX 9		Ref (D51p)
-B_HALT			(MC21	P)   : MUX 10		Ref (D62p)
-EMS2_B0			(MC15	FB)  : MUX 12		Ref (H116fb)
-CHIPA_C			(MC4	FB)  : MUX 13		Ref (C46fb)
-CA1			(MC25	P)   : MUX 14		Ref (B29p)
-B_SHARE_REQUEST		(MC29	P)   : MUX 15		Ref (D49p)
-CHIPB_A			(MC6	FB)  : MUX 18		Ref (D52fb)
-CHIPA_A			(MC10	FB)  : MUX 19		Ref (D58fb)
-ROM_SIZE2		(MC16	FB)  : MUX 21		Ref (H122fb)
-CA0			(MC24	P)   : MUX 22		Ref (B30p)
-E			(MC27	FB)  : MUX 23		Ref (GCLK)
-BA			(MC22	FB)  : MUX 25		Ref (OE1)
-EMS2_B2			(MC17	FB)  : MUX 27		Ref (H123fb)
-ROM_SIZE0		(MC19	FB)  : MUX 29		Ref (H127fb)
-CHIPB_Dm		(MC5	FB)  : MUX 30		Ref (D51fb)
-EMS1_A0			(MC13	FB)  : MUX 31		Ref (G108fb)
-EMS1_A1			(MC12	FB)  : MUX 33		Ref (G106fb)
-Reset			(MC23	FB)  : MUX 36		Ref (GCLR)
-EMS2_A1			(MC18	FB)  : MUX 37		Ref (H126fb)
-CHIPA_Dm		(MC9	FB)  : MUX 38		Ref (D55fb)
+A_SHARE_REQUEST		(MC31	P)   : MUX 9		Ref (D51p)
+CHIPA_A			(MC6	FB)  : MUX 10		Ref (D50fb)
+EMS1_B2			(MC16	FB)  : MUX 11		Ref (F90fb)
+A_HALT			(MC22	P)   : MUX 12		Ref (D64p)
+ROM_SIZE0		(MC21	FB)  : MUX 13		Ref (G108fb)
+B_SHARE_REQUEST		(MC30	P)   : MUX 15		Ref (D49p)
+CA1			(MC27	P)   : MUX 16		Ref (B29p)
+E			(MC29	FB)  : MUX 17		Ref (GCLK)
+EMS2_B1			(MC13	FB)  : MUX 18		Ref (F84fb)
+ROM_SIZE1		(MC20	FB)  : MUX 19		Ref (G106fb)
+CHIPB_Dm		(MC8	FB)  : MUX 20		Ref (D52fb)
+CA0			(MC26	P)   : MUX 22		Ref (B30p)
+Reset			(MC25	FB)  : MUX 24		Ref (GCLR)
+EMS1_B1			(MC18	FB)  : MUX 25		Ref (F96fb)
+EMS2_A0			(MC15	FB)  : MUX 26		Ref (F86fb)
+B_HALT			(MC23	P)   : MUX 28		Ref (D62p)
+EMS1_A1			(MC17	FB)  : MUX 29		Ref (F95fb)
+CHIPA_Dm		(MC7	FB)  : MUX 30		Ref (D51fb)
+BA			(MC24	FB)  : MUX 35		Ref (OE1)
+EMS2_B0			(MC12	FB)  : MUX 36		Ref (F82fb)
+ROM_SIZE2		(MC19	FB)  : MUX 38		Ref (G100fb)
+CHIPB_C			(MC5	FB)  : MUX 39		Ref (C46fb)
 
-FanIn assignment for block E [29]
+FanIn assignment for block E [30]
 {
-A_READ,A_HALT,A_SHARE_SELECT,
-B_HALT,B_SHARE_SELECT,B_READ,BA,
-CHIPB_A,CHIPB_C,CA13,Com_Ctrl_265,CA14,CA12,CA15,CHIPA_Dc,CHIPA_A,CHIPA_C,CHIPB_Dc,
-EMS2_A0,EMS1_A0,EMS1_A1,EMS2_A1,E,
-Reset,Rw,
-XXL_270,XXL_271,XXL_272,XXL_273,
+A_HALT,A_READ,A_SHARE_SELECT,
+B_HALT,B_READ,BA,B_SHARE_SELECT,
+CHIPA_Dc,CA15,CHIPA_C,CHIPB_A,CA12,CA14,CHIPA_A,CA13,CHIPB_Dc,CHIPB_C,Com_Ctrl_334,Com_Ctrl_333,
+D3,D6,
+EMS2_A1,EMS1_A0,EMS1_B0,E,EMS2_A0,EMS2_B0,EMS1_A1,
+Rw,Reset,
 }
 Multiplexer assignment for block E
-CHIPB_A			(MC9	FB)  : MUX 0		Ref (D52fb)
-CHIPB_C			(MC7	FB)  : MUX 1		Ref (C45fb)
-Reset			(MC20	FB)  : MUX 2		Ref (GCLR)
-CA13			(MC21	P)   : MUX 3		Ref (C40p)
-EMS2_A0			(MC15	FB)  : MUX 4		Ref (H114fb)
-Com_Ctrl_265		(MC2	FB)  : MUX 5		Ref (A15fb)
-CA14			(MC23	P)   : MUX 7		Ref (C38p)
-A_READ			(MC26	P)   : MUX 8		Ref (D61p)
-XXL_270			(MC4	FB)  : MUX 9		Ref (B29fb)
-B_HALT			(MC18	P)   : MUX 10		Ref (D62p)
-B_SHARE_SELECT		(MC29	P)   : MUX 11		Ref (F86p)
-A_HALT			(MC17	P)   : MUX 12		Ref (D64p)
-EMS1_A0			(MC14	FB)  : MUX 13		Ref (G108fb)
-EMS1_A1			(MC13	FB)  : MUX 15		Ref (G106fb)
-XXL_271			(MC5	FB)  : MUX 17		Ref (B31fb)
-EMS2_A1			(MC16	FB)  : MUX 19		Ref (H126fb)
-CA12			(MC24	P)   : MUX 20		Ref (C41p)
-CA15			(MC22	P)   : MUX 21		Ref (C37p)
-Rw			(MC1	P)   : MUX 22		Ref (A14p)
-A_SHARE_SELECT		(MC28	P)   : MUX 23		Ref (F85p)
-CHIPA_Dc		(MC12	FB)  : MUX 25		Ref (E76fb)
-B_READ			(MC27	P)   : MUX 26		Ref (D59p)
-CHIPA_A			(MC10	FB)  : MUX 29		Ref (D58fb)
-CHIPA_C			(MC8	FB)  : MUX 31		Ref (C46fb)
-XXL_272			(MC6	FB)  : MUX 33		Ref (B32fb)
-CHIPB_Dc		(MC11	FB)  : MUX 35		Ref (E74fb)
-XXL_273			(MC3	FB)  : MUX 36		Ref (B21fb)
-BA			(MC19	FB)  : MUX 37		Ref (OE1)
-E			(MC25	FB)  : MUX 39		Ref (GCLK)
+CHIPA_Dc		(MC12	FB)  : MUX 0		Ref (E71fb)
+CA15			(MC23	P)   : MUX 1		Ref (C37p)
+CHIPA_C			(MC4	FB)  : MUX 2		Ref (B20fb)
+D3			(MC2	P)   : MUX 3		Ref (A8p)
+EMS2_A1			(MC14	FB)  : MUX 4		Ref (F85fb)
+CHIPB_A			(MC5	FB)  : MUX 5		Ref (C45fb)
+A_HALT			(MC18	P)   : MUX 6		Ref (D64p)
+D6			(MC1	P)   : MUX 7		Ref (A3p)
+EMS1_A0			(MC10	FB)  : MUX 8		Ref (E66fb)
+EMS1_B0			(MC16	FB)  : MUX 9		Ref (F92fb)
+B_HALT			(MC19	P)   : MUX 10		Ref (D62p)
+B_READ			(MC27	P)   : MUX 12		Ref (D59p)
+BA			(MC20	FB)  : MUX 15		Ref (OE1)
+CA12			(MC25	P)   : MUX 16		Ref (C41p)
+CA14			(MC22	P)   : MUX 17		Ref (C38p)
+CHIPA_A			(MC7	FB)  : MUX 18		Ref (D50fb)
+A_READ			(MC26	P)   : MUX 20		Ref (D61p)
+CA13			(MC24	P)   : MUX 21		Ref (C40p)
+Rw			(MC3	P)   : MUX 22		Ref (A14p)
+E			(MC28	FB)  : MUX 23		Ref (GCLK)
+CHIPB_Dc		(MC11	FB)  : MUX 24		Ref (E68fb)
+CHIPB_C			(MC6	FB)  : MUX 25		Ref (C46fb)
+EMS2_A0			(MC15	FB)  : MUX 26		Ref (F86fb)
+B_SHARE_SELECT		(MC30	P)   : MUX 29		Ref (F86p)
+A_SHARE_SELECT		(MC29	P)   : MUX 31		Ref (F85p)
+Reset			(MC21	FB)  : MUX 34		Ref (GCLR)
+EMS2_B0			(MC13	FB)  : MUX 36		Ref (F82fb)
+EMS1_A1			(MC17	FB)  : MUX 37		Ref (F95fb)
+Com_Ctrl_334		(MC8	FB)  : MUX 38		Ref (D55fb)
+Com_Ctrl_333		(MC9	FB)  : MUX 39		Ref (D58fb)
 
-FanIn assignment for block F [29]
+FanIn assignment for block F [30]
 {
 A_HALT,A_READ,
 B_HALT,B_READ,BA,
-CA2,CA15,CA12,CA13,CHIPB_C,CA14,CHIPB_A,CHIPA_A,CA0,Com_Ctrl_265,CHIPA_C,CA1,
-EMS1_B3,EMS1_B1,EMS2_B3,EMS2_B1,EMS2_B2,EMS2_B4,EMS1_B2,
-Rw,ROM_SIZE1,
-XXL_269,XXL_268,
-addr_in_REGS,
+CA15,CA13,CHIPB_C,CA14,CHIPA_C,Com_Ctrl_333,CA12,Com_Ctrl_335,Com_Ctrl_334,
+D7,D0,D6,D2,D4,D1,
+EMS2_B1,EMS1_B1,EMS2_B3,EMS2_B2,EMS2_B4,EMS1_B2,EMS1_B3,
+Rw,
+XXL_339,XXL_340,
 }
 Multiplexer assignment for block F
-CA2			(MC23	P)   : MUX 0		Ref (B27p)
-CA15			(MC25	P)   : MUX 1		Ref (C37p)
-CA12			(MC27	P)   : MUX 2		Ref (C41p)
-CA13			(MC24	P)   : MUX 3		Ref (C40p)
-CHIPB_C			(MC5	FB)  : MUX 5		Ref (C45fb)
-A_HALT			(MC18	P)   : MUX 6		Ref (D64p)
-addr_in_REGS		(MC4	FB)  : MUX 7		Ref (C44fb)
-A_READ			(MC28	P)   : MUX 8		Ref (D61p)
-B_HALT			(MC19	P)   : MUX 10		Ref (D62p)
-EMS1_B3			(MC13	FB)  : MUX 11		Ref (G112fb)
-Rw			(MC1	P)   : MUX 12		Ref (A14p)
-XXL_269			(MC3	FB)  : MUX 13		Ref (B30fb)
-EMS1_B1			(MC11	FB)  : MUX 14		Ref (G100fb)
-EMS2_B3			(MC12	FB)  : MUX 15		Ref (G111fb)
-CA14			(MC26	P)   : MUX 17		Ref (C38p)
-CHIPB_A			(MC8	FB)  : MUX 18		Ref (D52fb)
-CHIPA_A			(MC9	FB)  : MUX 19		Ref (D58fb)
-EMS2_B1			(MC17	FB)  : MUX 21		Ref (H125fb)
-CA0			(MC21	P)   : MUX 22		Ref (B30p)
-Com_Ctrl_265		(MC2	FB)  : MUX 23		Ref (A15fb)
-CHIPA_C			(MC6	FB)  : MUX 25		Ref (C46fb)
-EMS2_B2			(MC15	FB)  : MUX 27		Ref (H123fb)
-XXL_268			(MC7	FB)  : MUX 29		Ref (C47fb)
-B_READ			(MC29	P)   : MUX 30		Ref (D59p)
-EMS2_B4			(MC14	FB)  : MUX 31		Ref (H121fb)
-CA1			(MC22	P)   : MUX 32		Ref (B29p)
-BA			(MC20	FB)  : MUX 37		Ref (OE1)
-EMS1_B2			(MC10	FB)  : MUX 38		Ref (G98fb)
-ROM_SIZE1		(MC16	FB)  : MUX 39		Ref (H124fb)
+EMS2_B1			(MC17	FB)  : MUX 0		Ref (F84fb)
+D7			(MC1	P)   : MUX 1		Ref (A1p)
+CA15			(MC26	P)   : MUX 3		Ref (C37p)
+XXL_339			(MC16	FB)  : MUX 5		Ref (E79fb)
+D0			(MC7	P)   : MUX 6		Ref (A13p)
+D6			(MC2	P)   : MUX 7		Ref (A3p)
+D2			(MC4	P)   : MUX 8		Ref (A9p)
+D4			(MC3	P)   : MUX 9		Ref (A6p)
+D1			(MC5	P)   : MUX 10		Ref (A11p)
+CA13			(MC27	P)   : MUX 11		Ref (C40p)
+A_HALT			(MC22	P)   : MUX 12		Ref (D64p)
+CHIPB_C			(MC11	FB)  : MUX 13		Ref (C46fb)
+B_HALT			(MC23	P)   : MUX 14		Ref (D62p)
+EMS1_B1			(MC19	FB)  : MUX 15		Ref (F96fb)
+CA14			(MC25	P)   : MUX 17		Ref (C38p)
+CHIPA_C			(MC9	FB)  : MUX 18		Ref (B20fb)
+Com_Ctrl_333		(MC13	FB)  : MUX 19		Ref (D58fb)
+CA12			(MC28	P)   : MUX 20		Ref (C41p)
+Com_Ctrl_335		(MC6	FB)  : MUX 21		Ref (A12fb)
+Rw			(MC8	P)   : MUX 22		Ref (A14p)
+EMS2_B3			(MC15	FB)  : MUX 25		Ref (E76fb)
+B_READ			(MC30	P)   : MUX 26		Ref (D59p)
+EMS2_B2			(MC21	FB)  : MUX 27		Ref (G112fb)
+EMS2_B4			(MC20	FB)  : MUX 29		Ref (G111fb)
+XXL_340			(MC10	FB)  : MUX 31		Ref (B28fb)
+EMS1_B2			(MC18	FB)  : MUX 33		Ref (F90fb)
+A_READ			(MC29	P)   : MUX 36		Ref (D61p)
+BA			(MC24	FB)  : MUX 37		Ref (OE1)
+Com_Ctrl_334		(MC12	FB)  : MUX 38		Ref (D55fb)
+EMS1_B3			(MC14	FB)  : MUX 39		Ref (E74fb)
 
 FanIn assignment for block G [22]
 {
 A_HALT,
-B_HALT,BA,
-CA5,Com_Ctrl_264,CA7,CA6,Com_Ctrl_263,
-D7,D3,D1,D6,D2,D0,
+BA,B_HALT,
+CA7,Com_Ctrl_333,CNT2,CA5,CA6,Com_Ctrl_332,
+D7,D2,D4,D0,D1,
 E,
-Rw,Reset,
-XXL_276,XXL_275,XXL_218,XXL_274,
+Rw,
+TIMER_EN.CE,
+XXL_345,XXL_274,XXL_346,XXL_347,
 addr_in_DEVS,
 }
 Multiplexer assignment for block G
-addr_in_DEVS		(MC8	FB)  : MUX 0		Ref (B18fb)
+XXL_345			(MC8	FB)  : MUX 0		Ref (B23fb)
 D7			(MC1	P)   : MUX 1		Ref (A1p)
-D3			(MC3	P)   : MUX 3		Ref (A8p)
-D1			(MC5	P)   : MUX 6		Ref (A11p)
-D6			(MC2	P)   : MUX 7		Ref (A3p)
-Rw			(MC7	P)   : MUX 8		Ref (A14p)
-XXL_276			(MC11	FB)  : MUX 9		Ref (B28fb)
-B_HALT			(MC16	P)   : MUX 10		Ref (D62p)
-XXL_275			(MC9	FB)  : MUX 11		Ref (B26fb)
-A_HALT			(MC15	P)   : MUX 12		Ref (D64p)
-CA5			(MC20	P)   : MUX 13		Ref (B22p)
-E			(MC19	FB)  : MUX 17		Ref (GCLK)
-D2			(MC4	P)   : MUX 18		Ref (A9p)
-XXL_218			(MC14	FB)  : MUX 19		Ref (E79fb)
-D0			(MC6	P)   : MUX 20		Ref (A13p)
-Com_Ctrl_264		(MC12	FB)  : MUX 21		Ref (D59fb)
-XXL_274			(MC10	FB)  : MUX 23		Ref (B27fb)
-Reset			(MC18	FB)  : MUX 24		Ref (GCLR)
-BA			(MC17	FB)  : MUX 25		Ref (OE1)
-CA7			(MC22	P)   : MUX 29		Ref (B19p)
-CA6			(MC21	P)   : MUX 31		Ref (B21p)
-Com_Ctrl_263		(MC13	FB)  : MUX 33		Ref (D61fb)
+A_HALT			(MC16	P)   : MUX 6		Ref (D64p)
+XXL_274			(MC11	FB)  : MUX 7		Ref (B32fb)
+D2			(MC3	P)   : MUX 8		Ref (A9p)
+D4			(MC2	P)   : MUX 9		Ref (A6p)
+addr_in_DEVS		(MC7	FB)  : MUX 10		Ref (B17fb)
+CA7			(MC21	P)   : MUX 11		Ref (B19p)
+Rw			(MC6	P)   : MUX 12		Ref (A14p)
+BA			(MC18	FB)  : MUX 15		Ref (OE1)
+E			(MC22	FB)  : MUX 17		Ref (GCLK)
+Com_Ctrl_333		(MC12	FB)  : MUX 19		Ref (D58fb)
+D0			(MC5	P)   : MUX 20		Ref (A13p)
+XXL_346			(MC9	FB)  : MUX 21		Ref (B26fb)
+XXL_347			(MC10	FB)  : MUX 23		Ref (B27fb)
+D1			(MC4	P)   : MUX 24		Ref (A11p)
+CNT2			(MC15	FB)  : MUX 27		Ref (H123fb)
+B_HALT			(MC17	P)   : MUX 28		Ref (D62p)
+CA5			(MC19	P)   : MUX 29		Ref (B22p)
+CA6			(MC20	P)   : MUX 31		Ref (B21p)
+TIMER_EN.CE		(MC14	FB)  : MUX 33		Ref (D61fb)
+Com_Ctrl_332		(MC13	FB)  : MUX 39		Ref (D60fb)
 
-FanIn assignment for block H [18]
+FanIn assignment for block H [22]
 {
 A_HALT,
-B_HALT,BootSrc,BA,
-Com_Ctrl_263,Com_Ctrl_262,CA7,Com_Ctrl_264,CA5,CA6,
-D7,D2,D4,D6,D0,D1,
+B_HALT,BA,BootSrc,
+CNT3,CNT6,CA5,CA7,CNT4,CNT7,CNT5,CNT11,CNT10,CNT8,Com_Ctrl_332,CNT9,CA6,CNT1,
+D7,
 Reset,
+TIMER_EN,
 addr_in_DEVS,
 }
 Multiplexer assignment for block H
-addr_in_DEVS		(MC7	FB)  : MUX 0		Ref (B18fb)
 D7			(MC1	P)   : MUX 1		Ref (A1p)
-Com_Ctrl_263		(MC10	FB)  : MUX 3		Ref (D61fb)
-A_HALT			(MC11	P)   : MUX 6		Ref (D64p)
-Com_Ctrl_262		(MC9	FB)  : MUX 7		Ref (D60fb)
-D2			(MC4	P)   : MUX 8		Ref (A9p)
-B_HALT			(MC12	P)   : MUX 10		Ref (D62p)
-CA7			(MC17	P)   : MUX 11		Ref (B19p)
-D4			(MC3	P)   : MUX 15		Ref (A6p)
-D6			(MC2	P)   : MUX 17		Ref (A3p)
-D0			(MC6	P)   : MUX 20		Ref (A13p)
-Com_Ctrl_264		(MC8	FB)  : MUX 21		Ref (D59fb)
-D1			(MC5	P)   : MUX 24		Ref (A11p)
-BootSrc			(MC18	P)   : MUX 28		Ref (H126p)
-CA5			(MC15	P)   : MUX 29		Ref (B22p)
-CA6			(MC16	P)   : MUX 33		Ref (B21p)
-Reset			(MC14	FB)  : MUX 34		Ref (GCLR)
-BA			(MC13	FB)  : MUX 35		Ref (OE1)
+CNT3			(MC5	FB)  : MUX 2		Ref (G98fb)
+CNT6			(MC11	FB)  : MUX 3		Ref (H124fb)
+A_HALT			(MC15	P)   : MUX 6		Ref (D64p)
+CA5			(MC19	P)   : MUX 7		Ref (B22p)
+CA7			(MC21	P)   : MUX 9		Ref (B19p)
+B_HALT			(MC16	P)   : MUX 10		Ref (D62p)
+CNT4			(MC14	FB)  : MUX 11		Ref (H127fb)
+CNT7			(MC9	FB)  : MUX 12		Ref (H119fb)
+BA			(MC17	FB)  : MUX 15		Ref (OE1)
+BootSrc			(MC22	P)   : MUX 16		Ref (H126p)
+CNT5			(MC13	FB)  : MUX 19		Ref (H126fb)
+TIMER_EN		(MC6	FB)  : MUX 20		Ref (G103fb)
+CNT11			(MC12	FB)  : MUX 21		Ref (H125fb)
+CNT10			(MC7	FB)  : MUX 22		Ref (H114fb)
+CNT8			(MC10	FB)  : MUX 23		Ref (H122fb)
+Com_Ctrl_332		(MC4	FB)  : MUX 25		Ref (D60fb)
+CNT9			(MC8	FB)  : MUX 30		Ref (H116fb)
+CA6			(MC20	P)   : MUX 33		Ref (B21p)
+Reset			(MC18	FB)  : MUX 34		Ref (GCLR)
+addr_in_DEVS		(MC3	FB)  : MUX 36		Ref (B17fb)
+CNT1			(MC2	FB)  : MUX 39		Ref (A10fb)
 
 Creating JEDEC file Z:\Aa.jed ...
 
 TQFP100 programmed logic:
 -----------------------------------
+A_G_A_DIR = ((BA & !A_HALT)
+	# (BA & !B_HALT));
+
 A_G_D_DIR = ((CHIPA_C & Rw.PIN & !BA)
 	# (!A_HALT & BA & !A_READ)
 	# (A_HALT & CHIPA_C & Rw.PIN & B_HALT));
 
-!A_G_ENABLE = ((CA12 & !CA13 & !CA14 & CA15 & E & CHIPA_C & EMS2_A0.Q & !EMS2_A1.Q)
-	# (!CA12 & !CA13 & !CA14 & CA15 & E & CHIPA_C & EMS1_A0.Q & !EMS1_A1.Q)
-	# (!A_HALT & BA));
+!A_G_ENABLE = ((CA12 & !CA13 & !CA14 & CA15 & E & CHIPA_C & EMS2_A0.Q & !EMS2_A1.Q & B_HALT)
+	# (BA & !A_HALT)
+	# (!CA12 & !CA13 & !CA14 & CA15 & E & CHIPA_C & !BA & EMS1_A0.Q & !EMS1_A1.Q)
+	# (!CA12 & !CA13 & !CA14 & CA15 & E & CHIPA_C & B_HALT & EMS1_A0.Q & !EMS1_A1.Q)
+	# (CA12 & !CA13 & !CA14 & CA15 & E & CHIPA_C & !BA & EMS2_A0.Q & !EMS2_A1.Q));
 
-A_G_A_DIR = ((BA & !A_HALT)
+A_SHARE_GRANTED = (A_SHARE_REQUEST & CHIPA_A);
+
+!A_S_READ = ((A_READ & CHIPA_A)
+	# (CA12 & !CA13 & !CA14 & CA15 & E & Rw.PIN & CHIPA_C & EMS2_A0.Q & !EMS2_A1.Q)
+	# (!CA12 & !CA13 & !CA14 & CA15 & E & Rw.PIN & CHIPA_C & EMS1_A0.Q & !EMS1_A1.Q));
+
+A_S_16 = ((!CA12 & !CA13 & !CA14 & CA15 & CHIPA_C & EMS1_A0.Q & !EMS1_A1.Q & EMS1_B4.Q)
+	# (CA12 & !CA13 & !CA14 & CA15 & CHIPA_C & EMS2_A0.Q & !EMS2_A1.Q & EMS2_B4.Q));
+
+B_G_A_DIR = ((BA & !A_HALT)
 	# (BA & !B_HALT));
 
 !A_S_SELECT = ((!CA12 & !CA13 & !CA14 & CA15 & CHIPA_C & EMS1_A0.Q & !EMS1_A1.Q)
 	# (CA12 & !CA13 & !CA14 & CA15 & CHIPA_C & EMS2_A0.Q & !EMS2_A1.Q)
 	# (A_SHARE_SELECT & CHIPA_A));
 
-A_S_16 = ((!CA12 & !CA13 & !CA14 & CA15 & CHIPA_C & EMS1_A0.Q & !EMS1_A1.Q & EMS1_B4.Q)
-	# (CA12 & !CA13 & !CA14 & CA15 & CHIPA_C & EMS2_A0.Q & !EMS2_A1.Q & EMS2_B4.Q));
+!A_S_WRITE = ((!A_READ & CHIPA_A)
+	# (CA12 & !CA13 & !CA14 & CA15 & E & !Rw.PIN & CHIPA_C & EMS2_A0.Q & !EMS2_A1.Q)
+	# (!CA12 & !CA13 & !CA14 & CA15 & E & !Rw.PIN & CHIPA_C & EMS1_A0.Q & !EMS1_A1.Q));
 
-A_SHARE_GRANTED = (A_SHARE_REQUEST & CHIPA_A);
+!B_G_ENABLE = ((CA12 & !CA13 & !CA14 & CA15 & E & CHIPB_C & !BA & !EMS2_A0.Q & EMS2_A1.Q)
+	# (CA12 & !CA13 & !CA14 & CA15 & E & CHIPB_C & A_HALT & !EMS2_A0.Q & EMS2_A1.Q)
+	# (A_HALT & BA & !B_HALT)
+	# (!CA12 & !CA13 & !CA14 & CA15 & E & !EMS1_A0.Q & EMS1_A1.Q & CHIPB_C & !BA)
+	# (!CA12 & !CA13 & !CA14 & CA15 & E & !EMS1_A0.Q & EMS1_A1.Q & CHIPB_C & A_HALT));
 
 B_G_D_DIR = ((CHIPB_C & Rw.PIN & !BA)
 	# (A_HALT & !B_HALT & BA & !B_READ)
 	# (A_HALT & B_HALT & CHIPB_C & Rw.PIN));
 
-!A_S_READ = ((A_READ & CHIPA_A)
-	# (CA12 & !CA13 & !CA14 & CA15 & E & Rw.PIN & CHIPA_C & EMS2_A0.Q & !EMS2_A1.Q)
-	# (!CA12 & !CA13 & !CA14 & CA15 & E & Rw.PIN & CHIPA_C & EMS1_A0.Q & !EMS1_A1.Q));
-
-!A_S_WRITE = ((!A_READ & CHIPA_A)
-	# (CA12 & !CA13 & !CA14 & CA15 & E & !Rw.PIN & CHIPA_C & EMS2_A0.Q & !EMS2_A1.Q)
-	# (!CA12 & !CA13 & !CA14 & CA15 & E & !Rw.PIN & CHIPA_C & EMS1_A0.Q & !EMS1_A1.Q));
-
-B_G_A_DIR = ((BA & !A_HALT)
-	# (BA & !B_HALT));
-
-!B_S_READ = ((B_READ & CHIPB_A)
-	# (CA12 & !CA13 & !CA14 & CA15 & E & Rw.PIN & CHIPB_C & !EMS2_A0.Q & EMS2_A1.Q)
-	# (!CA12 & !CA13 & !CA14 & CA15 & E & Rw.PIN & CHIPB_C & !EMS1_A0.Q & EMS1_A1.Q));
-
 B_SHARE_GRANTED = (B_SHARE_REQUEST & CHIPB_A);
-
-!B_G_ENABLE = ((A_HALT & BA & !B_HALT)
-	# (CA12 & !CA13 & !CA14 & CA15 & E & CHIPB_C & !EMS2_A0.Q & EMS2_A1.Q)
-	# (!CA12 & !CA13 & !CA14 & CA15 & E & CHIPB_C & !EMS1_A0.Q & EMS1_A1.Q));
 
 B_S_16 = ((!CA12 & !CA13 & !CA14 & CA15 & CHIPB_C & !EMS1_A0.Q & EMS1_A1.Q & EMS1_B4.Q)
 	# (CA12 & !CA13 & !CA14 & CA15 & CHIPB_C & !EMS2_A0.Q & EMS2_A1.Q & EMS2_B4.Q));
 
-!B_S_WRITE = ((!B_READ & CHIPB_A)
-	# (CA12 & !CA13 & !CA14 & CA15 & E & !Rw.PIN & CHIPB_C & !EMS2_A0.Q & EMS2_A1.Q)
-	# (!CA12 & !CA13 & !CA14 & CA15 & E & !Rw.PIN & CHIPB_C & !EMS1_A0.Q & EMS1_A1.Q));
-
-CHIPA_A = ((A_SHARE_REQUEST & Reset & !CHIPA_C)
-	# (A_SHARE_REQUEST & Reset & CHIPA_A));
+!B_S_READ = ((B_READ & CHIPB_A)
+	# (CA12 & !CA13 & !CA14 & CA15 & E & Rw.PIN & CHIPB_C & !EMS2_A0.Q & EMS2_A1.Q)
+	# (!CA12 & !CA13 & !CA14 & CA15 & E & Rw.PIN & CHIPB_C & !EMS1_A0.Q & EMS1_A1.Q));
 
 !B_S_SELECT = ((!CA12 & !CA13 & !CA14 & CA15 & CHIPB_C & !EMS1_A0.Q & EMS1_A1.Q)
 	# (CA12 & !CA13 & !CA14 & CA15 & CHIPB_C & !EMS2_A0.Q & EMS2_A1.Q)
@@ -653,19 +688,26 @@ CHIPA_C = ((Reset & EMS2_A0.Q & !EMS2_A1.Q & CHIPA_C)
 	# (Reset & !CHIPA_A & EMS1_A0.Q & !EMS1_A1.Q)
 	# (Reset & !CHIPA_A & EMS2_A0.Q & !EMS2_A1.Q));
 
-CHIPA_Dc = ((Reset & !CHIPA_C & CHIPA_Dc)
-	# (Reset & CHIPA_A));
+!B_S_WRITE = ((!B_READ & CHIPB_A)
+	# (CA12 & !CA13 & !CA14 & CA15 & E & !Rw.PIN & CHIPB_C & !EMS2_A0.Q & EMS2_A1.Q)
+	# (!CA12 & !CA13 & !CA14 & CA15 & E & !Rw.PIN & CHIPB_C & !EMS1_A0.Q & EMS1_A1.Q));
+
+CHIPA_A = ((A_SHARE_REQUEST & Reset & !CHIPA_C)
+	# (A_SHARE_REQUEST & Reset & CHIPA_A));
 
 CHIPB_A = ((B_SHARE_REQUEST & Reset & !CHIPB_C)
 	# (B_SHARE_REQUEST & Reset & CHIPB_A));
+
+CHIPA_Dc = ((Reset & !CHIPA_C & CHIPA_Dc)
+	# (Reset & CHIPA_A));
+
+CHIPA_Dm = ((Reset & !CHIPA_A & CHIPA_Dm)
+	# (Reset & CHIPA_C));
 
 CHIPB_C = ((Reset & !EMS2_A0.Q & EMS2_A1.Q & CHIPB_C)
 	# (Reset & CHIPB_C & !EMS1_A0.Q & EMS1_A1.Q)
 	# (Reset & !CHIPB_A & !EMS1_A0.Q & EMS1_A1.Q)
 	# (Reset & !CHIPB_A & !EMS2_A0.Q & EMS2_A1.Q));
-
-CHIPA_Dm = ((Reset & !CHIPA_A & CHIPA_Dm)
-	# (Reset & CHIPA_C));
 
 CHIPB_Dc = ((Reset & !CHIPB_C & CHIPB_Dc)
 	# (Reset & CHIPB_A));
@@ -673,7 +715,33 @@ CHIPB_Dc = ((Reset & !CHIPB_C & CHIPB_Dc)
 CHIPB_Dm = ((Reset & !CHIPB_A & CHIPB_Dm)
 	# (Reset & CHIPB_C));
 
+CNT0.T = 1;
+
+CNT1.T = 1;
+
+CNT2.T = 1;
+
+CNT3.T = 1;
+
+CNT4.T = 1;
+
+CNT5.T = 1;
+
+CNT6.T = 1;
+
+CNT7.T = 1;
+
+CNT8.T = 1;
+
+CNT9.T = 1;
+
+CNT10.T = 1;
+
+CNT11.T = 1;
+
 D5 = 0;
+
+Dev_FIRQ = 0;
 
 EMS1_A0.D = D6.PIN;
 
@@ -695,44 +763,44 @@ EMS2_A1.D = D7.PIN;
 
 EMS2_B0.D = D0.PIN;
 
-EMS2_B2.D = D2.PIN;
-
 EMS2_B1.D = D1.PIN;
+
+EMS2_B2.D = D2.PIN;
 
 EMS2_B3.D = D3.PIN;
 
 EMS2_B4.D = D4.PIN;
 
-GA12 = XXL_268;
-
 GA13 = ((!CA12 & !CA14 & CA15 & EMS1_B1.Q)
 	# CA13
 	# (CA12 & !CA14 & CA15 & EMS2_B1.Q));
 
-GA14 = ((!CA12 & !CA13 & CA15 & EMS1_B2.Q)
-	# CA14
-	# (CA12 & !CA13 & CA15 & EMS2_B2.Q));
-
-GA16 = ((CA12 & !CA13 & !CA14 & CA15 & EMS2_B4.Q & !BA)
-	# XXL_269);
+GA12 = XXL_339;
 
 !GA15 = ((!CA12 & !CA13 & !CA14 & !EMS1_B3.Q)
 	# (CA12 & !CA13 & !CA14 & !EMS2_B3.Q)
 	# !CA15);
 
-!XXL_220.TH = (A_HALT & B_HALT);
+GA14 = ((!CA12 & !CA13 & CA15 & EMS1_B2.Q)
+	# CA14
+	# (CA12 & !CA13 & CA15 & EMS2_B2.Q));
 
-!XXL_218.TH = (XXL_272
-	# XXL_273
-	# XXL_270
-	# XXL_271);
+!XXL_276.TH = (A_HALT & B_HALT);
+
+GA16 = ((CA12 & !CA13 & !CA14 & CA15 & EMS2_B4.Q & !BA)
+	# XXL_340);
+
+!XXL_274.TH = (XXL_343
+	# XXL_344
+	# XXL_341
+	# XXL_342);
+
+ROM = (XXL_346
+	# XXL_347
+	# (BA & !B_HALT)
+	# XXL_345);
 
 ROM_SIZE0.D = D0.PIN;
-
-ROM = (XXL_275
-	# XXL_276
-	# (BA & !B_HALT)
-	# XXL_274);
 
 ROM_SIZE1.D = D1.PIN;
 
@@ -742,18 +810,20 @@ ROM_SIZE2.D = D2.PIN;
 
 RomMapped.D = D7.PIN;
 
-!Write = (E & !Rw.PIN);
-
 Rw = ((!A_HALT & !A_READ)
 	# (A_HALT & !B_HALT & !B_READ));
 
+TIMER_EN.D = D7.PIN;
+
 addr_in_REGS = (!CA5 & !CA6 & !CA7 & !CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
+
+!Write = (E & !Rw.PIN);
 
 addr_in_DEVS = (!CA8 & !CA9 & !CA10 & !CA11 & !CA12 & CA13 & !CA14 & CA15);
 
-RAM = !XXL_218.PIN;
+RAM = !XXL_274.PIN;
 
-HALT = !XXL_220.PIN;
+HALT = !XXL_276.PIN;
 
 A_SHARE_DIRTY = ((!A_SHARE_GRANTED & CHIPA_Dm)
 	# (BA & !A_HALT)
@@ -766,32 +836,39 @@ B_SHARE_DIRTY = ((A_HALT & BA & !B_HALT)
 	# (B_SHARE_GRANTED & !EMS1_A0.Q & EMS1_A1.Q)
 	# (!B_SHARE_GRANTED & CHIPB_Dm));
 
-!D0 = (XXL_278
+!D0 = (XXL_349
 	# (CA0 & CA1 & CA2)
-	# XXL_277);
+	# XXL_348);
 
-D1 = XXL_279;
+D2 = (XXL_352
+	# XXL_351);
 
-D4 = ((!CA0 & CA1 & !CA2 & addr_in_REGS & EMS2_B4.Q)
-	# (!CA0 & !CA1 & !CA2 & addr_in_REGS & EMS1_B4.Q));
-
-D2 = (XXL_281
-	# XXL_280);
+D1 = XXL_350;
 
 D3 = ((CA0 & !CA1 & CA2 & addr_in_REGS & CHIPB_Dc)
 	# (!CA0 & !CA1 & !CA2 & addr_in_REGS & EMS1_B3.Q)
 	# (!CA0 & CA1 & !CA2 & addr_in_REGS & EMS2_B3.Q)
 	# (!CA0 & !CA1 & CA2 & addr_in_REGS & CHIPA_Dc));
 
-D7 = ((!CA0 & !CA1 & !CA2 & addr_in_REGS & EMS1_A1.Q)
-	# (!CA0 & CA1 & !CA2 & addr_in_REGS & EMS2_A1.Q)
-	# (!CA0 & CA1 & CA2 & addr_in_REGS & RomMapped.Q));
-
 D6 = ((!CA0 & !CA1 & !CA2 & addr_in_REGS & EMS1_A0.Q)
 	# (!CA0 & CA1 & !CA2 & addr_in_REGS & EMS2_A0.Q)
 	# (!CA0 & CA1 & CA2 & addr_in_REGS & BootSrc));
 
+D4 = ((!CA0 & CA1 & !CA2 & addr_in_REGS & EMS2_B4.Q)
+	# (!CA0 & !CA1 & !CA2 & addr_in_REGS & EMS1_B4.Q));
+
+D7 = ((CA0 & CA1 & CA2 & addr_in_REGS & TIMER_EN.Q)
+	# (!CA0 & !CA1 & !CA2 & addr_in_REGS & EMS1_A1.Q)
+	# (!CA0 & CA1 & !CA2 & addr_in_REGS & EMS2_A1.Q)
+	# (!CA0 & CA1 & CA2 & addr_in_REGS & RomMapped.Q));
+
+!Dev_Sel_3 = ((!CA5 & !CA6 & !CA7 & addr_in_DEVS & !BA)
+	# (!CA5 & !CA6 & !CA7 & addr_in_DEVS & A_HALT & B_HALT));
+
 !Dev_Sel_1 = ((!CA5 & !CA6 & !CA7 & addr_in_DEVS & !BA)
+	# (!CA5 & !CA6 & !CA7 & addr_in_DEVS & A_HALT & B_HALT));
+
+!Dev_Sel_2 = ((!CA5 & !CA6 & !CA7 & addr_in_DEVS & !BA)
 	# (!CA5 & !CA6 & !CA7 & addr_in_DEVS & A_HALT & B_HALT));
 
 !Dev_Sel_4 = ((!CA5 & !CA6 & !CA7 & addr_in_DEVS & !BA)
@@ -800,112 +877,108 @@ D6 = ((!CA0 & !CA1 & !CA2 & addr_in_REGS & EMS1_A0.Q)
 !Dev_Sel_7 = ((!CA5 & !CA6 & !CA7 & addr_in_DEVS & !BA)
 	# (!CA5 & !CA6 & !CA7 & addr_in_DEVS & A_HALT & B_HALT));
 
-!Dev_Sel_2 = ((!CA5 & !CA6 & !CA7 & addr_in_DEVS & !BA)
-	# (!CA5 & !CA6 & !CA7 & addr_in_DEVS & A_HALT & B_HALT));
-
-!Dev_Sel_3 = ((!CA5 & !CA6 & !CA7 & addr_in_DEVS & !BA)
-	# (!CA5 & !CA6 & !CA7 & addr_in_DEVS & A_HALT & B_HALT));
-
 !Dev_Sel_5 = ((!CA5 & !CA6 & !CA7 & addr_in_DEVS & !BA)
 	# (!CA5 & !CA6 & !CA7 & addr_in_DEVS & A_HALT & B_HALT));
 
 !Dev_Sel_6 = ((!CA5 & !CA6 & !CA7 & addr_in_DEVS & !BA)
 	# (!CA5 & !CA6 & !CA7 & addr_in_DEVS & A_HALT & B_HALT));
 
-Com_Ctrl_262 = ((!CA0 & CA1 & CA2 & E & !Rw.PIN & addr_in_REGS & !BA)
+Com_Ctrl_332 = ((!CA0 & CA1 & CA2 & E & !Rw.PIN & addr_in_REGS & !BA)
 	# (!CA0 & CA1 & CA2 & E & !Rw.PIN & addr_in_REGS & A_HALT & B_HALT));
 
-Com_Ctrl_263 = ((!CA0 & CA1 & !CA2 & E & !Rw.PIN & addr_in_REGS & !BA)
+Com_Ctrl_333 = ((!CA0 & CA1 & !CA2 & E & !Rw.PIN & addr_in_REGS & !BA)
 	# (!CA0 & CA1 & !CA2 & E & !Rw.PIN & addr_in_REGS & A_HALT & B_HALT));
 
-Com_Ctrl_264 = ((!CA0 & !CA1 & !CA2 & E & !Rw.PIN & addr_in_REGS & !BA)
+Com_Ctrl_334 = ((!CA0 & !CA1 & !CA2 & E & !Rw.PIN & addr_in_REGS & !BA)
 	# (!CA0 & !CA1 & !CA2 & E & !Rw.PIN & addr_in_REGS & A_HALT & B_HALT));
 
-Com_Ctrl_265 = (!BA
+Com_Ctrl_335 = (!BA
 	# (A_HALT & B_HALT));
 
-Com_Ctrl_266 = ((E & Rw.PIN & addr_in_REGS & A_HALT & B_HALT)
+Com_Ctrl_336 = ((E & Rw.PIN & addr_in_REGS & A_HALT & B_HALT)
 	# (E & Rw.PIN & addr_in_REGS & !BA));
 
-!FB_267 = (A_HALT & B_HALT);
+!FB_337 = (BA & A_HALT & B_HALT);
 
-XXL_268 = ((CA12 & CA13)
+!FB_338 = (A_HALT & B_HALT);
+
+XXL_339 = ((CA12 & CA13)
 	# (CA12 & EMS2_B0.Q)
 	# (!CA12 & !CA14 & !CA13 & CA15 & EMS1_B0.Q)
 	# (CA12 & !CA15)
 	# (CA12 & CA14));
 
-XXL_269 = ((BA & !A_HALT & A_S_16.PIN)
+XXL_340 = ((BA & !A_HALT & A_S_16.PIN)
 	# (BA & A_HALT & !B_HALT & B_S_16.PIN)
 	# (CA12 & !CA13 & !CA14 & CA15 & A_HALT & B_HALT & EMS2_B4.Q)
 	# (!CA12 & !CA13 & !CA14 & CA15 & EMS1_B4.Q & A_HALT & B_HALT)
 	# (!CA12 & !CA13 & !CA14 & CA15 & EMS1_B4.Q & !BA));
 
-XXL_270 = ((CA12 & !CA13 & !CA14 & CA15 & !BA & EMS2_A0.Q)
+XXL_341 = ((CA12 & !CA13 & !CA14 & CA15 & !BA & EMS2_A0.Q)
 	# (CA12 & !CA13 & !CA14 & CA15 & !BA & EMS2_A1.Q)
 	# (CA12 & !CA13 & !CA14 & CA15 & A_HALT & B_HALT & EMS2_A0.Q)
 	# (!CA12 & !CA13 & !CA14 & CA15 & A_HALT & B_HALT & EMS1_A0.Q)
 	# (!CA12 & !CA13 & !CA14 & CA15 & A_HALT & B_HALT & EMS1_A1.Q));
 
-XXL_271 = ((CA14 & CA15 & !ROM_SIZE1.Q & !ROM_SIZE2.Q & RomMapped.Q & A_HALT & B_HALT)
+XXL_342 = ((CA14 & CA15 & !ROM_SIZE1.Q & !ROM_SIZE2.Q & RomMapped.Q & A_HALT & B_HALT)
 	# (CA15 & !BA & !ROM_SIZE1.Q & !ROM_SIZE2.Q & RomMapped.Q & CA13 & !ROM_SIZE0.Q)
 	# (!CA14 & CA15 & !BA & CA13 & !CA12 & !CA8 & !CA9 & !CA10 & !CA11)
 	# (!CA14 & CA15 & A_HALT & B_HALT & !CA13 & CA12 & EMS2_A1.Q)
 	# (CA14 & CA15 & !BA & !ROM_SIZE1.Q & !ROM_SIZE2.Q & RomMapped.Q));
 
-XXL_272 = ((CA13 & CA15 & CA14 & !ROM_SIZE2.Q & RomMapped.Q & !ROM_SIZE0.Q & !BA)
+XXL_343 = ((CA13 & CA15 & CA14 & !ROM_SIZE2.Q & RomMapped.Q & !ROM_SIZE0.Q & !BA)
 	# (CA13 & CA15 & A_HALT & B_HALT & CA14 & !ROM_SIZE2.Q & RomMapped.Q & !ROM_SIZE0.Q)
 	# (CA13 & CA15 & CA12 & CA14 & !ROM_SIZE2.Q & RomMapped.Q & !BA)
 	# (CA13 & CA15 & A_HALT & B_HALT & !ROM_SIZE2.Q & RomMapped.Q & !ROM_SIZE0.Q & !ROM_SIZE1.Q)
 	# (CA13 & CA15 & A_HALT & B_HALT & !CA12 & !CA14 & !CA8 & !CA9 & !CA10 & !CA11));
 
-XXL_273 = ((!CA12 & !CA13 & !CA14 & CA15 & !BA & EMS1_A1.Q)
+XXL_344 = ((!CA12 & !CA13 & !CA14 & CA15 & !BA & EMS1_A1.Q)
 	# (CA12 & CA13 & CA14 & CA15 & A_HALT & B_HALT & !ROM_SIZE2.Q & RomMapped.Q)
 	# (!CA12 & !CA13 & !CA14 & CA15 & !BA & EMS1_A0.Q));
 
-XXL_274 = ((!CA12 & !CA13 & !CA14 & !EMS1_A1.Q)
+XXL_345 = ((!CA12 & !CA13 & !CA14 & !EMS1_A1.Q)
 	# (CA12 & !CA13 & !CA14 & !EMS2_A0.Q)
 	# (CA12 & !CA13 & !CA14 & !EMS2_A1.Q)
 	# !CA15
 	# (!CA12 & !CA13 & !CA14 & !EMS1_A0.Q));
 
-XXL_275 = ((CA14 & !RomMapped.Q)
+XXL_346 = ((CA14 & !RomMapped.Q)
 	# (!CA14 & CA13 & !CA12 & !CA8 & !CA9 & !CA10 & !CA11)
 	# (!CA14 & CA13 & ROM_SIZE1.Q)
 	# (CA14 & !CA13 & ROM_SIZE1.Q)
 	# (CA14 & ROM_SIZE2.Q));
 
-XXL_276 = ((CA13 & ROM_SIZE2.Q)
+XXL_347 = ((CA13 & ROM_SIZE2.Q)
 	# (CA13 & !RomMapped.Q)
 	# (BA & !A_HALT)
 	# (CA13 & ROM_SIZE0.Q & !CA12 & ROM_SIZE1.Q)
 	# (CA13 & ROM_SIZE0.Q & !CA14));
 
-XXL_277 = ((CA0 & !CA1 & !CA2 & !CHIPA_C & EMS1_A0.Q & !EMS1_A1.Q)
+XXL_348 = ((CA0 & !CA1 & !CA2 & !CHIPA_C & EMS1_A0.Q & !EMS1_A1.Q)
 	# (CA0 & CA2 & !CHIPB_C)
 	# (CA0 & !CA1 & !EMS1_A0.Q & EMS1_A1.Q & !CHIPB_C)
 	# (!CA0 & !CA1 & !CA2 & !EMS1_B0.Q)
 	# (!CA0 & !CA1 & CA2 & !CHIPA_C));
 
-XXL_278 = ((CA1 & CA0 & !CHIPA_C & EMS2_A0.Q & !EMS2_A1.Q)
+XXL_349 = ((CA1 & CA0 & !CHIPA_C & EMS2_A0.Q & !EMS2_A1.Q)
 	# (CA1 & CA0 & !EMS2_A0.Q & EMS2_A1.Q & !CHIPB_C)
 	# !addr_in_REGS
 	# (CA1 & !CA2 & !CA0 & !EMS2_B0.Q)
 	# (CA1 & CA2 & !ROM_SIZE0.Q));
 
-XXL_279 = ((CA0 & !CA1 & CA2 & addr_in_REGS & CHIPB_A)
+XXL_350 = ((CA0 & !CA1 & CA2 & addr_in_REGS & CHIPB_A)
 	# (!CA0 & CA1 & CA2 & addr_in_REGS & ROM_SIZE1.Q)
 	# (!CA0 & !CA1 & !CA2 & addr_in_REGS & EMS1_B1.Q)
 	# (!CA0 & CA1 & !CA2 & addr_in_REGS & EMS2_B1.Q)
 	# (!CA0 & !CA1 & CA2 & addr_in_REGS & CHIPA_A));
 
-XXL_280 = ((!CA0 & CA1 & addr_in_REGS & !CA2 & EMS2_B2.Q)
+XXL_351 = ((!CA0 & CA1 & addr_in_REGS & !CA2 & EMS2_B2.Q)
 	# (CA0 & CA1 & addr_in_REGS & !CA2 & B_SHARE_REQUEST & !EMS2_A0.Q & EMS2_A1.Q)
 	# (CA0 & CA1 & addr_in_REGS & !CA2 & A_SHARE_REQUEST & EMS2_A0.Q & !EMS2_A1.Q)
 	# (!CA0 & !CA1 & addr_in_REGS & CA2 & A_SHARE_REQUEST)
 	# (CA0 & !CA1 & addr_in_REGS & EMS1_A0.Q & !EMS1_A1.Q & !CA2 & A_SHARE_REQUEST));
 
-XXL_281 = ((!CA0 & CA1 & addr_in_REGS & CA2 & ROM_SIZE2.Q)
+XXL_352 = ((!CA0 & CA1 & addr_in_REGS & CA2 & ROM_SIZE2.Q)
 	# (!CA0 & !CA1 & addr_in_REGS & !CA2 & EMS1_B2.Q)
 	# (CA0 & !CA1 & addr_in_REGS & B_SHARE_REQUEST & !EMS1_A0.Q & EMS1_A1.Q)
 	# (CA0 & !CA1 & addr_in_REGS & B_SHARE_REQUEST & CA2));
@@ -920,121 +993,171 @@ B_S_16.OE = ((CA12 & !CA13 & !CA14 & CA15 & CHIPB_C & A_HALT & B_HALT & !EMS2_A0
 	# (!CA12 & !CA13 & !CA14 & CA15 & CHIPB_C & !EMS1_A0.Q & EMS1_A1.Q & A_HALT & B_HALT)
 	# (!CA12 & !CA13 & !CA14 & CA15 & CHIPB_C & !EMS1_A0.Q & EMS1_A1.Q & !BA));
 
-D5.OE = Com_Ctrl_266;
+CNT0.C = E;
+
+CNT0.AR = !Reset;
+
+CNT1.C = CNT0.Q;
+
+CNT1.AR = !Reset;
+
+CNT2.C = CNT1.Q;
+
+CNT2.AR = !Reset;
+
+CNT3.C = CNT2.Q;
+
+CNT3.AR = !Reset;
+
+CNT4.C = CNT3.Q;
+
+CNT4.AR = !Reset;
+
+CNT5.C = CNT4.Q;
+
+CNT5.AR = !Reset;
+
+CNT6.C = CNT5.Q;
+
+CNT6.AR = !Reset;
+
+CNT7.C = CNT6.Q;
+
+CNT7.AR = !Reset;
+
+CNT8.C = CNT7.Q;
+
+CNT8.AR = !Reset;
+
+CNT9.C = CNT8.Q;
+
+CNT9.AR = !Reset;
+
+CNT10.C = CNT9.Q;
+
+CNT10.AR = !Reset;
+
+CNT11.C = CNT10.Q;
+
+CNT11.AR = !Reset;
+
+D5.OE = Com_Ctrl_336;
+
+Dev_FIRQ.OE = (CNT3.Q & CNT4.Q & CNT5.Q & CNT6.Q & CNT7.Q & CNT8.Q & CNT9.Q & CNT10.Q & CNT11.Q & TIMER_EN.Q);
 
 EMS1_A0.C = !Q;
 
 EMS1_A0.AR = !Reset;
 
-EMS1_A0.CE = Com_Ctrl_264;
+EMS1_A0.CE = Com_Ctrl_334;
 
 EMS1_A1.C = !Q;
 
 EMS1_A1.AR = !Reset;
 
-EMS1_A1.CE = Com_Ctrl_264;
+EMS1_A1.CE = Com_Ctrl_334;
 
 EMS1_B0.C = !Q;
 
 EMS1_B0.AR = !Reset;
 
-EMS1_B0.CE = Com_Ctrl_264;
+EMS1_B0.CE = Com_Ctrl_334;
 
 EMS1_B1.C = !Q;
 
 EMS1_B1.AR = !Reset;
 
-EMS1_B1.CE = Com_Ctrl_264;
+EMS1_B1.CE = Com_Ctrl_334;
 
 EMS1_B2.C = !Q;
 
 EMS1_B2.AR = !Reset;
 
-EMS1_B2.CE = Com_Ctrl_264;
+EMS1_B2.CE = Com_Ctrl_334;
 
 EMS1_B3.C = !Q;
 
 EMS1_B3.AP = !Reset;
 
-EMS1_B3.CE = Com_Ctrl_264;
+EMS1_B3.CE = Com_Ctrl_334;
 
 EMS1_B4.C = !Q;
 
 EMS1_B4.AR = !Reset;
 
-EMS1_B4.CE = Com_Ctrl_264;
+EMS1_B4.CE = Com_Ctrl_334;
 
 EMS2_A0.C = !Q;
 
 EMS2_A0.AR = !Reset;
 
-EMS2_A0.CE = Com_Ctrl_263;
+EMS2_A0.CE = Com_Ctrl_333;
 
 EMS2_A1.C = !Q;
 
 EMS2_A1.AR = !Reset;
 
-EMS2_A1.CE = Com_Ctrl_263;
+EMS2_A1.CE = Com_Ctrl_333;
 
 EMS2_B0.C = !Q;
 
 EMS2_B0.AR = !Reset;
 
-EMS2_B0.CE = Com_Ctrl_263;
-
-EMS2_B2.C = !Q;
-
-EMS2_B2.AR = !Reset;
-
-EMS2_B2.CE = Com_Ctrl_263;
+EMS2_B0.CE = Com_Ctrl_333;
 
 EMS2_B1.C = !Q;
 
 EMS2_B1.AR = !Reset;
 
-EMS2_B1.CE = Com_Ctrl_263;
+EMS2_B1.CE = Com_Ctrl_333;
+
+EMS2_B2.C = !Q;
+
+EMS2_B2.AR = !Reset;
+
+EMS2_B2.CE = Com_Ctrl_333;
 
 EMS2_B3.C = !Q;
 
 EMS2_B3.AP = !Reset;
 
-EMS2_B3.CE = Com_Ctrl_263;
+EMS2_B3.CE = Com_Ctrl_333;
 
 EMS2_B4.C = !Q;
 
 EMS2_B4.AR = !Reset;
 
-EMS2_B4.CE = Com_Ctrl_263;
+EMS2_B4.CE = Com_Ctrl_333;
 
-GA12.OE = Com_Ctrl_265;
+GA13.OE = Com_Ctrl_335;
 
-GA13.OE = Com_Ctrl_265;
+GA12.OE = Com_Ctrl_335;
 
-GA14.OE = Com_Ctrl_265;
+GA15.OE = Com_Ctrl_335;
 
-GA15.OE = Com_Ctrl_265;
+GA14.OE = Com_Ctrl_335;
 
-XXL_220.OE = FB_267;
+XXL_276.OE = FB_338;
 
-XXL_218.OE = Com_Ctrl_265;
+XXL_274.OE = FB_337;
 
 ROM_SIZE0.C = !Q;
 
 ROM_SIZE0.AR = !Reset;
 
-ROM_SIZE0.CE = Com_Ctrl_262;
+ROM_SIZE0.CE = Com_Ctrl_332;
 
 ROM_SIZE1.C = !Q;
 
 ROM_SIZE1.AR = !Reset;
 
-ROM_SIZE1.CE = Com_Ctrl_262;
+ROM_SIZE1.CE = Com_Ctrl_332;
 
 ROM_SIZE2.C = !Q;
 
 ROM_SIZE2.AR = !Reset;
 
-ROM_SIZE2.CE = Com_Ctrl_262;
+ROM_SIZE2.CE = Com_Ctrl_332;
 
 RomMapped.C = !Q;
 
@@ -1042,24 +1165,31 @@ RomMapped.AR = (!BootSrc & !Reset);
 
 RomMapped.AP = (BootSrc & !Reset);
 
-RomMapped.CE = Com_Ctrl_262;
+RomMapped.CE = Com_Ctrl_332;
 
 Rw.OE = ((BA & !A_HALT)
 	# (BA & !B_HALT));
 
-D0.OE = Com_Ctrl_266;
+TIMER_EN.C = !Q;
 
-D1.OE = Com_Ctrl_266;
+TIMER_EN.AR = !Reset;
 
-D4.OE = Com_Ctrl_266;
+TIMER_EN.CE = ((CA0 & CA1 & CA2 & E & !Rw.PIN & addr_in_REGS & !BA)
+	# (CA0 & CA1 & CA2 & E & !Rw.PIN & addr_in_REGS & A_HALT & B_HALT));
 
-D2.OE = Com_Ctrl_266;
+D0.OE = Com_Ctrl_336;
 
-D3.OE = Com_Ctrl_266;
+D2.OE = Com_Ctrl_336;
 
-D7.OE = Com_Ctrl_266;
+D1.OE = Com_Ctrl_336;
 
-D6.OE = Com_Ctrl_266;
+D3.OE = Com_Ctrl_336;
+
+D6.OE = Com_Ctrl_336;
+
+D4.OE = Com_Ctrl_336;
+
+D7.OE = Com_Ctrl_336;
 
 
 TQFP100 Pin/Node Placement:
@@ -1126,6 +1256,7 @@ Pin 72 = Dev_Sel_5; /* MC 110 */
 Pin 73 = TDO; /* MC 112 */ 
 Pin 75 = Dev_Sel_6; /* MC 113 */ 
 Pin 76 = Dev_Sel_7; /* MC 115 */ 
+Pin 80 = Dev_FIRQ; /* MC 121 */ 
 Pin 84 = BootSrc; /* MC 126 */ 
 Pin 85 = RomMapped; /* MC 128 */ 
 Pin 87 = E;
@@ -1140,58 +1271,73 @@ Pin 97 = D2; /* MC  9 */
 Pin 98 = D3; /* MC  8 */
 Pin 99 = D4; /* MC  6 */
 Pin 100 = D5; /* MC  5 */
-PINNODE 325 = FB_267; /* MC 25 Foldback */
-PINNODE 612 = Rw.OE; /* MC 12 Feedback */
-PINNODE 615 = Com_Ctrl_265; /* MC 15 Feedback */
-PINNODE 618 = addr_in_DEVS; /* MC 18 Feedback */
-PINNODE 619 = Com_Ctrl_266; /* MC 19 Feedback */
-PINNODE 620 = XXL_220; /* MC 20 Feedback */
-PINNODE 621 = XXL_273; /* MC 21 Feedback */
+PINNODE 324 = FB_338; /* MC 24 Foldback */
+PINNODE 325 = FB_337; /* MC 25 Foldback */
+PINNODE 607 = CNT0; /* MC 7 Feedback */
+PINNODE 610 = CNT1; /* MC 10 Feedback */
+PINNODE 612 = Com_Ctrl_335; /* MC 12 Feedback */
+PINNODE 615 = Rw.OE; /* MC 15 Feedback */
+PINNODE 617 = addr_in_DEVS; /* MC 17 Feedback */
+PINNODE 618 = XXL_276; /* MC 18 Feedback */
+PINNODE 619 = XXL_344; /* MC 19 Feedback */
+PINNODE 620 = CHIPA_C; /* MC 20 Feedback */
+PINNODE 621 = A_S_16.OE; /* MC 21 Feedback */
 PINNODE 622 = B_S_16.OE; /* MC 22 Feedback */
-PINNODE 623 = A_S_16.OE; /* MC 23 Feedback */
-PINNODE 626 = XXL_275; /* MC 26 Feedback */
-PINNODE 627 = XXL_274; /* MC 27 Feedback */
-PINNODE 628 = XXL_276; /* MC 28 Feedback */
-PINNODE 629 = XXL_270; /* MC 29 Feedback */
-PINNODE 630 = XXL_269; /* MC 30 Feedback */
-PINNODE 631 = XXL_271; /* MC 31 Feedback */
-PINNODE 632 = XXL_272; /* MC 32 Feedback */
+PINNODE 623 = XXL_345; /* MC 23 Feedback */
+PINNODE 626 = XXL_346; /* MC 26 Feedback */
+PINNODE 627 = XXL_347; /* MC 27 Feedback */
+PINNODE 628 = XXL_340; /* MC 28 Feedback */
+PINNODE 629 = XXL_341; /* MC 29 Feedback */
+PINNODE 630 = XXL_343; /* MC 30 Feedback */
+PINNODE 631 = XXL_342; /* MC 31 Feedback */
+PINNODE 632 = XXL_274; /* MC 32 Feedback */
 PINNODE 644 = addr_in_REGS; /* MC 44 Feedback */
-PINNODE 645 = CHIPB_C; /* MC 45 Feedback */
-PINNODE 646 = CHIPA_C; /* MC 46 Feedback */
-PINNODE 647 = XXL_268; /* MC 47 Feedback */
-PINNODE 648 = XXL_277; /* MC 48 Feedback */
-PINNODE 651 = CHIPB_Dm; /* MC 51 Feedback */
-PINNODE 652 = CHIPB_A; /* MC 52 Feedback */
-PINNODE 655 = CHIPA_Dm; /* MC 55 Feedback */
-PINNODE 658 = CHIPA_A; /* MC 58 Feedback */
-PINNODE 659 = Com_Ctrl_264; /* MC 59 Feedback */
-PINNODE 660 = Com_Ctrl_262; /* MC 60 Feedback */
-PINNODE 661 = Com_Ctrl_263; /* MC 61 Feedback */
-PINNODE 662 = XXL_281; /* MC 62 Feedback */
-PINNODE 663 = XXL_278; /* MC 63 Feedback */
-PINNODE 664 = XXL_280; /* MC 64 Feedback */
-PINNODE 674 = CHIPB_Dc; /* MC 74 Feedback */
-PINNODE 676 = CHIPA_Dc; /* MC 76 Feedback */
-PINNODE 679 = XXL_218; /* MC 79 Feedback */
-PINNODE 696 = XXL_279; /* MC 96 Feedback */
-PINNODE 698 = EMS1_B2; /* MC 98 Feedback */
-PINNODE 700 = EMS1_B1; /* MC 100 Feedback */
-PINNODE 703 = EMS1_B0; /* MC 103 Feedback */
-PINNODE 706 = EMS1_A1; /* MC 106 Feedback */
-PINNODE 708 = EMS1_A0; /* MC 108 Feedback */
-PINNODE 711 = EMS2_B3; /* MC 111 Feedback */
-PINNODE 712 = EMS1_B3; /* MC 112 Feedback */
-PINNODE 714 = EMS2_A0; /* MC 114 Feedback */
-PINNODE 716 = EMS2_B0; /* MC 116 Feedback */
-PINNODE 719 = EMS1_B4; /* MC 119 Feedback */
-PINNODE 721 = EMS2_B4; /* MC 121 Feedback */
-PINNODE 722 = ROM_SIZE2; /* MC 122 Feedback */
-PINNODE 723 = EMS2_B2; /* MC 123 Feedback */
-PINNODE 724 = ROM_SIZE1; /* MC 124 Feedback */
-PINNODE 725 = EMS2_B1; /* MC 125 Feedback */
-PINNODE 726 = EMS2_A1; /* MC 126 Feedback */
-PINNODE 727 = ROM_SIZE0; /* MC 127 Feedback */
+PINNODE 645 = CHIPB_A; /* MC 45 Feedback */
+PINNODE 646 = CHIPB_C; /* MC 46 Feedback */
+PINNODE 647 = XXL_348; /* MC 47 Feedback */
+PINNODE 648 = XXL_351; /* MC 48 Feedback */
+PINNODE 650 = CHIPA_A; /* MC 50 Feedback */
+PINNODE 651 = CHIPA_Dm; /* MC 51 Feedback */
+PINNODE 652 = CHIPB_Dm; /* MC 52 Feedback */
+PINNODE 655 = Com_Ctrl_334; /* MC 55 Feedback */
+PINNODE 658 = Com_Ctrl_333; /* MC 58 Feedback */
+PINNODE 659 = Com_Ctrl_336; /* MC 59 Feedback */
+PINNODE 660 = Com_Ctrl_332; /* MC 60 Feedback */
+PINNODE 661 = TIMER_EN.CE; /* MC 61 Feedback */
+PINNODE 662 = XXL_352; /* MC 62 Feedback */
+PINNODE 663 = XXL_349; /* MC 63 Feedback */
+PINNODE 664 = XXL_350; /* MC 64 Feedback */
+PINNODE 666 = EMS1_A0; /* MC 66 Feedback */
+PINNODE 668 = CHIPB_Dc; /* MC 68 Feedback */
+PINNODE 671 = CHIPA_Dc; /* MC 71 Feedback */
+PINNODE 674 = EMS1_B3; /* MC 74 Feedback */
+PINNODE 676 = EMS2_B3; /* MC 76 Feedback */
+PINNODE 679 = XXL_339; /* MC 79 Feedback */
+PINNODE 682 = EMS2_B0; /* MC 82 Feedback */
+PINNODE 684 = EMS2_B1; /* MC 84 Feedback */
+PINNODE 685 = EMS2_A1; /* MC 85 Feedback */
+PINNODE 686 = EMS2_A0; /* MC 86 Feedback */
+PINNODE 687 = EMS1_B4; /* MC 87 Feedback */
+PINNODE 690 = EMS1_B2; /* MC 90 Feedback */
+PINNODE 692 = EMS1_B0; /* MC 92 Feedback */
+PINNODE 695 = EMS1_A1; /* MC 95 Feedback */
+PINNODE 696 = EMS1_B1; /* MC 96 Feedback */
+PINNODE 698 = CNT3; /* MC 98 Feedback */
+PINNODE 700 = ROM_SIZE2; /* MC 100 Feedback */
+PINNODE 703 = TIMER_EN; /* MC 103 Feedback */
+PINNODE 706 = ROM_SIZE1; /* MC 106 Feedback */
+PINNODE 708 = ROM_SIZE0; /* MC 108 Feedback */
+PINNODE 711 = EMS2_B4; /* MC 111 Feedback */
+PINNODE 712 = EMS2_B2; /* MC 112 Feedback */
+PINNODE 714 = CNT10; /* MC 114 Feedback */
+PINNODE 716 = CNT9; /* MC 116 Feedback */
+PINNODE 719 = CNT7; /* MC 119 Feedback */
+PINNODE 722 = CNT8; /* MC 122 Feedback */
+PINNODE 723 = CNT2; /* MC 123 Feedback */
+PINNODE 724 = CNT6; /* MC 124 Feedback */
+PINNODE 725 = CNT11; /* MC 125 Feedback */
+PINNODE 726 = CNT5; /* MC 126 Feedback */
+PINNODE 727 = CNT4; /* MC 127 Feedback */
 
 ** Resource Usage **
 
@@ -1211,38 +1357,38 @@ DCERP Field = Summary of Allocations.
 For input only = INPUT.
 
 MCell Pin# Oe   PinDrive        DCERP  FBDrive      DCERP  Foldback  CascadeOut     TotPT output_slew
-MC1   2    PT   D7              C----  --                  --        --             4     slow
+MC1   2    PT   D7              C----  --                  NA        --             5     slow
 MC2   0         --                     --                  --        --             0     slow
 MC3   1    PT   D6              C----  --                  --        --             4     slow
 MC4   0         --                     --                  --        --             0     slow
 MC5   100  PT   D5              C----  --                  --        --             1     slow
 MC6   99   PT   D4              C----  --                  --        --             3     slow
-MC7   0         --                     --                  --        --             0     slow
+MC7   0         --                     CNT0         Tg-g-  --        --             0     slow
 MC8   98   PT   D3              C----  --                  NA        --             5     slow
 MC9   97   PT   D2              C----  --                  --        --             3     slow
-MC10  0         --                     --                  --        --             0     slow
+MC10  0         --                     CNT1         Tc-g-  --        --             1     slow
 MC11  96   PT   D1              C----  --                  --        --             2     slow
-MC12  0         --                     Rw.OE        C----  --        --             2     slow
+MC12  0         --                     Com_Ctrl_335 C----  --        --             2     slow
 MC13  94   PT   D0              C----  --                  --        --             4     slow
 MC14  93   PT   Rw              C----  --                  --        --             3     slow
-MC15  0         --                     Com_Ctrl_265 C----  --        --             2     slow
+MC15  0         --                     Rw.OE        C----  --        --             2     slow
 MC16  92   on   HALT            C----  --                  --        --             1     slow
-MC17  14   --   CA8             INPUT  --                  --        --             0     slow
-MC18  0         --                     addr_in_DEVS C----  --        --             1     slow
-MC19  13   --   CA7             INPUT  Com_Ctrl_266 C----  --        --             2     slow
-MC20  0    PT   --                     XXL_220      C----  --        --             2     slow
-MC21  12   --   CA6             INPUT  XXL_273      C----  --        --             3     slow
+MC17  14   --   CA8             INPUT  addr_in_DEVS C----  --        --             1     slow
+MC18  0    PT   --                     XXL_276      C----  --        --             2     slow
+MC19  13   --   CA7             INPUT  XXL_344      C----  --        --             3     slow
+MC20  0         --                     CHIPA_C      C----  --        --             4     slow
+MC21  12   --   CA6             INPUT  A_S_16.OE    C----  --        --             4     slow
 MC22  10   --   CA5             INPUT  B_S_16.OE    C----  --        --             4     slow
-MC23  0         --                     A_S_16.OE    C----  --        --             4     slow
-MC24  9         --                     --                  --        --             0     slow
-MC25  8         --                     --                  FB_267    --             1     slow
-MC26  0         --                     XXL_275      C----  NA        --             5     slow
-MC27  7    --   CA2             INPUT  XXL_274      C----  NA        --             5     slow
-MC28  0         --                     XXL_276      C----  NA        --             5     slow
-MC29  6    --   CA1             INPUT  XXL_270      C----  NA        --             5     slow
-MC30  5    --   CA0             INPUT  XXL_269      C----  NA        --             5     slow
-MC31  0         --                     XXL_271      C----  NA        --             5     slow
-MC32  4    --   TDI             INPUT  XXL_272      C----  NA        --             5     slow
+MC23  0         --                     XXL_345      C----  NA        --             5     slow
+MC24  9         --                     --                  FB_338    --             1     slow
+MC25  8         --                     --                  FB_337    --             1     slow
+MC26  0         --                     XXL_346      C----  NA        --             5     slow
+MC27  7    --   CA2             INPUT  XXL_347      C----  NA        --             5     slow
+MC28  0         --                     XXL_340      C----  NA        --             5     slow
+MC29  6    --   CA1             INPUT  XXL_341      C----  NA        --             5     slow
+MC30  5    --   CA0             INPUT  XXL_343      C----  NA        --             5     slow
+MC31  0         --                     XXL_342      C----  NA        --             5     slow
+MC32  4    PT   TDI             INPUT  XXL_274      C----  NA        --             5     slow
 MC33  25   PT   B_S_16          C----  --                  --        --             3     slow
 MC34  0         --                     --                  --        --             0     slow
 MC35  24   PT   A_S_16          C----  --                  --        --             3     slow
@@ -1255,89 +1401,89 @@ MC41  20   --   CA12            INPUT  --                  --        --         
 MC42  0         --                     --                  --        --             0     slow
 MC43  19   --   CA11            INPUT  --                  --        --             0     slow
 MC44  0         --                     addr_in_REGS C----  --        --             1     slow
-MC45  17   --   CA10            INPUT  CHIPB_C      C----  --        --             4     slow
-MC46  16   --   CA9             INPUT  CHIPA_C      C----  --        --             4     slow
-MC47  0         --                     XXL_268      C----  NA        --             5     slow
-MC48  15   --   TMS             INPUT  XXL_277      C----  NA        --             5     slow
+MC45  17   --   CA10            INPUT  CHIPB_A      C----  --        --             2     slow
+MC46  16   --   CA9             INPUT  CHIPB_C      C----  --        --             4     slow
+MC47  0         --                     XXL_348      C----  NA        --             5     slow
+MC48  15   --   TMS             INPUT  XXL_351      C----  NA        --             5     slow
 MC49  37   --   B_SHARE_REQUEST INPUT  --                  --        --             0     slow
-MC50  0         --                     --                  --        --             0     slow
-MC51  36   --   A_SHARE_REQUEST INPUT  CHIPB_Dm     C----  --        --             2     slow
-MC52  0         --                     CHIPB_A      C----  --        --             2     slow
+MC50  0         --                     CHIPA_A      C----  --        --             2     slow
+MC51  36   --   A_SHARE_REQUEST INPUT  CHIPA_Dm     C----  --        --             2     slow
+MC52  0         --                     CHIPB_Dm     C----  --        --             2     slow
 MC53  35   on   B_SHARE_GRANTED C----  --                  --        --             1     slow
 MC54  33   on   A_SHARE_GRANTED C----  --                  --        --             1     slow
-MC55  0         --                     CHIPA_Dm     C----  --        --             2     slow
+MC55  0         --                     Com_Ctrl_334 C----  --        --             2     slow
 MC56  32   on   B_SHARE_DIRTY   C----  --                  --        --             4     slow
 MC57  31   on   A_SHARE_DIRTY   C----  --                  NA        --             5     slow
-MC58  0         --                     CHIPA_A      C----  --        --             2     slow
-MC59  30   --   B_READ          INPUT  Com_Ctrl_264 C----  --        --             2     slow
-MC60  0         --                     Com_Ctrl_262 C----  --        --             2     slow
-MC61  29   --   A_READ          INPUT  Com_Ctrl_263 C----  --        --             2     slow
-MC62  28   --   B_HALT          INPUT  XXL_281      C----  --        --             4     slow
-MC63  0         --                     XXL_278      C----  NA        --             5     slow
-MC64  27   --   A_HALT          INPUT  XXL_280      C----  NA        --             5     slow
+MC58  0         --                     Com_Ctrl_333 C----  --        --             2     slow
+MC59  30   --   B_READ          INPUT  Com_Ctrl_336 C----  --        --             2     slow
+MC60  0         --                     Com_Ctrl_332 C----  --        --             2     slow
+MC61  29   --   A_READ          INPUT  TIMER_EN.CE  C----  --        --             2     slow
+MC62  28   --   B_HALT          INPUT  XXL_352      C----  --        --             4     slow
+MC63  0         --                     XXL_349      C----  NA        --             5     slow
+MC64  27   --   A_HALT          INPUT  XXL_350      C----  NA        --             5     slow
 MC65  40   on   A_S_SELECT      C----  --                  --        --             3     slow
-MC66  0         --                     --                  --        --             0     slow
+MC66  0         --                     EMS1_A0      Dgeg-  --        --             2     slow
 MC67  41   on   B_S_SELECT      C----  --                  --        --             3     slow
-MC68  0         --                     --                  --        --             0     slow
+MC68  0         --                     CHIPB_Dc     C----  --        --             2     slow
 MC69  42   on   A_S_READ        C----  --                  --        --             3     slow
 MC70  44   on   B_S_READ        C----  --                  --        --             3     slow
-MC71  0         --                     --                  --        --             0     slow
+MC71  0         --                     CHIPA_Dc     C----  --        --             2     slow
 MC72  45   on   A_S_WRITE       C----  --                  --        --             3     slow
 MC73  46   on   B_S_WRITE       C----  --                  --        --             3     slow
-MC74  0         --                     CHIPB_Dc     C----  --        --             2     slow
-MC75  47   on   A_G_ENABLE      C----  --                  --        --             3     slow
-MC76  0         --                     CHIPA_Dc     C----  --        --             2     slow
-MC77  48   on   B_G_ENABLE      C----  --                  --        --             3     slow
+MC74  0         --                     EMS1_B3      Dge-p  --        --             3     slow
+MC75  47   on   A_G_ENABLE      C----  --                  NA        --             5     slow
+MC76  0         --                     EMS2_B3      Dge-p  --        --             3     slow
+MC77  48   on   B_G_ENABLE      C----  --                  NA        --             5     slow
 MC78  49   on   A_G_A_DIR       C----  --                  --        --             2     slow
-MC79  0    PT   --                     XXL_218      C----  NA        --             5     slow
+MC79  0         --                     XXL_339      C----  NA        --             5     slow
 MC80  50   on   B_G_A_DIR       C----  --                  --        --             2     slow
 MC81  52   on   A_G_D_DIR       C----  --                  --        --             3     slow
-MC82  0         --                     --                  --        --             0     slow
+MC82  0         --                     EMS2_B0      Dgeg-  --        --             2     slow
 MC83  53   on   B_G_D_DIR       C----  --                  --        --             3     slow
-MC84  0         --                     --                  --        --             0     slow
-MC85  54   --   A_SHARE_SELECT  INPUT  --                  --        --             0     slow
-MC86  55   --   B_SHARE_SELECT  INPUT  --                  --        --             0     slow
-MC87  0         --                     --                  --        --             0     slow
+MC84  0         --                     EMS2_B1      Dgeg-  --        --             2     slow
+MC85  54   --   A_SHARE_SELECT  INPUT  EMS2_A1      Dgeg-  --        --             2     slow
+MC86  55   --   B_SHARE_SELECT  INPUT  EMS2_A0      Dgeg-  --        --             2     slow
+MC87  0         --                     EMS1_B4      Dgeg-  --        --             2     slow
 MC88  56   on   GA16            C----  --                  --        --             2     slow
 MC89  57   PT   GA15            C----  --                  --        --             4     slow
-MC90  0         --                     --                  --        --             0     slow
+MC90  0         --                     EMS1_B2      Dgeg-  --        --             2     slow
 MC91  58   PT   GA14            C----  --                  --        --             4     slow
-MC92  0         --                     --                  --        --             0     slow
+MC92  0         --                     EMS1_B0      Dgeg-  --        --             2     slow
 MC93  60   PT   GA13            C----  --                  --        --             4     slow
 MC94  61   PT   GA12            C----  --                  --        --             2     slow
-MC95  0         --                     --                  --        --             0     slow
-MC96  62   --   TCK             INPUT  XXL_279      C----  NA        --             5     slow
+MC95  0         --                     EMS1_A1      Dgeg-  --        --             2     slow
+MC96  62   --   TCK             INPUT  EMS1_B1      Dgeg-  --        --             2     slow
 MC97  63   on   Read            C----  --                  --        --             1     slow
-MC98  0         --                     EMS1_B2      Dgeg-  --        --             2     slow
+MC98  0         --                     CNT3         Tc-g-  --        --             1     slow
 MC99  64   on   Write           C----  --                  --        --             1     slow
-MC100 0         --                     EMS1_B1      Dgeg-  --        --             2     slow
+MC100 0         --                     ROM_SIZE2    Dgeg-  --        --             2     slow
 MC101 65   on   ROM             C----  --                  --        --             4     slow
 MC102 67   on   RAM             C----  --                  --        --             1     slow
-MC103 0         --                     EMS1_B0      Dgeg-  --        --             2     slow
+MC103 0         --                     TIMER_EN     Dgeg-  --        --             2     slow
 MC104 68   on   Dev_Sel_1       C----  --                  --        --             2     slow
 MC105 69   on   Dev_Sel_2       C----  --                  --        --             2     slow
-MC106 0         --                     EMS1_A1      Dgeg-  --        --             2     slow
+MC106 0         --                     ROM_SIZE1    Dgeg-  --        --             2     slow
 MC107 70   on   Dev_Sel_3       C----  --                  --        --             2     slow
-MC108 0         --                     EMS1_A0      Dgeg-  --        --             2     slow
+MC108 0         --                     ROM_SIZE0    Dgeg-  --        --             2     slow
 MC109 71   on   Dev_Sel_4       C----  --                  --        --             2     slow
 MC110 72   on   Dev_Sel_5       C----  --                  --        --             2     slow
-MC111 0         --                     EMS2_B3      Dge-p  --        --             3     slow
-MC112 73   --   TDO             INPUT  EMS1_B3      Dge-p  --        --             3     slow
+MC111 0         --                     EMS2_B4      Dgeg-  --        --             2     slow
+MC112 73   --   TDO             INPUT  EMS2_B2      Dgeg-  --        --             2     slow
 MC113 75   on   Dev_Sel_6       C----  --                  --        --             2     slow
-MC114 0         --                     EMS2_A0      Dgeg-  --        --             2     slow
+MC114 0         --                     CNT10        Tc-g-  --        --             1     slow
 MC115 76   on   Dev_Sel_7       C----  --                  --        --             2     slow
-MC116 0         --                     EMS2_B0      Dgeg-  --        --             2     slow
+MC116 0         --                     CNT9         Tc-g-  --        --             1     slow
 MC117 77        --                     --                  --        --             0     slow
 MC118 78        --                     --                  --        --             0     slow
-MC119 0         --                     EMS1_B4      Dgeg-  --        --             2     slow
+MC119 0         --                     CNT7         Tc-g-  --        --             1     slow
 MC120 79        --                     --                  --        --             0     slow
-MC121 80        --                     EMS2_B4      Dgeg-  --        --             2     slow
-MC122 0         --                     ROM_SIZE2    Dgeg-  --        --             2     slow
-MC123 81        --                     EMS2_B2      Dgeg-  --        --             2     slow
-MC124 0         --                     ROM_SIZE1    Dgeg-  --        --             2     slow
-MC125 83        --                     EMS2_B1      Dgeg-  --        --             2     slow
-MC126 84   --   BootSrc         INPUT  EMS2_A1      Dgeg-  --        --             2     slow
-MC127 0         --                     ROM_SIZE0    Dgeg-  --        --             2     slow
+MC121 80   PT   Dev_FIRQ        C----  --                  --        --             1     slow
+MC122 0         --                     CNT8         Tc-g-  --        --             1     slow
+MC123 81        --                     CNT2         Tc-g-  --        --             1     slow
+MC124 0         --                     CNT6         Tc-g-  --        --             1     slow
+MC125 83        --                     CNT11        Tc-g-  --        --             1     slow
+MC126 84   --   BootSrc         INPUT  CNT5         Tc-g-  --        --             1     slow
+MC127 0         --                     CNT4         Tc-g-  --        --             1     slow
 MC128 85   on   RomMapped       Dgerp  --                  --        --             4     slow
 MC0   90        Q               INPUT  --                  --        --             0     slow
 MC0   89        Reset           INPUT  --                  --        --             0     slow
@@ -1345,25 +1491,25 @@ MC0   88        BA              INPUT  --                  --        --         
 MC0   87        E               INPUT  --                  --        --             0     slow
 
 Logic Array Block	Logic Cells	I/O Pins	Foldbacks	TotalPT		FanIN	Cascades
-A: LC1	- LC16		12/16(75%)	10/16(62%)	0/16(0%)	34/80(42%)	(29)	0
-B: LC17	- LC32		13/16(81%)	8/16(50%)	1/16(6%)	52/80(65%)	(28)	0
-C: LC33	- LC48		7/16(43%)	10/16(62%)	0/16(0%)	25/80(31%)	(29)	0
-D: LC49	- LC64		14/16(87%)	10/16(62%)	0/16(0%)	39/80(48%)	(29)	0
-E: LC65	- LC80		13/16(81%)	10/16(62%)	0/16(0%)	37/80(46%)	(29)	0
-F: LC81	- LC96		8/16(50%)	10/16(62%)	0/16(0%)	27/80(33%)	(29)	0
-G: LC97	- LC112		16/16(100%)	10/16(62%)	0/16(0%)	33/80(41%)	(22)	0
-H: LC113- LC128		13/16(81%)	4/16(25%)	0/16(0%)	28/80(35%)	(18)	0
+A: LC1	- LC16		14/16(87%)	10/16(62%)	0/16(0%)	36/80(45%)	(31)	0
+B: LC17	- LC32		14/16(87%)	8/16(50%)	2/16(12%)	60/80(75%)	(31)	0
+C: LC33	- LC48		7/16(43%)	10/16(62%)	0/16(0%)	23/80(28%)	(31)	0
+D: LC49	- LC64		15/16(93%)	10/16(62%)	0/16(0%)	41/80(51%)	(31)	0
+E: LC65	- LC80		16/16(100%)	10/16(62%)	0/16(0%)	49/80(61%)	(30)	0
+F: LC81	- LC96		16/16(100%)	10/16(62%)	0/16(0%)	40/80(50%)	(30)	0
+G: LC97	- LC112		16/16(100%)	10/16(62%)	0/16(0%)	30/80(37%)	(22)	0
+H: LC113- LC128		13/16(81%)	5/16(31%)	0/16(0%)	18/80(22%)	(22)	0
 
 Total dedicated input used:	4/4 	(100%)
-Total I/O pins used		72/80 	(90%)
-Total Logic cells used 		96/128 	(75%)
-Total Flip-Flop used 		18/128 	(14%)
-Total Foldback logic used 	1/128 	(0%)
-Total Nodes+FB/MCells 		97/128 	(75%)
+Total I/O pins used		73/80 	(91%)
+Total Logic cells used 		111/128 	(86%)
+Total Flip-Flop used 		31/128 	(24%)
+Total Foldback logic used 	2/128 	(1%)
+Total Nodes+FB/MCells 		113/128 	(88%)
 Total cascade used 		0
 Total input pins 		31
-Total output pins 		45
-Total Pts 			275
+Total output pins 		46
+Total Pts 			297
 Creating pla file Z:\Aa.tt3 with 0 inputs 0 outputs, 0 pins 0 nodes and 0 pterms...
 
 ----------------  End fitter, Design FITS
