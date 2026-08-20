@@ -104,10 +104,10 @@
 			(layerselection 0x00000000_00000000_55555555_5755f5ff)
 			(plot_on_all_layers_selection 0x00000000_00000000_00000000_00000000)
 			(disableapertmacros no)
-			(usegerberextensions no)
-			(usegerberattributes no)
+			(usegerberextensions yes)
+			(usegerberattributes yes)
 			(usegerberadvancedattributes yes)
-			(creategerberjobfile yes)
+			(creategerberjobfile no)
 			(dashed_line_dash_ratio 12.000000)
 			(dashed_line_gap_ratio 3.000000)
 			(svgprecision 4)
@@ -71888,6 +71888,19 @@
 			(justify left bottom mirror)
 		)
 	)
+	(gr_text "git: 91f4cbe"
+		(at 173.6471 78.20152 90)
+		(layer "B.SilkS")
+		(uuid "0f098d97-66e9-4d92-8c7d-59f41f47b01d")
+		(effects
+			(font
+				(size 2 2)
+				(thickness 0.4)
+				(bold yes)
+			)
+			(justify left bottom mirror)
+		)
+	)
 	(gr_text "Data"
 		(at 156.718 39.7256 90)
 		(layer "B.SilkS")
@@ -72087,6 +72100,19 @@
 		(at 246.47017 35.01009 90)
 		(layer "B.SilkS")
 		(uuid "96064076-8a89-4981-8fcb-b35efe6ab641")
+		(effects
+			(font
+				(size 2 2)
+				(thickness 0.4)
+				(bold yes)
+			)
+			(justify left bottom mirror)
+		)
+	)
+	(gr_text "PCB v.1.0"
+		(at 167.62476 97.78365 90)
+		(layer "B.SilkS")
+		(uuid "adb7705d-e594-4732-a22e-ad53a6cc9e4a")
 		(effects
 			(font
 				(size 2 2)
