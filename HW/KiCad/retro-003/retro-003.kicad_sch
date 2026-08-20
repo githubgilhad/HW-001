@@ -11780,6 +11780,214 @@
 				)
 			)
 			(symbol "ATF1508AS-10AU100-logic_1_1"
+				(rectangle
+					(start -38.1 49.53)
+					(end -34.29 46.99)
+					(stroke
+						(width 0)
+						(type solid)
+						(color 194 0 0 1)
+					)
+					(fill
+						(type color)
+						(color 255 255 0 1)
+					)
+				)
+				(rectangle
+					(start -38.1 44.45)
+					(end -34.29 41.91)
+					(stroke
+						(width 0)
+						(type solid)
+						(color 194 0 0 1)
+					)
+					(fill
+						(type color)
+						(color 255 255 0 1)
+					)
+				)
+				(rectangle
+					(start -38.1 8.89)
+					(end -34.29 6.35)
+					(stroke
+						(width 0)
+						(type solid)
+						(color 194 0 0 1)
+					)
+					(fill
+						(type color)
+						(color 255 255 0 1)
+					)
+				)
+				(rectangle
+					(start -38.1 3.81)
+					(end -34.29 1.27)
+					(stroke
+						(width 0)
+						(type solid)
+						(color 194 0 0 1)
+					)
+					(fill
+						(type color)
+						(color 255 255 0 1)
+					)
+				)
+				(rectangle
+					(start -38.1 -6.35)
+					(end -34.29 -8.89)
+					(stroke
+						(width 0)
+						(type solid)
+						(color 194 0 0 1)
+					)
+					(fill
+						(type color)
+						(color 255 255 0 1)
+					)
+				)
+				(rectangle
+					(start -38.1 -8.89)
+					(end -34.29 -11.43)
+					(stroke
+						(width 0)
+						(type solid)
+						(color 194 0 0 1)
+					)
+					(fill
+						(type color)
+						(color 255 255 0 1)
+					)
+				)
+				(rectangle
+					(start -38.1 -57.15)
+					(end -34.29 -59.69)
+					(stroke
+						(width 0)
+						(type solid)
+						(color 194 0 0 1)
+					)
+					(fill
+						(type color)
+						(color 255 255 0 1)
+					)
+				)
+				(rectangle
+					(start -38.1 -59.69)
+					(end -34.29 -62.23)
+					(stroke
+						(width 0)
+						(type solid)
+						(color 194 0 0 1)
+					)
+					(fill
+						(type color)
+						(color 255 255 0 1)
+					)
+				)
+				(rectangle
+					(start 34.29 52.07)
+					(end 38.1 49.53)
+					(stroke
+						(width 0)
+						(type solid)
+						(color 194 0 0 1)
+					)
+					(fill
+						(type color)
+						(color 255 255 0 1)
+					)
+				)
+				(rectangle
+					(start 34.29 49.53)
+					(end 38.1 46.99)
+					(stroke
+						(width 0)
+						(type solid)
+						(color 194 0 0 1)
+					)
+					(fill
+						(type color)
+						(color 255 255 0 1)
+					)
+				)
+				(rectangle
+					(start 34.29 8.89)
+					(end 38.1 6.35)
+					(stroke
+						(width 0)
+						(type solid)
+						(color 194 0 0 1)
+					)
+					(fill
+						(type color)
+						(color 255 255 0 1)
+					)
+				)
+				(rectangle
+					(start 34.29 6.35)
+					(end 38.1 3.81)
+					(stroke
+						(width 0)
+						(type solid)
+						(color 194 0 0 1)
+					)
+					(fill
+						(type color)
+						(color 255 255 0 1)
+					)
+				)
+				(rectangle
+					(start 34.29 -8.89)
+					(end 38.1 -11.43)
+					(stroke
+						(width 0)
+						(type solid)
+						(color 194 0 0 1)
+					)
+					(fill
+						(type color)
+						(color 255 255 0 1)
+					)
+				)
+				(rectangle
+					(start 34.29 -13.97)
+					(end 38.1 -16.51)
+					(stroke
+						(width 0)
+						(type solid)
+						(color 194 0 0 1)
+					)
+					(fill
+						(type color)
+						(color 255 255 0 1)
+					)
+				)
+				(rectangle
+					(start 34.29 -52.07)
+					(end 38.1 -54.61)
+					(stroke
+						(width 0)
+						(type solid)
+						(color 194 0 0 1)
+					)
+					(fill
+						(type color)
+						(color 255 255 0 1)
+					)
+				)
+				(rectangle
+					(start 34.29 -57.15)
+					(end 38.1 -59.69)
+					(stroke
+						(width 0)
+						(type solid)
+						(color 194 0 0 1)
+					)
+					(fill
+						(type color)
+						(color 255 255 0 1)
+					)
+				)
 				(text "JTAG"
 					(at -28.956 56.896 0)
 					(effects
@@ -44212,15 +44420,15 @@
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "A0"
+		(property "Value" "A1"
 			(at 844.8675 792.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "MHF:LED_0805_2012Metric"
@@ -44402,6 +44610,73 @@
 			(project "retro-003"
 				(path "/64851a36-d60f-4ef2-a652-2faeae5c6012"
 					(reference "J52")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 1082.04 209.55 90)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0055697c-2cfc-4eb0-893a-7c951a7dabc0")
+		(property "Reference" "#PWR040"
+			(at 1088.39 209.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 1085.85 209.5499 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 1082.04 209.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 1082.04 209.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 1082.04 209.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "9dccaa44-0757-45e3-afe4-91d680638650")
+		)
+		(instances
+			(project "retro-003"
+				(path "/64851a36-d60f-4ef2-a652-2faeae5c6012"
+					(reference "#PWR040")
 					(unit 1)
 				)
 			)
@@ -47583,15 +47858,15 @@
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "A0"
+		(property "Value" "B6"
 			(at 844.8675 758.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "MHF:LED_0805_2012Metric"
@@ -49867,15 +50142,15 @@
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "A0"
+		(property "Value" "B2"
 			(at 844.8675 748.03 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "MHF:LED_0805_2012Metric"
@@ -53077,15 +53352,15 @@
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "A0"
+		(property "Value" "B4"
 			(at 844.8675 753.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "MHF:LED_0805_2012Metric"
@@ -53610,15 +53885,15 @@
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "A0"
+		(property "Value" "B3"
 			(at 844.8675 750.57 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "MHF:LED_0805_2012Metric"
@@ -57293,73 +57568,6 @@
 		)
 	)
 	(symbol
-		(lib_id "MHF:+5V")
-		(at 1082.04 209.55 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "6433886d-5bec-4e23-b245-04447328a651")
-		(property "Reference" "#PWR040"
-			(at 1078.23 209.55 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+5V"
-			(at 1085.85 209.5499 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 1082.04 209.55 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 1082.04 209.55 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 1082.04 209.55 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "fe9930cc-6fa4-4d64-8c06-ba8ac78160e1")
-		)
-		(instances
-			(project "retro-003"
-				(path "/64851a36-d60f-4ef2-a652-2faeae5c6012"
-					(reference "#PWR040")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 99.06 44.45 90)
 		(unit 1)
@@ -59141,15 +59349,15 @@
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "A0"
+		(property "Value" "B5"
 			(at 844.8675 755.65 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "MHF:LED_0805_2012Metric"
@@ -61223,43 +61431,43 @@
 			)
 		)
 		(pin "5"
-			(uuid "dd9f7898-f5ca-409c-8145-ef7986548be1")
+			(uuid "dd9f7898-f5ca-409c-8145-ef7986548be2")
 		)
 		(pin "14"
-			(uuid "1ddad3f9-e6f7-46da-82b2-b2f4761017e6")
+			(uuid "1ddad3f9-e6f7-46da-82b2-b2f4761017e7")
 		)
 		(pin "11"
-			(uuid "4c6d2c5a-7dfc-47c1-ae67-09ca8baade02")
+			(uuid "4c6d2c5a-7dfc-47c1-ae67-09ca8baade03")
 		)
 		(pin "2"
-			(uuid "d4e359bb-aeca-41d9-95d2-a3015c72ea6c")
+			(uuid "d4e359bb-aeca-41d9-95d2-a3015c72ea6d")
 		)
 		(pin "9"
 			(uuid "d0d1c841-db53-4d2e-af4d-09c73ef5da2d")
 		)
 		(pin "13"
-			(uuid "153142aa-5c22-4ef6-a687-9ac20bbf9c48")
+			(uuid "153142aa-5c22-4ef6-a687-9ac20bbf9c49")
 		)
 		(pin "10"
-			(uuid "322b387b-fff5-4a02-b61e-ff9fd02dc5e1")
+			(uuid "322b387b-fff5-4a02-b61e-ff9fd02dc5e2")
 		)
 		(pin "6"
-			(uuid "9805e147-02a3-4473-9c7a-6c31405a79d5")
+			(uuid "9805e147-02a3-4473-9c7a-6c31405a79d6")
 		)
 		(pin "7"
-			(uuid "f13d0afc-f3fb-4be4-8f51-258c74ebc5b8")
+			(uuid "f13d0afc-f3fb-4be4-8f51-258c74ebc5b9")
 		)
 		(pin "4"
-			(uuid "b95036fb-9728-46cc-8229-6e1c76e8563f")
+			(uuid "b95036fb-9728-46cc-8229-6e1c76e85640")
 		)
 		(pin "1"
-			(uuid "f4bbc8f4-a4b5-442d-b46f-38d793c063ff")
+			(uuid "f4bbc8f4-a4b5-442d-b46f-38d793c06400")
 		)
 		(pin "12"
-			(uuid "dbbbc8ce-740f-4aef-bd39-2b9cfdbe5754")
+			(uuid "dbbbc8ce-740f-4aef-bd39-2b9cfdbe5755")
 		)
 		(pin "3"
-			(uuid "ef2dd8b3-d04b-4572-9f76-474e6e3918f5")
+			(uuid "ef2dd8b3-d04b-4572-9f76-474e6e3918f6")
 		)
 		(pin "8"
 			(uuid "8929f1b5-ca8c-4351-b6ce-ab149cfb128c")
@@ -62407,7 +62615,7 @@
 			)
 		)
 		(pin "5"
-			(uuid "dd9f7898-f5ca-409c-8145-ef7986548be2")
+			(uuid "dd9f7898-f5ca-409c-8145-ef7986548be3")
 		)
 		(pin "14"
 			(uuid "1ddad3f9-e6f7-46da-82b2-b2f4761017e8")
@@ -62428,7 +62636,7 @@
 			(uuid "322b387b-fff5-4a02-b61e-ff9fd02dc5e3")
 		)
 		(pin "6"
-			(uuid "9805e147-02a3-4473-9c7a-6c31405a79d6")
+			(uuid "9805e147-02a3-4473-9c7a-6c31405a79d7")
 		)
 		(pin "7"
 			(uuid "f13d0afc-f3fb-4be4-8f51-258c74ebc5ba")
@@ -62939,20 +63147,20 @@
 		(dnp no)
 		(uuid "8c584792-8254-47c5-a031-dcecc9bca2c4")
 		(property "Reference" "L44"
-			(at 848.6775 744.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "A0"
 			(at 844.8675 742.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Value" "B0"
+			(at 844.8675 742.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Footprint" "MHF:LED_0805_2012Metric"
@@ -63370,7 +63578,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Buzzer_Beeper:MagneticBuzzer_Kingstate_KCG0601"
+		(property "Footprint" "Buzzer_Beeper:Buzzer_12x9.5RM7.6"
 			(at 943.991 745.49 0)
 			(effects
 				(font
@@ -65447,15 +65655,15 @@
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "A0"
+		(property "Value" "IA"
 			(at 844.8675 779.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "MHF:LED_0805_2012Metric"
@@ -68445,15 +68653,15 @@
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "A0"
+		(property "Value" "B2"
 			(at 844.8675 784.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "MHF:LED_0805_2012Metric"
@@ -68975,7 +69183,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Crystal:Crystal_HC52-6mm_Vertical"
+		(property "Footprint" "Crystal:Crystal_HC49-4H_Vertical"
 			(at 90.17 317.5 0)
 			(effects
 				(font
@@ -69069,46 +69277,46 @@
 			)
 		)
 		(pin "5"
-			(uuid "dd9f7898-f5ca-409c-8145-ef7986548be1")
+			(uuid "dd9f7898-f5ca-409c-8145-ef7986548be5")
 		)
 		(pin "14"
-			(uuid "1ddad3f9-e6f7-46da-82b2-b2f4761017e6")
+			(uuid "1ddad3f9-e6f7-46da-82b2-b2f4761017e9")
 		)
 		(pin "11"
 			(uuid "02b1b6f1-5f52-4ca1-9c8f-5b8b523dc581")
 		)
 		(pin "2"
-			(uuid "d4e359bb-aeca-41d9-95d2-a3015c72ea6c")
+			(uuid "d4e359bb-aeca-41d9-95d2-a3015c72ea6e")
 		)
 		(pin "9"
-			(uuid "f39fa767-08de-40f8-a36b-ba56cb91f699")
+			(uuid "f39fa767-08de-40f8-a36b-ba56cb91f69a")
 		)
 		(pin "13"
-			(uuid "153142aa-5c22-4ef6-a687-9ac20bbf9c48")
+			(uuid "153142aa-5c22-4ef6-a687-9ac20bbf9c4b")
 		)
 		(pin "10"
 			(uuid "04d733b5-8f8e-40bd-b554-1e228fb2341d")
 		)
 		(pin "6"
-			(uuid "9805e147-02a3-4473-9c7a-6c31405a79d5")
+			(uuid "9805e147-02a3-4473-9c7a-6c31405a79d9")
 		)
 		(pin "7"
-			(uuid "f13d0afc-f3fb-4be4-8f51-258c74ebc5b8")
+			(uuid "f13d0afc-f3fb-4be4-8f51-258c74ebc5bb")
 		)
 		(pin "4"
-			(uuid "b95036fb-9728-46cc-8229-6e1c76e8563f")
+			(uuid "b95036fb-9728-46cc-8229-6e1c76e85642")
 		)
 		(pin "1"
-			(uuid "f4bbc8f4-a4b5-442d-b46f-38d793c063ff")
+			(uuid "f4bbc8f4-a4b5-442d-b46f-38d793c06401")
 		)
 		(pin "12"
-			(uuid "dbbbc8ce-740f-4aef-bd39-2b9cfdbe5754")
+			(uuid "dbbbc8ce-740f-4aef-bd39-2b9cfdbe5757")
 		)
 		(pin "3"
-			(uuid "ef2dd8b3-d04b-4572-9f76-474e6e3918f5")
+			(uuid "ef2dd8b3-d04b-4572-9f76-474e6e3918f8")
 		)
 		(pin "8"
-			(uuid "4232f6ac-0ea1-40be-ba98-5fe43699253f")
+			(uuid "4232f6ac-0ea1-40be-ba98-5fe436992540")
 		)
 		(instances
 			(project "retro-003"
@@ -69854,15 +70062,15 @@
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "A0"
+		(property "Value" "B1"
 			(at 844.8675 745.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "MHF:LED_0805_2012Metric"
@@ -70072,15 +70280,15 @@
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "A0"
+		(property "Value" "IB"
 			(at 844.8675 782.32 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "MHF:LED_0805_2012Metric"
@@ -73944,15 +74152,15 @@
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "A0"
+		(property "Value" "B7"
 			(at 844.8675 760.73 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "MHF:LED_0805_2012Metric"
@@ -76509,15 +76717,15 @@
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "A0"
+		(property "Value" "B1"
 			(at 844.8675 787.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "MHF:LED_0805_2012Metric"
@@ -79202,15 +79410,15 @@
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "A0"
+		(property "Value" "A2"
 			(at 844.8675 789.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "MHF:LED_0805_2012Metric"
