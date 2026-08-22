@@ -255,10 +255,10 @@
 	/************************************************************/
 	PIN  77 = BS;			/* x  future use, CPU: Bus Status */
 	PIN  78 = MRDY;			/* x  future use, PCB 10k pullup  */
-	PIN  79 = DMA_BREQ;		/* x  future use, PCB 10k pullup  */
-	PIN  80 = Dev_FIRQ;		/* x  future use, PCB 10k pullup  */
-	PIN  81 = Dev_IRQ;		/* x  future use, PCB 10k pullup  */
-	PIN  83 = Dev_NMI;		/* x  future use, PCB 10k pullup  */
+	PIN  79 = !DMA_BREQ;		/* x  future use, PCB 10k pullup  */
+	PIN  80 = !Dev_FIRQ;		/* x  future use, PCB 10k pullup  */
+	PIN  81 = !Dev_IRQ;		/* x  future use, PCB 10k pullup  */
+	PIN  83 = !Dev_NMI;		/* x  future use, PCB 10k pullup  */
 	PIN  84 = BootSrc;		/* I 1=ROM, 0=RAM, PCB pinheader switch */
 	/* I  Bus Avaiable, 1= CPU released bus */
 	/* 85..90 is Input Only Block */
