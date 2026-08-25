@@ -1,0 +1,27 @@
+/* Ukázka zdrojového souboru .psi */
+Name      MojeCPLD;
+Device    ATF1508;
+
+ORDER: clock, read_write, address, data;
+
+VECTORS:
+
+
+/* --- Zde začíná samotný simulační scénář --- */
+0 1 '0000' ZZZZZZZZ
+
+/* Volání makra s hexadecimální matematikou */
+/* --- Začátek expanze makra ZAPIS --- */
+$MSG "Test zapisu na adresu: A018 - Zápis do konfiguračního 24istru";
+$set read_write = 0;
+$set address = 'A018';
+$set data = 'FF';
+C 0 X XXXXXXXX /* Provede hodinový kmit */
+/* --- Konec expanze makra ZAPIS --- */
+/* --- Začátek expanze makra ZAPIS --- */
+$MSG "Test zapisu na adresu: A00A - Zápis do datového 10istru";
+$set read_write = 0;
+$set address = 'A00A';
+$set data = '55';
+C 0 X XXXXXXXX /* Provede hodinový kmit */
+/* --- Konec expanze makra ZAPIS --- */

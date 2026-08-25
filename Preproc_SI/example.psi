@@ -1,0 +1,22 @@
+/* Ukázka zdrojového souboru .psi */
+Name      MojeCPLD;
+Device    ATF1508;
+
+ORDER: clock, read_write, address, data;
+
+VECTORS:
+
+#def_macro ZAPIS(reg, data_val, popis)
+$MSG "Test zapisu na adresu: { 'A000' + reg } - {popis}";
+$set read_write = 0;
+$set address = '{ 'A000' + reg }';
+$set data = '{data_val}';
+C 0 X XXXXXXXX /* Provede hodinový kmit */
+#end_macro
+
+/* --- Zde začíná samotný simulační scénář --- */
+0 1 '0000' ZZZZZZZZ
+
+/* Volání makra s hexadecimální matematikou */
+#call ZAPIS(18, 'FF', "Zápis do konfiguračního registru")
+#call ZAPIS(0A, '55', "Zápis do datového registru")
