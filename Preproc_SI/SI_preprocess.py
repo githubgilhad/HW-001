@@ -111,11 +111,11 @@ def preprocess(input_file, output_file):
             context = dict(zip(macro['args'], cargs))
             
             # Expandování těla makra
-            output_lines.append(f"/* --- Začátek expanze makra {cname} --- */\n")
+            # output_lines.append(f"/* --- Začátek expanze makra {cname} --- */\n")
             for body_line in macro['body']:
                 expanded_line = eval_expr(body_line, context)
                 output_lines.append(expanded_line)
-            output_lines.append(f"/* --- Konec expanze makra {cname} --- */\n")
+            # output_lines.append(f"/* --- Konec expanze makra {cname} --- */\n")
             continue
 
         # Běžné simulační řádky projdou beze změny

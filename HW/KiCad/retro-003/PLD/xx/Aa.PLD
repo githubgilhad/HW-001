@@ -133,7 +133,7 @@
 	/* {{{ HEADER */
 	
 	
-	Name     ATF3_GLUE;
+	Name     Aa;
 	PartNo   0003;
 	Date     2026-07-23;
 	Revision 0.2;
@@ -413,6 +413,7 @@
 	/************************************************************/
 	
 	FIELD CA = [CA15..CA0];
+	FIELD DATA = [D7..D0];
 	FIELD REG_SEL = [CA3..0];
 	FIELD DEV_SEL = [CA7..5];
 	FIELD ROM_SIZE = [ROM_SIZE2..0];
@@ -888,8 +889,8 @@
 	 */
 	
 	/* Rw je ovladan CPU, vyjma HALT rezimu, kdy to prevezme ATF2 a ridi se dle MHF_x */
-	Rw =	  !A_READ & A_HALT
-		# !B_READ & B_HALT & !A_HALT; /* directed by A primary, or B secondary */
+	Rw =	  A_READ & A_HALT
+		# B_READ & B_HALT & !A_HALT; /* directed by A primary, or B secondary */
 	Rw.OE =	  in_HALT_mode; /* driven only in HALT mode */
 	/* }}} */
 	/************************************************************/
@@ -1132,6 +1133,7 @@
 	/* JIFFY CLOCK & FIRQ STRETCH                           {{{ */
 	/************************************************************/
 	/* Vsechny bity sdileji globalni hodiny E - zadne zpozdeni */
+	FIELD COUNT = [CNT11..0];
 	[CNT11..0].CK = E;
 	[CNT11..0].AR = Reset;
 	/* Toggle logika - kazdy bit se preklopi, POKUD vsechny nizsi bity jsou 1 */
@@ -1149,6 +1151,6 @@
 	CNT10.T = CNT9 & CNT8 & CNT7 & CNT6 & CNT5 & CNT4 & CNT3 & CNT2 & CNT1 & CNT0;
 	CNT11.T = CNT10 & CNT9 & CNT8 & CNT7 & CNT6 & CNT5 & CNT4 & CNT3 & CNT2 & CNT1 & CNT0;
 	
-	Dev_FIRQ = 'b'0;
+	Dev_FIRQ = 'b'1;
 	Dev_FIRQ.OE = TIMER_EN & ([CNT11..3]:&) ;
 	/* }}} */

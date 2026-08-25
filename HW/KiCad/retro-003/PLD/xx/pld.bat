@@ -17,7 +17,7 @@ set "NAZEV=%~1"
 C:
 CD \wincupl\shared
 
-cupl -bxf -m1 -u c:\Wincupl\Shared\cupl.dl  z:\%NAZEV%.PLD
+cupl -s -bxf -m1 -u c:\Wincupl\Shared\cupl.dl  z:\%NAZEV%.PLD
 
 copy Z:\%NAZEV%.tt2 Z:\%NAZEV%.tt2.bck
 echo "backup + fixing nodes"
