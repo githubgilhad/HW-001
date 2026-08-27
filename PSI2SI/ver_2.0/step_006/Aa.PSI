@@ -1,0 +1,88 @@
+Name     Aa;
+PartNo   0003;
+Date     2026-07-23;
+Revision 0.2;
+Designer Gilhad;
+Company  None;
+Assembly None;
+Location ;
+Device   f1508isptqfp100;
+
+
+MSG "### PSI macros, use SI_preprocessor.py Aa.psi Aa.si ###";
+
+/* Definujeme sirky sbernic z PLD (ostatni neuvedene piny maji automaticky sirku 1) */
+#field_size DATA=8 CA=16 COUNT=13
+
+
+#def_macro READ_REG(reg_num)
+$MSG "### READ_REG({reg_num}) ###";
+#set CA   = {'A000'+reg_num}
+#set Rw   = 1
+#set DATA = "*"
+#//
+#set E = 0;
+#set Q = 1;
+#gen_vector
+#none
+#set E = 1;
+#gen_vector
+#//
+#set Q = 0;
+#gen_vector
+#//
+#set E = 0;
+#gen_vector
+#end_macro
+
+#def_macro WRITE_REG(reg_num, value)
+$MSG "### WRITE_REG({reg_num}, {value}) ###";
+#set CA   = {'A000'+reg_num}
+#set Rw   = 0
+#//
+#set E = 0; 
+#set Q = 1;
+#set DATA={value}
+#gen_vector
+#// Tady budeme zapisovat do registru
+#comm_start Zapisuji data {value} na adresu {'A000'+reg_num}
+Konec zapisu bude za chvilku.
+#comm_end
+#//
+#set E = 1;
+#set DATA={value}
+#gen_vector
+#//
+#set Q = 0;
+#set DATA={value}
+#gen_vector
+#comment Zapsano data {value} na adresu {'A000'+reg_num}
+#//
+#set E = 0;
+#set DATA={value}
+#gen_vector
+#end_macro
+
+
+MSG "## Test FIRQ (with [CNT11..6].AP = Reset; /* .AR */ ";
+ORDER: !Dev_FIRQ, %1, !Reset, BA, %1, E, Q, Rw, %1, CA, %1, DATA, %1, " CNT:", COUNT, %1, TIMER_EN, " CNT_R:", CNT_R11, CNT_R10, CNT_R9, CNT_R8 ;
+
+VECTORS:
+
+$MSG "## Reset all";
+Z 00 C01 'A008' "*" "*" *****
+
+$MSG "## write TIMER_EN true";
+Z 10 110 'A008' '80' "*" *****
+Z 10 100 'A008' '80' "*" *****
+
+$MSG "## read TIMER_EN by hands";
+Z 10 001 'A008' "*" "*" *****
+Z 10 011 'A008' "*" "*" *****
+Z 10 111 'A008' "*" "*" *****
+Z 10 101 'A008' "*" "*" *****
+#call WRITE_REG(8,80)
+#call READ_REG(0)
+#call READ_REG(1)
+
+

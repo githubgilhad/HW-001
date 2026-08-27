@@ -1,0 +1,24 @@
+Prima, vyzkousel jsem to a prevazne to funguje dobre :)
+Zatim jsem jenom narazil na to, ze nektera generovana cisla (parametry ve volani maker) nebyla expandovana jako hexadecimalni, ale jako prevedena na dekadicky tvar:
+ve vstupnim souboru je
+...
+    #def_macro WRITE_REG(reg_num, value)
+    $MSG "### WRITE_REG({reg_num}, {value}) ###";
+...
+    #call WRITE_REG(8,80)
+a ve vystupu je
+   $MSG "### WRITE_REG(8, 128) ###";
+cili ta 80 hexa je prevedena na 128 dekadickych
+
+a druhy problem, ve vstupni souboru je radka ORDER takto:
+
+ORDER: !Dev_FIRQ, %1, !Reset, BA, %1, E, Q, Rw, %1, CA, %1, DATA, %1, " CNT:", COUNT, %1, TIMER_EN, " CNT_R:", CNT_R11, CNT_R10, CNT_R9, CNT_R8 ;
+
+a jsou v ni retezce " CNT:" a " CNT_R:", tyto retezce do vygenerovanych vektoru nepatri (tam se proste vypusti), takze misto:
+
+Z 10 010 'A008' '0128' " CNT:"'*' *" CNT_R:"****
+
+by to melo generovat tohle:
+Z 10 010 'A008' '80' "*" *****
+
+muzes to jeste opravit?
