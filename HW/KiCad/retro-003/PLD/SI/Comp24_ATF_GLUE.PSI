@@ -1,0 +1,287 @@
+/* .. vim: ft=cuplsim showbreak=-->\  noexpandtab fileencoding=utf-8 nomodified   wrap textwidth=0 foldmethod=marker foldmarker={{{,}}} foldcolumn=4 ruler showcmd lcs=tab\:|- list tabstop=8 noexpandtab nosmarttab softtabstop=0 shiftwidth=0 linebreak  tags=./tags;,tags; 
+*/
+
+	Name     Comp24_ATF_GLUE;
+	PartNo   0003;
+	Date     2026-08-27;
+	Revision 0.4;
+	Designer Gilhad;
+	Company  None ;
+	Assembly None ;
+	Location ;
+	Device  f1508isptqfp100;
+
+
+MSG "### PSI macros, use PSI2SI.py Aa.PSI Aa.SI ###";
+
+/* Definujeme sirky sbernic z PLD (ostatni neuvedene piny maji automaticky sirku 1) */
+#field_size DATA=8 CADDR=16 GADDR=5  REG_SELECTOR=4 DEV_SELECTOR=3 ROM_SIZE=2 COUNT=12 COUNT_R = 4 Dev_Sel_lines=7
+#// Pullups: Dev_Sel_7..1, ROM, RAM, A_S_16, B_S_16, A_HALT, B_HALT, Dev_FIRQ, Dev_IRQ, Dev_NMI, DMA_BREQ, MRDY, Reset
+#// {{{ Macros
+#def_macro READ_MEM(addr) {{{
+$MSG "### READ_MEM({addr}) ###";
+#set CADDR   = '{addr}'
+#set Rw    = 1
+#set Read  = H
+#set Write = H
+#set DATA  = "*"
+#set E = 0;
+#set Q = 1;
+#gen_vector
+#set E = 1;
+#set Read  = L
+#gen_vector
+#set Q = 0;
+#set Read  = L
+#gen_vector
+#set E = 0;
+#set Read  = H
+#gen_vector
+#end_macro }}}
+#def_macro WRITE_MEM(addr,val) {{{
+$MSG "### WRITE_MEM({addr},{val}) ###";
+#set CADDR   = '{addr}'
+#set Rw   = 0
+#set Read  = H
+#set Write = H
+#set DATA = '{val}'
+#set E = 0;
+#set Q = 1;
+#gen_vector
+#set E = 1;
+#set Write = L
+#gen_vector
+#set Q = 0;
+#set Write = L
+#gen_vector
+#set E = 0;
+#set Write = H
+#gen_vector
+#end_macro }}}
+#def_macro TEST_MEM(addr,val) {{{
+$MSG "### TEST_MEM({addr},{val}) ###";
+#set CADDR   = '{addr}'
+#set Rw   = 1
+#set Read  = H
+#set Write = H
+#set DATA = 'Z'
+#set E = 0;
+#set Q = 1;
+#gen_vector
+#set E = 1;
+#set DATA = "{val}"
+#set Read  = L
+#gen_vector
+#set Q = 0;
+#set DATA = "{val}"
+#set Read  = L
+#gen_vector
+#set E = 0;
+#set DATA = 'Z'
+#set Read  = H
+#gen_vector
+#end_macro }}}
+
+#def_macro READ_REG(reg_num) {{{
+$MSG "### READ_REG({reg_num}) ###";
+#set CADDR   = {'A000'+reg_num}
+#set Rw   = 1
+#set Read  = H
+#set Write = H
+#set DATA = "*"
+#set E = 0;
+#set Q = 1;
+#gen_vector
+#set E = 1;
+#set Read  = L
+#gen_vector
+#set Q = 0;
+#set Read  = L
+#gen_vector
+#set E = 0;
+#set Read  = H
+#gen_vector
+#end_macro }}}
+#def_macro WRITE_REG(reg_num, value) {{{
+$MSG "### WRITE_REG({reg_num}, {value}) ###";
+#set CADDR   = {'A000'+reg_num}
+#set Rw   = 0
+#set Read  = H
+#set Write = H
+#set E = 0; 
+#set Q = 1;
+#set DATA={value}
+#gen_vector
+#set E = 1;
+#set Write = L
+#set DATA={value}
+#gen_vector
+#set Q = 0;
+#set Write = L
+#set DATA={value}
+#gen_vector
+#set E = 0;
+#set Write = H
+#set DATA={value}
+#gen_vector
+#end_macro }}}
+#def_macro TEST_REG(reg_num, value) {{{
+$MSG "### TEST_REG({reg_num}, {value}) ###";
+#set CADDR   = {'A000'+reg_num}
+#set Rw   = 1
+#set Read  = H
+#set Write = H
+#set E = 0; 
+#set Q = 1;
+#set DATA="Z"
+#gen_vector
+#set E = 1;
+#set Read = L
+#set DATA="{value}"
+#gen_vector
+#set Q = 0;
+#set Read = L
+#set DATA="{value}"
+#gen_vector
+#set E = 0;
+#set Read = H
+#set DATA="Z"
+#gen_vector
+#end_macro }}}
+
+#def_macro Defaults {{{
+$MSG "### Defaults set";
+#set DATA = "*" 
+#set  CADDR = 'FFFF' 
+#set  E = 0
+#set  Q = 1 
+#set  Rw = 1 
+#set  Read = * 
+#set  Write = * 
+#set  Reset = 1 
+#set  in_HALT_mode = * 
+#set  GADDR = "*" 
+#set  A_S_16 = * 
+#set  B_S_16 = * 
+#// 
+#set  A_HALT = 0 
+#set  B_HALT = 0 
+#set  HALT = * 
+#set  BA = 0 
+#//
+#set  BootSrc = 1  /* boot z ROM */
+#set  RomMapped = * 
+#//
+#set  Dev_FIRQ = * 
+#set  Dev_IRQ = 0 
+#set  Dev_NMI = 0 
+#set  DMA_BREQ = 0 
+#set  BS = 0 
+#set  MRDY = 0 
+#//
+#set  RAM = * 
+#set  ROM = * 
+#set  Dev_Sel_lines = "*" 
+#//
+#set  A_S_SELECT = * 
+#set  B_S_SELECT = * 
+#set  A_G_ENABLE = * 
+#set  B_G_ENABLE = * 
+#//
+#set  /* inputs */ A_READ = 0 
+#set  B_READ = 0 
+#set  A_SHARE_REQUEST = 0 
+#set  B_SHARE_REQUEST = 0 
+#set  A_SHARE_SELECT = 0 
+#set  B_SHARE_SELECT = 0 
+#//
+#set  /* outputs */ A_SHARE_DIRTY = * 
+#set  B_SHARE_DIRTY = * 
+#set  A_SHARE_GRANTED = * 
+#set  B_SHARE_GRANTED = * 
+#set  A_S_READ = * 
+#set  B_S_READ = * 
+#set  A_S_WRITE = * 
+#set  B_S_WRITE = * 
+#set  A_G_A_DIR = * 
+#set  B_G_A_DIR = * 
+#set  A_G_D_DIR = * 
+#set  B_G_D_DIR = * 
+#//
+#set  /* nodes */ ROM_SIZE = "*" 
+#set  addr_in_REGS = * 
+#set  addr_in_DEVS = * 
+#//
+#set  /* EMS1 mapping */ EMS1_A1 = * 
+#set  EMS1_A0 = * 
+#set  EMS1_B4 = * 
+#set  EMS1_B3 = * 
+#set  EMS1_B2 = * 
+#set  EMS1_B1 = * 
+#set  EMS1_B0 = * 
+#//
+#set  /* EMS2 mapping */ EMS2_A1 = * 
+#set  EMS2_A0 = * 
+#set  EMS2_B4 = * 
+#set  EMS2_B3 = * 
+#set  EMS2_B2 = * 
+#set  EMS2_B1 = * 
+#set  EMS2_B0 = * 
+#//
+#set  /* ownership */ CHIPA_A = * 
+#set  CHIPA_C = * 
+#set  CHIPB_A = * 
+#set  CHIPB_C = * 
+#set  CHIPA_Dc = * 
+#set  CHIPA_Dm = * 
+#set  CHIPB_Dc = * 
+#set  CHIPB_Dm = * 
+#//
+#set  TIMER_EN = * 
+#set  COUNT = "*" 
+#set  COUNT_R = "*" 
+#end_macro }}}
+
+#// }}}
+
+ORDER: 
+	DATA, %1, CADDR, %1, E, Q, %1, Rw, !Read, !Write,
+	%1, "R:", !Reset, in_HALT_mode, %1, GADDR, A_S_16, B_S_16,
+	%1, !A_HALT, !B_HALT, !HALT, BA,
+	%1, BootSrc, RomMapped, 
+	%1, !Dev_FIRQ, !Dev_IRQ, !Dev_NMI, !DMA_BREQ, BS, MRDY, 
+	%1, !RAM, !ROM,
+	%1, Dev_Sel_lines, 
+	%1, !A_S_SELECT, !B_S_SELECT, !A_G_ENABLE, !B_G_ENABLE,
+	%1, /* inputs */ A_READ, B_READ, A_SHARE_REQUEST, B_SHARE_REQUEST, A_SHARE_SELECT, B_SHARE_SELECT, 
+	%1, /* outputs */ A_SHARE_DIRTY, B_SHARE_DIRTY, A_SHARE_GRANTED, B_SHARE_GRANTED, !A_S_READ, !B_S_READ, !A_S_WRITE, !B_S_WRITE, A_G_A_DIR, B_G_A_DIR, A_G_D_DIR, B_G_D_DIR, 
+	%3, /* nodes */ ROM_SIZE, addr_in_REGS, addr_in_DEVS, 
+	%1, /* EMS1 mapping */ EMS1_A1, EMS1_A0, %1, EMS1_B4, EMS1_B3, EMS1_B2, EMS1_B1, EMS1_B0,
+	%1, /* EMS2 mapping */ EMS2_A1, EMS2_A0, %1, EMS2_B4, EMS2_B3, EMS2_B2, EMS2_B1, EMS2_B0,
+	%1, /* ownership */ CHIPA_A, CHIPA_C, CHIPB_A, CHIPB_C, %1, CHIPA_Dc, CHIPA_Dm, CHIPB_Dc, CHIPB_Dm, 
+	%2, TIMER_EN, %1, COUNT, %1, COUNT_R,
+	" |";
+
+VECTORS:
+
+ZZZZZZZZ 1111111111111111 01 1HH 0L LHHHHZZ 00L0 0L Z00000 ** "*" HHHH 000000 LLLLHHHHLLLL   LLLLL LL LHLLL LL LHLLH LLLL LLLL  L LLLLLLLLLLLL LLLL 
+#call Defaults()
+#set Reset=0
+$MSG "### Reset activated";
+#gen_vector
+#set Reset=1
+$MSG "### Reset deactivated";
+#gen_vector
+#call READ_REG(0)
+#call WRITE_REG(0,C7)
+#call TEST_REG(0,C7)
+#call READ_REG(7)
+#call READ_REG(7)
+#call READ_REG(7)
+#call READ_REG(7)
+#call WRITE_MEM(1234,5A)
+#call READ_MEM(1234)
+#call TEST_MEM(1234,"Z")
+#call READ_MEM(FFFF)
+#call TEST_MEM(A000,C7)
+

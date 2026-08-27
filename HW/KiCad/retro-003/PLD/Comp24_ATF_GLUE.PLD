@@ -133,10 +133,10 @@
 	/* {{{ HEADER */
 	
 	
-	Name     ATF3_GLUE;
+	Name     Comp24_ATF_GLUE;
 	PartNo   0003;
-	Date     2026-08-17;
-	Revision 0.3;
+	Date     2026-08-27;
+	Revision 0.4;
 	Designer Gilhad;
 	Company  None ;
 	Assembly None ;
@@ -352,7 +352,7 @@
 	/************************************************************/
 	/* NODES                                                {{{ */
 	/************************************************************/
-	
+	NODE in_HALT_mode;
 	NODE [ROM_SIZE2..0];
 	PINNODE  = addr_in_REGS; /* 637 */
 /*	NODE addr_in_REGS; /* */
@@ -406,17 +406,21 @@
 	/************************************************************/
 	NODE TIMER_EN;
 	NODE CNT11..CNT0;
-	NODE CNT_R8..11;
+	NODE CNT_R11..8;
 	/* }}} */
 	/************************************************************/
 	/* FIELDs                                               {{{ */
 	/************************************************************/
 	
-	FIELD CA = [CA15..CA0];
 	FIELD DATA = [D7..D0];
-	FIELD REG_SEL = [CA3..0];
-	FIELD DEV_SEL = [CA7..5];
+	FIELD CADDR = [CA15..CA0];
+	FIELD GADDR =  [GA16..12];
+	FIELD REG_SELECTOR = [CA3..0];
+	FIELD DEV_SELECTOR = [CA7..5];
 	FIELD ROM_SIZE = [ROM_SIZE2..0];
+	FIELD COUNT = [CNT11..0];
+	FIELD COUNT_R = [CNT_R11..8];
+	FIELD Dev_Sel_lines = [Dev_Sel_7..1];
 	
 	/* 
 	
@@ -442,18 +446,18 @@
 	/* addr_in_XXX                                          {{{ */
 	/************************************************************/
 	
-	addr_in_NATIVE_RAM_LO = CA:[0000..7FFF];
-	/* addr_in_DEVICE_AREA = CA:[A020..A0FF]; */
-	addr_in_EMS1_WINDOW =   CA:[8000..8FFF];
-	addr_in_EMS2_WINDOW =   CA:[9000..9FFF];
-	addr_in_REGS =          CA:[A000..A01F]; /* Registers take address range of non existent Device_0 and are managed specially. Mirroring is OK. Garbage In = Garbage Out */
-	addr_in_DEVS =          CA:[A000..A0FF]; /* it is easier to cover also registers in place of Device_0 */
-	addr_in_MAYBE_RAM_HI =  CA:[A100..FFFF];
+	addr_in_NATIVE_RAM_LO = CADDR:[0000..7FFF];
+	/* addr_in_DEVICE_AREA = CADDR:[A020..A0FF]; */
+	addr_in_EMS1_WINDOW =   CADDR:[8000..8FFF];
+	addr_in_EMS2_WINDOW =   CADDR:[9000..9FFF];
+	addr_in_REGS =          CADDR:[A000..A01F]; /* Registers take address range of non existent Device_0 and are managed specially. Mirroring is OK. Garbage In = Garbage Out */
+	addr_in_DEVS =          CADDR:[A000..A0FF]; /* it is easier to cover also registers in place of Device_0 */
+	addr_in_MAYBE_RAM_HI =  CADDR:[A100..FFFF];
 	
-	addr_in_ROM_24K = CA:[A100..FFFF];
-	addr_in_ROM_16K = CA:[C000..FFFF];
-	addr_in_ROM_8K  = CA:[E000..FFFF];
-	addr_in_ROM_4K  = CA:[F000..FFFF];
+	addr_in_ROM_24K = CADDR:[A100..FFFF];
+	addr_in_ROM_16K = CADDR:[C000..FFFF];
+	addr_in_ROM_8K  = CADDR:[E000..FFFF];
+	addr_in_ROM_4K  = CADDR:[F000..FFFF];
 	
 	
 	addr_in_ROM_AREA = 
@@ -467,15 +471,15 @@
 		)
 		;
 	
-	REG0 =  addr_in_REGS & REG_SEL:0; /* EMS1_PAGE */
-	REG1 =  addr_in_REGS & REG_SEL:1; /* EMS1_STATUS */
-	REG2 =  addr_in_REGS & REG_SEL:2; /* EMS2_PAGE */
-	REG3 =  addr_in_REGS & REG_SEL:3; /* EMS2_STATUS */
-	REG4 =  addr_in_REGS & REG_SEL:4; /* CHIPA_STATUS */
-	REG5 =  addr_in_REGS & REG_SEL:5; /* CHIPB_STATUS */
-	REG6 =  addr_in_REGS & REG_SEL:6; /* ROM_STATUS + ROM_SIZE MBxxSSSS */
-	REG7 =  addr_in_REGS & REG_SEL:7; /* TIMER LLLLLLLL (RO) */
-	REG8 =  addr_in_REGS & REG_SEL:8; /* TIMER TxxxxHHH */
+	REG0 =  addr_in_REGS & REG_SELECTOR:0; /* EMS1_PAGE */
+	REG1 =  addr_in_REGS & REG_SELECTOR:1; /* EMS1_STATUS */
+	REG2 =  addr_in_REGS & REG_SELECTOR:2; /* EMS2_PAGE */
+	REG3 =  addr_in_REGS & REG_SELECTOR:3; /* EMS2_STATUS */
+	REG4 =  addr_in_REGS & REG_SELECTOR:4; /* CHIPA_STATUS */
+	REG5 =  addr_in_REGS & REG_SELECTOR:5; /* CHIPB_STATUS */
+	REG6 =  addr_in_REGS & REG_SELECTOR:6; /* ROM_STATUS + ROM_SIZE MBxxSSSS */
+	REG7 =  addr_in_REGS & REG_SELECTOR:7; /* TIMER LLLLLLLL (RO) */
+	REG8 =  addr_in_REGS & REG_SELECTOR:8; /* TIMER TxxxxHHH */
 	
 	REG_ACCESS = addr_in_REGS & E & !in_HALT_mode;
 	REG_READ = 
@@ -740,7 +744,7 @@
 	EMS2_B3.AP = Reset;
 	EMS2_B2.AR = Reset;
 	EMS2_B1.AR = Reset;
-	EMS2_B0.AR = Reset;
+	EMS2_B0.AP = Reset;
 	
 	EMS2_A1.CE = REG2 & REG_WRITE;
 	EMS2_A0.CE = REG2 & REG_WRITE;
@@ -864,13 +868,13 @@
 	/* DEVICE BLOCK                                         {{{ */
 	/************************************************************/
 	
-	Dev_Sel_1 = addr_in_DEVS & DEV_SEL:1 & !in_HALT_mode;
-	Dev_Sel_2 = addr_in_DEVS & DEV_SEL:2 & !in_HALT_mode;
-	Dev_Sel_3 = addr_in_DEVS & DEV_SEL:3 & !in_HALT_mode;
-	Dev_Sel_4 = addr_in_DEVS & DEV_SEL:4 & !in_HALT_mode;
-	Dev_Sel_5 = addr_in_DEVS & DEV_SEL:5 & !in_HALT_mode;
-	Dev_Sel_6 = addr_in_DEVS & DEV_SEL:6 & !in_HALT_mode;
-	Dev_Sel_7 = addr_in_DEVS & DEV_SEL:7 & !in_HALT_mode;
+	Dev_Sel_1 = addr_in_DEVS & DEV_SELECTOR:20 & !in_HALT_mode;
+	Dev_Sel_2 = addr_in_DEVS & DEV_SELECTOR:40 & !in_HALT_mode;
+	Dev_Sel_3 = addr_in_DEVS & DEV_SELECTOR:60 & !in_HALT_mode;
+	Dev_Sel_4 = addr_in_DEVS & DEV_SELECTOR:80 & !in_HALT_mode;
+	Dev_Sel_5 = addr_in_DEVS & DEV_SELECTOR:A0 & !in_HALT_mode;
+	Dev_Sel_6 = addr_in_DEVS & DEV_SELECTOR:C0 & !in_HALT_mode;
+	Dev_Sel_7 = addr_in_DEVS & DEV_SELECTOR:E0 & !in_HALT_mode;
 	
 	/* }}} */
 	/************************************************************/
@@ -973,7 +977,7 @@
 	/************************************************************/
 
 	/************************************************************/
-	/* EMS + GA <-> CA BLOK                              {{{ OK */
+	/* EMS + GA <-> CADDR BLOK                              {{{ OK */
 	/************************************************************/
 	
 	ACTIVE_PAGE_A1 =
@@ -1133,7 +1137,6 @@
 	/* JIFFY CLOCK & FIRQ STRETCH                           {{{ */
 	/************************************************************/
 	/* Vsechny bity sdileji globalni hodiny E - zadne zpozdeni */
-	FIELD COUNT = [CNT11..0];
 	[CNT11..0].CK = E;
 	[CNT11..0].AR = Reset;
 	/* Toggle logika - kazdy bit se preklopi, POKUD vsechny nizsi bity jsou 1 */

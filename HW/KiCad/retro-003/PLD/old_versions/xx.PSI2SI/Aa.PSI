@@ -1,0 +1,256 @@
+/* .. vim: ft=cuplsim showbreak=-->\  noexpandtab fileencoding=utf-8 nomodified   wrap textwidth=0 foldmethod=marker foldmarker={{{,}}} foldcolumn=4 ruler showcmd lcs=tab\:|- list tabstop=8 noexpandtab nosmarttab softtabstop=0 shiftwidth=0 linebreak  tags=./tags;,tags; 
+*/
+
+Name     Aa;
+PartNo   0003;
+Date     2026-07-23;
+Revision 0.2;
+Designer Gilhad;
+Company  None;
+Assembly None;
+Location ;
+Device   f1508isptqfp100;
+
+
+MSG "### PSI macros, use SI_preprocessor.py Aa.psi Aa.si ###";
+
+/* Definujeme sirky sbernic z PLD (ostatni neuvedene piny maji automaticky sirku 1) */
+#field_size DATA=8 CA=16 COUNT=13
+
+
+#def_macro READ_REG(reg_num)
+$MSG "### READ_REG({reg_num}) ###";
+#// #comment READ_REG({reg_num})
+#set CA   = {'A000'+reg_num}
+#set Rw   = 1
+#set DATA = "*"
+#set E = 0;
+#set Q = 1;
+#gen_vector
+#set E = 1;
+#gen_vector
+#set Q = 0;
+#gen_vector
+#set E = 0;
+#gen_vector
+#end_macro
+
+#def_macro WRITE_REG(reg_num, value)
+$MSG "### WRITE_REG({reg_num}, {value}) ###";
+#hide {{{
+#hide
+#comm_start
+{{{
+WRITE_REG({reg_num},{value})
+WRITE_REG({reg_num},{value})
+}}}
+#comm_end
+#unhide
+#hide {{{
+zblept
+#unhide }}}
+#unhide }}}
+#set CA   = {'A000'+reg_num}
+#set Rw   = 0
+#set E = 0; 
+#set Q = 1;
+#set DATA={value}
+#gen_vector
+#set E = 1;
+#set DATA={value}
+#gen_vector
+#set Q = 0;
+#set DATA={value}
+#gen_vector
+#set E = 0;
+#set DATA={value}
+#gen_vector
+#end_macro
+
+
+
+
+MSG "## Test for HALT only";
+
+ORDER: !A_HALT, !B_HALT, !HALT; 
+
+
+VECTORS:
+11Z /* pullup get it high */
+01L
+00L
+00L
+00L
+10L
+10L
+10L
+11Z /* pullup get it high from now */
+11Z
+11Z
+11Z
+
+MSG "## test HALT and Rw in HALT mode";
+ORDER: !A_HALT, !B_HALT, !HALT, BA, E, Rw, %1, A_READ, B_READ , %1, CA, %1, DATA; 
+
+
+VECTORS:
+$MSG "## NOT HALT";
+11*010 00 'A000' '5A' 
+$MSG "## HALT";
+01*10* 00 'A000' '5A'
+00*11* 00 'A000' '5A'
+00*10* 00 'A000' '5A'
+00*11* 00 'A000' '5A'
+10*10* 00 'A000' '5A'
+10*11* 00 'A000' '5A'
+10*10* 00 'A000' '5A'
+$MSG "## NOT HALT";
+11*010 00 'A000' '5A'
+11*000 00 'A000' '5A'
+11*010 00 'A000' '5A'
+
+/*
+MSG "## Test  HALT and Rw in HALT mode - expanded fields"; 
+ORDER: !A_HALT, !B_HALT, !HALT, BA, E, Rw, A_READ, B_READ, CA15, CA14, CA13, CA12, CA11, CA10, CA9, CA8, CA7, CA6, CA5, CA4, CA3, CA2, CA1, CA0, D7, D6, D5, D4, D3, D2, D1, D0; 
+
+
+VECTORS:
+11Z01000101000000000000001011010
+01L10L00101000000000000001011010
+00L11L00101000000000000001011010
+00L10L00101000000000000001011010
+00L11L00101000000000000001011010
+10L10L00101000000000000001011010
+10L11L00101000000000000001011010
+10L10L00101000000000000001011010
+11Z01000101000000000000001011010
+11Z00000101000000000000001011010
+11Z01000101000000000000001011010
+*/
+
+/*
+MSG "## Test  HALT and Rw in HALT mode - no adresses and no data ";
+ORDER: !A_HALT, !B_HALT, !HALT, BA, E, Rw, A_READ, B_READ; 
+
+
+VECTORS:
+11Z01000
+01L10L00
+00L11L00
+00L10L00
+00L11L00
+10L10L00
+10L11L00
+10L10L00
+11Z01000
+11Z00000
+11Z01000
+*/
+
+MSG "## Test write and read REG7 & REG8";
+ORDER: !Dev_FIRQ, %1, !Reset, !A_HALT, !B_HALT, !HALT, BA, %1, E, Q, Rw, %1, A_READ, B_READ , %1, CA, %1, DATA, %1, COUNT, %1, TIMER_EN,addr_in_REGS, in_HALT_mode;
+
+
+VECTORS:
+* 011*0 010 11 'A008' '80' "*" ***
+
+$MSG "## write reg 8 ";
+* 111*0 010 11 'A008' '80' "*" *** 
+* 111*0 110 11 'A008' '80' "*" ***
+* 111*0 100 11 'A008' '80' "*" ***
+* 111*0 000 11 'A008' '80' "*" ***
+
+$MSG "## read reg 7 ";
+* 111*0 011 11 'A007' "*" "*" ***
+* 111*0 111 11 'A007' "*" "*" ***
+* 111*0 101 11 'A007' "*" "*" ***
+* 111*0 001 11 'A007' "*" "*" ***
+
+$MSG "## read reg 8 ";
+* 111*0 011 11 'A008' "*" "*" *** 
+* 111*0 111 11 'A008' "*" "*" ***
+* 111*0 101 11 'A008' "*" "*" ***
+* 111*0 001 11 'A008' "*" "*" ***
+
+MSG "## Test FIRQ (with [CNT11..6].AP = Reset; /* .AR */ ";
+ORDER: !Dev_FIRQ, %1, !Reset, BA, BootSrc, A_SHARE_REQUEST,B_SHARE_REQUEST, %1, E, Q, Rw, %1, CA, %1, DATA, %1, " CNT:", COUNT, %1, TIMER_EN, " CNT_R:", CNT_R11, CNT_R10, CNT_R9, CNT_R8 ;
+
+VECTORS:
+
+$MSG "## Reset all";
+Z 00000 C01 'A008' "*" "*" *****
+
+$MSG "## write TIMER_EN true";
+Z 10000 110 'A008' '80' "*" *****
+Z 10000 100 'A008' '80' "*" *****
+
+/*
+$MSG "## go to COUNT = 54";
+Z 10000 C01 'A007' "*" "*" *****
+$REPEAT 50;
+Z 10000 C01 'A007' "*" "*" *****
+
+$MSG "## go next 10 steps with FOR";
+$FOR i = 1..10:
+* 10000 C01 'A007' "*" "*" *****
+$ENDF;
+
+
+L 10000 011 'A007' "*" "*" *****
+L 10000 111 'A007' "*" "*" *****
+$MSG "## read reg7, write CNT_R"
+L 10000 101 'A007' "*" "*" *****
+L 10000 001 'A007' "*" "*" *****
+
+$MSG "## read reg8"
+Z 10000 101 'A008' "*" "*" *****
+Z 10000 C01 'A008' "*" "*" *****
+*/
+
+/* {{{  Makra  nefunguji
+$MSG "## MACROS ##";
+$MACRO M_LINE
+$MSG "######################################################";
+$MEND
+}}} */
+/*
+$MSG "## read all registers with FOR"; Nefunguje, protoze makro expanduje jen cisla, ne promenne
+$FOR i = 0..7:
+#call READ..REG(i)
+$ENDF;
+*/
+$MSG "## read TIMER_EN by hands";
+Z 10000 001 'A008' "*" "*" *****
+Z 10000 011 'A008' "*" "*" *****
+Z 10000 111 'A008' "*" "*" *****
+Z 10000 101 'A008' "*" "*" *****
+#call WRITE_REG(8,80)
+#call READ_REG(0)
+#call READ_REG(1)
+#call READ_REG(2)
+#call READ_REG(3)
+#call READ_REG(4)
+#call READ_REG(5)
+#call READ_REG(6)
+#call READ_REG(7)
+#call READ_REG(8)
+
+ORDER: !Reset, BA, BootSrc, A_SHARE_REQUEST,B_SHARE_REQUEST, %1, E, Q, Rw, %1, CA, %1, DATA, %1, TIMER_EN;
+
+VECTORS:
+
+$MSG "## Reset all";
+00110 C01 "X" "Z" *
+10110 C01 "X" "Z" *
+
+#call WRITE_REG(8,80)
+#call READ_REG(0)
+#call READ_REG(1)
+#call READ_REG(2)
+#call READ_REG(3)
+#call READ_REG(4)
+#call READ_REG(5)
+#call READ_REG(6)
+#call READ_REG(7)
+#call READ_REG(8)
+
