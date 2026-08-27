@@ -420,7 +420,8 @@
 	FIELD ROM_SIZE = [ROM_SIZE2..0];
 	FIELD COUNT = [CNT11..0];
 	FIELD COUNT_R = [CNT_R11..8];
-	FIELD Dev_Sel_lines = [Dev_Sel_7..1];
+	Dev_Sel_0 = addr_in_DEVS & DEV_SELECTOR:00 & !in_HALT_mode; /* DEV_SELECTOR je od 5. bitu, nutno tedy <<5, 1 -> 20 */
+	FIELD Dev_Sel_lines = ![Dev_Sel_7..0];
 	
 	/* 
 	
@@ -868,7 +869,7 @@
 	/* DEVICE BLOCK                                         {{{ */
 	/************************************************************/
 	
-	Dev_Sel_1 = addr_in_DEVS & DEV_SELECTOR:20 & !in_HALT_mode;
+	Dev_Sel_1 = addr_in_DEVS & DEV_SELECTOR:20 & !in_HALT_mode; /* DEV_SELECTOR je od 5. bitu, nutno tedy <<5, 1 -> 20 */
 	Dev_Sel_2 = addr_in_DEVS & DEV_SELECTOR:40 & !in_HALT_mode;
 	Dev_Sel_3 = addr_in_DEVS & DEV_SELECTOR:60 & !in_HALT_mode;
 	Dev_Sel_4 = addr_in_DEVS & DEV_SELECTOR:80 & !in_HALT_mode;
@@ -1041,7 +1042,7 @@
 		#  in_HALT_mode &  A_HALT & A_S_16 
 		#  in_HALT_mode & !A_HALT & B_HALT & B_S_16 ; /* mimo EMS/boot nelze sahnout nad 64kB, a tedy GA16=0  */
 
-	GA15 = EMS_WINDOW & ACTIVE_B3 # !EMS_WINDOW & CA15;
+	GA15 = EMS_WINDOW & ACTIVE_B3 # !EMS_WINDOW & CA15; /* v registrech se GADDR ignoruje, ale bude tam 0A */
 	GA14 = EMS_WINDOW & ACTIVE_B2 # !EMS_WINDOW & CA14;
 	GA13 = EMS_WINDOW & ACTIVE_B1 # !EMS_WINDOW & CA13;
 	GA12 = EMS_WINDOW & ACTIVE_B0 # !EMS_WINDOW & CA12;

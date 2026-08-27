@@ -11,11 +11,14 @@
 	Location ;
 	Device  f1508isptqfp100;
 
-
+#macro Header() {{{
 MSG "### PSI macros, use PSI2SI.py Aa.PSI Aa.SI ###";
+MSG "### Generated {date} {time} ###";
+#end_macro }}}
+#call Header()
 
 /* Definujeme sirky sbernic z PLD (ostatni neuvedene piny maji automaticky sirku 1) */
-#field_size DATA=8 CADDR=16 GADDR=5  REG_SELECTOR=4 DEV_SELECTOR=3 ROM_SIZE=2 COUNT=12 COUNT_R = 4 Dev_Sel_lines=7
+#field_size DATA=8 CADDR=16 GADDR=5  REG_SELECTOR=4 DEV_SELECTOR=3 ROM_SIZE=2 COUNT=12 COUNT_R = 4 Dev_Sel_lines=8
 #// Pullups: Dev_Sel_7..1, ROM, RAM, A_S_16, B_S_16, A_HALT, B_HALT, Dev_FIRQ, Dev_IRQ, Dev_NMI, DMA_BREQ, MRDY, Reset
 #// {{{ Macros
 #def_macro READ_MEM(addr) {{{
@@ -181,7 +184,7 @@ $MSG "### Defaults set";
 #//
 #set  RAM = * 
 #set  ROM = * 
-#set  Dev_Sel_lines = "*" 
+#set  Dev_Sel_lines = "H" 
 #//
 #set  A_S_SELECT = * 
 #set  B_S_SELECT = * 
@@ -241,7 +244,37 @@ $MSG "### Defaults set";
 #set  COUNT = "*" 
 #set  COUNT_R = "*" 
 #end_macro }}}
-
+#macro test_addr_in_RAM {{{
+#set RAM = L
+#set ROM = H
+#set addr_in_DEVS = L
+#set addr_in_REGS = L
+#set Dev_Sel_lines = "H"
+#set A_G_ENABLE = H
+#set B_G_ENABLE = H
+#end_macro }}}
+#macro test_addr_in_ROM {{{
+#set RAM = H
+#set ROM = L
+#set addr_in_DEVS = L
+#set addr_in_REGS = L
+#set Dev_Sel_lines = "H"
+#set A_G_ENABLE = H
+#set B_G_ENABLE = H
+#end_macro }}}
+#macro test_addr_in_DEV(num) {{{
+#set RAM = H
+#set ROM = H
+#set addr_in_DEVS = H
+#set addr_in_REGS = L
+#set Dev_Sel_lines = "{0xFF ^ (1 << num)}"
+#set A_G_ENABLE = H
+#set B_G_ENABLE = H
+#end_macro }}}
+#macro test_addr_in_REG {{{
+#call test_addr_in_DEV(0)
+#set addr_in_REGS = H
+#end_macro }}}
 #// }}}
 
 ORDER: 
@@ -251,7 +284,7 @@ ORDER:
 	%1, BootSrc, RomMapped, 
 	%1, !Dev_FIRQ, !Dev_IRQ, !Dev_NMI, !DMA_BREQ, BS, MRDY, 
 	%1, !RAM, !ROM,
-	%1, Dev_Sel_lines, 
+	%1, !Dev_Sel_lines, 
 	%1, !A_S_SELECT, !B_S_SELECT, !A_G_ENABLE, !B_G_ENABLE,
 	%1, /* inputs */ A_READ, B_READ, A_SHARE_REQUEST, B_SHARE_REQUEST, A_SHARE_SELECT, B_SHARE_SELECT, 
 	%1, /* outputs */ A_SHARE_DIRTY, B_SHARE_DIRTY, A_SHARE_GRANTED, B_SHARE_GRANTED, !A_S_READ, !B_S_READ, !A_S_WRITE, !B_S_WRITE, A_G_A_DIR, B_G_A_DIR, A_G_D_DIR, B_G_D_DIR, 
@@ -272,6 +305,7 @@ $MSG "### Reset activated";
 #set Reset=1
 $MSG "### Reset deactivated";
 #gen_vector
+#call test_addr_in_REG()
 #call READ_REG(0)
 #call WRITE_REG(0,C7)
 #call TEST_REG(0,C7)
@@ -279,9 +313,20 @@ $MSG "### Reset deactivated";
 #call READ_REG(7)
 #call READ_REG(7)
 #call READ_REG(7)
+#call test_addr_in_RAM()
 #call WRITE_MEM(1234,5A)
 #call READ_MEM(1234)
 #call TEST_MEM(1234,"Z")
+#call test_addr_in_ROM()
 #call READ_MEM(FFFF)
+#call test_addr_in_REG()
 #call TEST_MEM(A000,C7)
-
+#call test_addr_in_DEV(1)
+#call TEST_MEM(A021,"Z")
+#call TEST_MEM(A031,"Z")
+#call test_addr_in_DEV(2)
+#call TEST_MEM(A041,"Z")
+#call TEST_MEM(A051,"Z")
+#call test_addr_in_DEV(7)
+#call TEST_MEM(A0F1,"Z")
+#call TEST_MEM(A0FF,"Z")

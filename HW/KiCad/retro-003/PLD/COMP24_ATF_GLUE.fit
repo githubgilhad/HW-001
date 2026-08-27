@@ -1,4 +1,4 @@
-Atmel ATF1508AS Fitter Version 1.8.7.8 ,running Thu Aug 27 08:45:53 2026
+Atmel ATF1508AS Fitter Version 1.8.7.8 ,running Thu Aug 27 21:04:13 2026
 
 
 fit1508 Z:\Comp24_ATF_GLUE.tt2 -CUPL -dev P1508T100 -JTAG ON -preassign keep
@@ -888,19 +888,19 @@ D6 = ((CA0 & CA1 & CA2 & !CA3 & addr_in_REGS & CNT6.Q)
 
 D7 = XXL_361;
 
-!Dev_Sel_3 = (!A_G_A_DIR & !CA5 & !CA6 & !CA7 & addr_in_DEVS);
+!Dev_Sel_3 = (!A_G_A_DIR & CA5 & CA6 & !CA7 & addr_in_DEVS);
 
-!Dev_Sel_1 = (!A_G_A_DIR & !CA5 & !CA6 & !CA7 & addr_in_DEVS);
+!Dev_Sel_1 = (!A_G_A_DIR & CA5 & !CA6 & !CA7 & addr_in_DEVS);
 
-!Dev_Sel_2 = (!A_G_A_DIR & !CA5 & !CA6 & !CA7 & addr_in_DEVS);
+!Dev_Sel_2 = (!A_G_A_DIR & !CA5 & CA6 & !CA7 & addr_in_DEVS);
 
-!Dev_Sel_4 = (!A_G_A_DIR & !CA5 & !CA6 & !CA7 & addr_in_DEVS);
+!Dev_Sel_4 = (!A_G_A_DIR & !CA5 & !CA6 & CA7 & addr_in_DEVS);
 
-!Dev_Sel_5 = (!A_G_A_DIR & !CA5 & !CA6 & !CA7 & addr_in_DEVS);
+!Dev_Sel_5 = (!A_G_A_DIR & CA5 & !CA6 & CA7 & addr_in_DEVS);
 
-!Dev_Sel_6 = (!A_G_A_DIR & !CA5 & !CA6 & !CA7 & addr_in_DEVS);
+!Dev_Sel_6 = (!A_G_A_DIR & !CA5 & CA6 & CA7 & addr_in_DEVS);
 
-!Dev_Sel_7 = (!A_G_A_DIR & !CA5 & !CA6 & !CA7 & addr_in_DEVS);
+!Dev_Sel_7 = (!A_G_A_DIR & CA5 & CA6 & CA7 & addr_in_DEVS);
 
 GA16 = ((!A_G_A_DIR & CA12 & !CA13 & !CA14 & CA15 & EMS2_B4.Q)
 	# (!A_G_A_DIR & !CA12 & !CA13 & !CA14 & CA15 & EMS1_B4.Q)
