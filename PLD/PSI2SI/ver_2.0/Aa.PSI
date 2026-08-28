@@ -73,10 +73,10 @@ ORDER: !Dev_FIRQ, %1, !Reset, BA, %1, E, Q, Rw, %1, CA, %1, DATA, %1, " CNT:", C
 
 VECTORS:
 
-$MSG "## Reset all";
+#msg Reset all
 Z 00 C01 'A008' "*" "*" *****
 
-$MSG "## write TIMER_EN true";
+#msg write TIMER_EN true
 Z 10 110 'A008' '80' "*" *****
 Z 10 100 'A008' '80' "*" *****
 

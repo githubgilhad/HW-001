@@ -11,13 +11,72 @@
 	Location ;
 	Device  f1508isptqfp100;
 
-
+#macro Header() {{{
 MSG "### PSI macros, use PSI2SI.py Aa.PSI Aa.SI ###";
+MSG "### Generated {date} {time} ###";
+#end_macro }}}
+#call Header()
 
 /* Definujeme sirky sbernic z PLD (ostatni neuvedene piny maji automaticky sirku 1) */
-#field_size DATA=8 CADDR=16 GADDR=5  REG_SELECTOR=4 DEV_SELECTOR=3 ROM_SIZE=2 COUNT=12 COUNT_R = 4 Dev_Sel_lines=7
-#// Pullups: Dev_Sel_7..1, ROM, RAM, A_S_16, B_S_16, A_HALT, B_HALT, Dev_FIRQ, Dev_IRQ, Dev_NMI, DMA_BREQ, MRDY, Reset
+#field_size DATA=8 CADDR=16 GADDR=4  REG_SELECTOR=4 DEV_SELECTOR=3 ROM_SIZE=2 COUNT=12 COUNT_R = 4 Dev_Sel_lines=8
+MSG "### Pullups: Dev_Sel_7..1, ROM, RAM, A_S_16, B_S_16, A_HALT, B_HALT, Dev_FIRQ, Dev_IRQ, Dev_NMI, DMA_BREQ, MRDY, Reset";
+MSG "### Pridat: Pullups: A_READ, B_READ";
+MSG "### Pridat: Pulldowns: A_SHARE_REQUEST, B_SHARE_REQUEST";
 #// {{{ Macros
+#macro test_addr_in_RAM {{{
+#set RAM = L
+#set ROM = H
+#set addr_in_DEVS = L
+#set addr_in_REGS = L
+#set Dev_Sel_lines = "H"
+#set A_G_ENABLE = H
+#set B_G_ENABLE = H
+#end_macro }}}
+#macro test_addr_in_ROM {{{
+#set RAM = H
+#set ROM = L
+#set addr_in_DEVS = L
+#set addr_in_REGS = L
+#set Dev_Sel_lines = "H"
+#set A_G_ENABLE = H
+#set B_G_ENABLE = H
+#end_macro }}}
+#macro test_addr_in_DEV(num) {{{
+#set RAM = H
+#set ROM = H
+#set addr_in_DEVS = H
+#set addr_in_REGS = L
+#set Dev_Sel_lines = "{0xFF ^ (1 << num)}"
+#set A_G_ENABLE = H
+#set B_G_ENABLE = H
+#end_macro }}}
+#macro test_addr_in_REG {{{
+#call test_addr_in_DEV(0)
+#set addr_in_REGS = H
+#end_macro }}}
+#def_macro clock(readval,writeval) {{{ vygeneruje E+Q cyklus, read je "H rv rv H" cyklus, write podobne
+#msg clock({readval},{writeval})
+#set E = 0
+#set Q = 1
+#set Read = H
+#set Write = H
+#gen_vector
+#set E = 1
+#set Q = 1
+#set Read = {readval}
+#set Write = {writeval}
+#gen_vector
+#set E = 1
+#set Q = 0
+#set Read = {readval}
+#set Write = {writeval}
+#gen_vector
+#set E = 0
+#set Q = 0
+#set Read = H
+#set Write = H
+#gen_vector
+#end_macro }}}
 #def_macro READ_MEM(addr) {{{
 $MSG "### READ_MEM({addr}) ###";
 #set CADDR   = '{addr}'
@@ -84,6 +143,7 @@ $MSG "### TEST_MEM({addr},{val}) ###";
 
 #def_macro READ_REG(reg_num) {{{
 $MSG "### READ_REG({reg_num}) ###";
+#call test_addr_in_REG()
 #set CADDR   = {'A000'+reg_num}
 #set Rw   = 1
 #set Read  = H
@@ -104,6 +164,7 @@ $MSG "### READ_REG({reg_num}) ###";
 #end_macro }}}
 #def_macro WRITE_REG(reg_num, value) {{{
 $MSG "### WRITE_REG({reg_num}, {value}) ###";
+#call test_addr_in_REG()
 #set CADDR   = {'A000'+reg_num}
 #set Rw   = 0
 #set Read  = H
@@ -127,6 +188,7 @@ $MSG "### WRITE_REG({reg_num}, {value}) ###";
 #end_macro }}}
 #def_macro TEST_REG(reg_num, value) {{{
 $MSG "### TEST_REG({reg_num}, {value}) ###";
+#call test_addr_in_REG()
 #set CADDR   = {'A000'+reg_num}
 #set Rw   = 1
 #set Read  = H
@@ -160,12 +222,13 @@ $MSG "### Defaults set";
 #set  Write = * 
 #set  Reset = 1 
 #set  in_HALT_mode = * 
+#set  GA16  = * 
 #set  GADDR = "*" 
-#set  A_S_16 = * 
-#set  B_S_16 = * 
+#set  A_S_16 = 1 /* pullup */
+#set  B_S_16 = 1 
 #// 
-#set  A_HALT = 0 
-#set  B_HALT = 0 
+#set  A_HALT = 1 /* pullup */
+#set  B_HALT = 1 
 #set  HALT = * 
 #set  BA = 0 
 #//
@@ -173,27 +236,27 @@ $MSG "### Defaults set";
 #set  RomMapped = * 
 #//
 #set  Dev_FIRQ = * 
-#set  Dev_IRQ = 0 
-#set  Dev_NMI = 0 
-#set  DMA_BREQ = 0 
-#set  BS = 0 
-#set  MRDY = 0 
+#set  Dev_IRQ = Z
+#set  Dev_NMI = Z 
+#set  DMA_BREQ = Z 
+#set  BS = Z 
+#set  MRDY = Z 
 #//
 #set  RAM = * 
 #set  ROM = * 
-#set  Dev_Sel_lines = "*" 
+#set  Dev_Sel_lines = "H" 
 #//
 #set  A_S_SELECT = * 
 #set  B_S_SELECT = * 
 #set  A_G_ENABLE = * 
 #set  B_G_ENABLE = * 
 #//
-#set  /* inputs */ A_READ = 0 
-#set  B_READ = 0 
-#set  A_SHARE_REQUEST = 0 
-#set  B_SHARE_REQUEST = 0 
-#set  A_SHARE_SELECT = 0 
-#set  B_SHARE_SELECT = 0 
+#set  /* inputs */ A_READ = 1 /* pullup */
+#set  B_READ = 1
+#set  A_SHARE_REQUEST = 0 /* pulldown */
+#set  B_SHARE_REQUEST = 0
+#set  A_SHARE_SELECT = Z
+#set  B_SHARE_SELECT = Z
 #//
 #set  /* outputs */ A_SHARE_DIRTY = * 
 #set  B_SHARE_DIRTY = * 
@@ -241,30 +304,36 @@ $MSG "### Defaults set";
 #set  COUNT = "*" 
 #set  COUNT_R = "*" 
 #end_macro }}}
-
 #// }}}
 
 ORDER: 
-	DATA, %1, CADDR, %1, E, Q, %1, Rw, !Read, !Write,
-	%1, "R:", !Reset, in_HALT_mode, %1, GADDR, A_S_16, B_S_16,
-	%1, !A_HALT, !B_HALT, !HALT, BA,
+	DATA, 
+	%1, CADDR, 
+	%1, E, Q, 
+	%1, "Rw:", Rw, !Read, !Write,
+	%1, "R:", !Reset, in_HALT_mode, 
+	%1, "G:", GA16, GADDR,
+	%1, A_S_16, B_S_16,
+	%1, "H:", !A_HALT, !B_HALT, !HALT, BA,
+	%1, "C:", !Dev_FIRQ, !Dev_IRQ, !Dev_NMI, !DMA_BREQ, BS, MRDY, 
+	%1, "OE:", !RAM, !ROM,
+	%1, !Dev_Sel_lines, 
+	%1, "Sg:", !A_S_SELECT, !B_S_SELECT, %1, !A_G_ENABLE, !B_G_ENABLE,
+	%1, "In:", /* inputs */ A_READ, B_READ, %1, A_SHARE_REQUEST, B_SHARE_REQUEST, %1, A_SHARE_SELECT, B_SHARE_SELECT, 
+	%1, "Out:", /* outputs */ A_SHARE_DIRTY, B_SHARE_DIRTY, %1, A_SHARE_GRANTED, B_SHARE_GRANTED, %1, !A_S_READ, !B_S_READ, %1, !A_S_WRITE, !B_S_WRITE, %1, A_G_A_DIR, B_G_A_DIR, %1, A_G_D_DIR, B_G_D_DIR, 
+	%3, "Rs:",/* nodes */ ROM_SIZE,
 	%1, BootSrc, RomMapped, 
-	%1, !Dev_FIRQ, !Dev_IRQ, !Dev_NMI, !DMA_BREQ, BS, MRDY, 
-	%1, !RAM, !ROM,
-	%1, Dev_Sel_lines, 
-	%1, !A_S_SELECT, !B_S_SELECT, !A_G_ENABLE, !B_G_ENABLE,
-	%1, /* inputs */ A_READ, B_READ, A_SHARE_REQUEST, B_SHARE_REQUEST, A_SHARE_SELECT, B_SHARE_SELECT, 
-	%1, /* outputs */ A_SHARE_DIRTY, B_SHARE_DIRTY, A_SHARE_GRANTED, B_SHARE_GRANTED, !A_S_READ, !B_S_READ, !A_S_WRITE, !B_S_WRITE, A_G_A_DIR, B_G_A_DIR, A_G_D_DIR, B_G_D_DIR, 
-	%3, /* nodes */ ROM_SIZE, addr_in_REGS, addr_in_DEVS, 
-	%1, /* EMS1 mapping */ EMS1_A1, EMS1_A0, %1, EMS1_B4, EMS1_B3, EMS1_B2, EMS1_B1, EMS1_B0,
-	%1, /* EMS2 mapping */ EMS2_A1, EMS2_A0, %1, EMS2_B4, EMS2_B3, EMS2_B2, EMS2_B1, EMS2_B0,
-	%1, /* ownership */ CHIPA_A, CHIPA_C, CHIPB_A, CHIPB_C, %1, CHIPA_Dc, CHIPA_Dm, CHIPB_Dc, CHIPB_Dm, 
-	%2, TIMER_EN, %1, COUNT, %1, COUNT_R,
+	%1, addr_in_REGS, addr_in_DEVS, 
+	%1, "E1:", /* EMS1 mapping */ EMS1_A1, EMS1_A0, %1, EMS1_B4, EMS1_B3, EMS1_B2, EMS1_B1, EMS1_B0,
+	%1, "E2:", /* EMS2 mapping */ EMS2_A1, EMS2_A0, %1, EMS2_B4, EMS2_B3, EMS2_B2, EMS2_B1, EMS2_B0,
+	%1, "Ow:",/* ownership */ CHIPA_A, CHIPA_C, CHIPB_A, CHIPB_C, %1, CHIPA_Dc, CHIPA_Dm, CHIPB_Dc, CHIPB_Dm, 
+	%2, "T:",TIMER_EN, %1, COUNT, %1, COUNT_R,
 	" |";
 
 VECTORS:
-
-ZZZZZZZZ 1111111111111111 01 1HH 0L LHHHHZZ 00L0 0L Z00000 ** "*" HHHH 000000 LLLLHHHHLLLL   LLLLL LL LHLLL LL LHLLH LLLL LLLL  L LLLLLLLLLLLL LLLL 
+/* DATA   CADDR           EQ Rw: R: G:       H:   C:     OE     Sg:   In:      Out:                Rs:       E1:      E2:      Ow:        T:                 */
+ZZZZZZZZ 1111111111111111 01 1HH 0L LHHHH ZZ 11Z0 ZZZZZZ ** "*" HH HH ZZ ZZ ZZ LL LL HH HH LL LL   LLL 0L LL LL LHLLL LL LHLLH LLLL LLLL  L LLLLLLLLLLLL LLLL 
+#hide {{{
 #call Defaults()
 #set Reset=0
 $MSG "### Reset activated";
@@ -279,9 +348,149 @@ $MSG "### Reset deactivated";
 #call READ_REG(7)
 #call READ_REG(7)
 #call READ_REG(7)
+#call test_addr_in_RAM()
 #call WRITE_MEM(1234,5A)
 #call READ_MEM(1234)
 #call TEST_MEM(1234,"Z")
+#call test_addr_in_ROM()
 #call READ_MEM(FFFF)
+#call test_addr_in_REG()
 #call TEST_MEM(A000,C7)
-
+#call test_addr_in_DEV(1)
+#call TEST_MEM(A021,"Z")
+#call TEST_MEM(A031,"Z")
+#call test_addr_in_DEV(2)
+#call TEST_MEM(A041,"Z")
+#call TEST_MEM(A051,"Z")
+#call test_addr_in_DEV(7)
+#call TEST_MEM(A0F1,"Z")
+#call TEST_MEM(A0FF,"Z")
+$MSG "################################################################################";
+$MSG "### BOOT TEST";
+$MSG "################################################################################";
+#unhide }}}
+#call Defaults()
+#msg Reset ma kondenzator a 'vyssi prah citlivosti', zacina na nule,  spina jako posledni
+#set Reset=0
+#msg A_HALT je pulldown dolu => HALT je aktivni => BA je aktivni, nez reset skonci
+#set A_HALT = 0
+#set BA=1
+#msg Rw je Read, protoze A_READ je pullup
+#set Rw = H
+#msg CADDR je HiZ, protoze je HALT
+#set CADDR = 'Z'
+#gen_vector
+#msg B_HALT ma taky pulldown (ale otestujeme spravnou polaritu)
+#set B_HALT = 0
+#gen_vector
+#msg Reset konecne konci, nastava regulatni in_HALT_mode
+#set Reset=1
+#gen_vector
+#msg Initial HALT
+#comm_start
+	(Reset ma kondenzator a "vyssi prah citlivosti", spina jako posledni)
+	* nabehne napajeci napeti
+	* `A_HALT` je pulldownem drzeny dole
+		* GLUE logic tudiz podrzi dole `HALT`
+		* (CPU je v haltu a zacne nabihat jeho reset, vsechny signaly v HiZ)
+		* (Arduino staruje a ma vsechny piny HiZ)
+		* (GLUE po resetu odpojilo brany k Arduinu)
+	* Clock se rozbiha na nejakych 4 MHz
+* po delsi dobe nastartuje Arduino (veci v setup a tak)
+	* `A_HALT` nastavi na **LOW** a aktivne ho tam drzi (zadna zmena)
+	* Arduino nacte z SD karty, nebo FLASH, nebo nejak obsah ROM
+#comm_end
+#msg MHF nabootovalo a aktivne prebira A_HALT a vsechny ostatni sve piny (ale zatim zadna zmena)
+#msg MHF nacte z SD karty, nebo FLASH, nebo nejak obsah ROM
+#msg pri in_HALT_mode ma MHF gate otevrene (pokud neni druhe v poradi) (A_G_ENABLE=L B_G_ENABLE=H):
+#set A_G_ENABLE=L
+#set B_G_ENABLE=H
+#gen_vector
+#msg MHF_A zacne plnit SystemRAM
+#msg nejdriv pro jistotu nastavim A_READ=1, aby se SystemRAM nahodile nemazala (MHF ma data HiZ)
+#set A_READ=1
+#msg A_SHARE_SELECT=0 (manage SystemRAM) + A_SHARE_REQUEST=1 (Wants to own) (=>A_SHARE_GRANTED=1)
+#set A_SHARE_SELECT=0
+#set A_SHARE_REQUEST=1
+#set A_SHARE_GRANTED=H
+#gen_vector
+#msg mam A_HALT, dostal jsem A_SHARE_GRANTED=1 + A_SHARE_DIRTY=1 => muzu pouzivat SystemRAM
+#set A_SHARE_DIRTY=H
+#msg ########################################
+#msg  nastavim A_READ=1 (=> ctu SystemRAM, to je pro ni OK, MHF ma data=HiZ), nastavim CADDR/GADDR, nastavim A_S_16 pro spravnou pulku
+#set A_READ=1
+#set CADDR='FFFF'
+#set GADDR='F'
+#set A_S_16 = 1
+#set GA16 = H
+#set DATA="Z" /* SystemRAM poskytuje data */
+#set RAM=L
+#set Rw=H
+#set Read=L
+#set Write=H
+#call clock(L,H)
+#msg adresa vyrana, jdu zapsat - nejdriv nastavim zapis (a nezajimam se, co tam jde)
+#set A_READ=0
+#set Rw=L
+#set Read=H
+#set Write=L
+#call clock(H,L)
+#msg pak zapisu data
+#set DATA="Z" /* zapisuje MHF */
+#call clock(H,L)
+#msg Prepnu na cteni - ted na sbernici cpou data jak SystemRAM, tak MHF, ale jsou stejna, tak to nevadi
+#set A_READ=1
+#set Rw=H
+#set Read=L
+#set Write=H
+#call clock(L,H)
+#msg ########################################
+#msg MHF da data HiZ, nastavi dalsi adresu, zapise dalsi byte a tak porad dokola
+#msg nastavim A_READ=1 (=> ctu SystemRAM, to je pro ni OK, MHF ma data=HiZ), nastavim CADDR/GADDR
+#set A_READ=1
+#set CADDR='FFFE'
+#set GADDR='F'
+#set A_S_16 = 1
+#set GA16 = H
+#set DATA="Z" /* SystemRAM poskytuje data */
+#set RAM=L
+#set Rw=H
+#set Read=L
+#set Write=H
+#call clock(L,H)
+#msg adresa vyrana, jdu zapsat - nejdriv nastavim zapis (a nezajimam se, co tam jde)
+#set A_READ=0
+#set Rw=L
+#set Read=H
+#set Write=L
+#call clock(H,L)
+#msg pak zapisu data
+#set DATA="Z" /* zapisuje MHF */
+#call clock(H,L)
+#msg Prepnu na cteni - ted na sbernici cpou data jak SystemRAM, tak MHF, ale jsou stejna, tak to nevadi
+#set A_READ=1
+#set Rw=H
+#set Read=L
+#set Write=H
+#call clock(L,H)
+#msg ########################################
+#msg dokud nejsou vsechna data zapsana
+#msg test zapisu do oblasti registru (pisu do SystemRAM)
+#set CADDR='A000'
+#set GADDR='A'
+#set A_S_16 = 0
+#set GA16 = L
+#gen_vector
+#msg test zapisu do oblasti EMS1 (pisu do SystemRAM)
+#set CADDR='8000'
+#set GADDR='8'
+#set A_S_16 = 0
+#set GA16 = L
+#gen_vector
+#msg test zapisu do oblasti EMS2 (pisu do SystemRAM)
+#set CADDR='9000'
+#set GADDR='9'
+#set A_S_16 = 0
+#set GA16 = L
+#gen_vector
+#msg ########################################

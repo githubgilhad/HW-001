@@ -414,7 +414,7 @@
 	
 	FIELD DATA = [D7..D0];
 	FIELD CADDR = [CA15..CA0];
-	FIELD GADDR =  [GA16..12];
+	FIELD GADDR =  [GA15..12];
 	FIELD REG_SELECTOR = [CA3..0];
 	FIELD DEV_SELECTOR = [CA7..5];
 	FIELD ROM_SIZE = [ROM_SIZE2..0];
@@ -431,6 +431,21 @@
 	1 = 16k
 	0 = 24.75 kB
 	*/
+	/* }}} */
+	/************************************************************/
+	/* CPU bus defaults                                     {{{ */
+	/************************************************************/
+	Dev_NMI  ='b'0;
+	Dev_IRQ  ='b'0;
+	DMA_BREQ ='b'0;
+	MRDY     ='b'0;
+	BS       ='b'0;
+	
+	Dev_NMI.OE  ='b'0;
+	Dev_IRQ.OE  ='b'0;
+	DMA_BREQ.OE ='b'0;
+	MRDY.OE     ='b'0;
+	BS.OE       ='b'0;
 	/* }}} */
 	/************************************************************/
 	/* HALT mode                                            {{{ */

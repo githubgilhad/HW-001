@@ -1,5 +1,9 @@
 #!/usr/bin/python -u
 # vim: fileencoding=utf-8:nomodified:nowrap:textwidth=0:foldmethod=marker:foldcolumn=4:ruler:showcmd:lcs=tab\:|- list:tabstop=8:noexpandtab:nosmarttab:softtabstop=0:shiftwidth=0
+# from GIT-ghub/HD6309/HW-001/PLD/PSI2SI/ver_2.0/
+# 2026.08.28 03:24:23
+
+
 """
 PSI2SI Preprocessor
 Převádí .PSI (Preprocessor Simulation Input) na .SI (Simulation Input) pro WinCUPL/Winsim.
@@ -90,6 +94,11 @@ class Preprocessor:
                         # OPRAVA: Expanze u jednorádkového komentáře
                         expanded_rest = self.expand_exprs(rest_of_line, local_vars)
                         self.output.append('/* ' + expanded_rest + ' */')
+                        continue
+                    elif kw == 'msg':
+                        # OPRAVA: Expanze u jednorádkového message
+                        expanded_rest = self.expand_exprs(rest_of_line, local_vars)
+                        self.output.append('$MSG "## ' + expanded_rest + '";')
                         continue
                     elif kw in ('macro', 'def_macro'):
                         name_match = re.match(r'([a-zA-Z_][A-Za-z0-9_]*)\s*(?:\((.*?)\))?', rest_of_line, re.DOTALL)
