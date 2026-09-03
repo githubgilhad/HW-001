@@ -1,0 +1,1 @@
+sed 's/.*/	(label "\1" (at 100 100 90) (effects (font (size 1.27 1.27)) (justify right bottom))) (label "\1" (at 100 200 0) (effects (font (size 1.27 1.27)) (justify right bottom)))/'

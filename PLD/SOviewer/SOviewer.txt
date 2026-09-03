@@ -1,0 +1,82 @@
+
+class AaSOViewer:
+	def __init__(self, root, file_path, kicad_viewer):
+		self.root = root
+		self.kicad_viewer = kicad_viewer
+		self.top = tk.Toplevel(root)
+		self.top.title(f"Simulation Output: {file_path}")
+		self.top.geometry("1200x300")
+		
+		# Horní ovládací panel (zůstává stejný)
+		control_frame = tk.Frame(self.top)
+		control_frame.pack(side=tk.TOP, fill=tk.X, pady=5)
+		
+		tk.Button(control_frame, text="← Předchozí (Up)", command=self.prev_vector).pack(side=tk.LEFT, padx=10)
+		tk.Button(control_frame, text="Následující (Down) →", command=self.next_vector).pack(side=tk.LEFT, padx=10)
+		self.info_label = tk.Label(control_frame, text="0 / 0")
+		self.info_label.pack(side=tk.LEFT, padx=20)
+		
+		tk.Button(control_frame, text="Ukončit program", command=root.destroy, bg="lightcoral").pack(side=tk.RIGHT, padx=10)
+		
+		# --- ÚPRAVA: Rámec pro Canvas a Scrollbary pro správné rozložení ---
+		main_frame = tk.Frame(self.top)
+		main_frame.pack(fill=tk.BOTH, expand=True)
+		
+		# 1. Vytvoření svislého (Y) scrollbaru (umístěn vpravo)
+		v_scrollbar = tk.Scrollbar(main_frame, orient="vertical")
+		v_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+		
+		# 2. Vytvoření vodorovného (X) scrollbaru (umístěn dole)
+		h_scrollbar = tk.Scrollbar(main_frame, orient="horizontal")
+		h_scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
+		
+		# 3. Vytvoření samotného Canvasu
+		self.canvas = tk.Canvas(main_frame, bg="white")
+		self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+		
+		# 4. Propojení obou scrollbarů s Canvasem
+		self.canvas.configure(
+			xscrollcommand=h_scrollbar.set,
+			yscrollcommand=v_scrollbar.set
+		)
+		h_scrollbar.config(command=self.canvas.xview)
+		v_scrollbar.config(command=self.canvas.yview)
+		
+		self.fields = {}
+		self.orders_expanded = []
+		self.vectors = []
+		self.current_vector_idx = -1
+		
+		self.char_w = 8
+		self.char_h = 16
+		
+		self.parse_aaso(file_path)
+		
+		# --- ÚPRAVA: Nastavení scrollregionu pro X i Y osu ---
+		total_w = len(self.orders_expanded) * self.char_w + 50
+		# Zde zadejte odhadovanou maximální výšku obsahu (např. 800 místo původních 200),
+		# nebo to nechte dynamicky spočítat podle počtu řádků
+		total_h = 1000 
+		self.canvas.config(scrollregion=(0, 0, total_w, total_h))
+		
+		self.draw()
+		
+		# Ovládání šipkami (zůstává stejné)
+		self.top.bind("<Up>", lambda e: self.prev_vector())
+		self.top.bind("<Down>", lambda e: self.next_vector())
+		
+		# --- NOVÉ: Navázání kolečka myši pro svislý posun ---
+		self.canvas.bind("<MouseWheel>", self.on_canvas_y_scroll)
+		# Podpora pro Linux
+		self.canvas.bind("<Button-4>", self.on_canvas_y_scroll)
+		self.canvas.bind("<Button-5>", self.on_canvas_y_scroll)
+		
+		self.top.focus_set()
+
+	# --- NOVÁ METODA: Obsluha kolečka myši ---
+	def on_canvas_y_scroll(self, event):
+		"""Posouvá Canvas svisle nahoru nebo dolů podle pohybu kolečka."""
+		if event.num == 4 or (hasattr(event, 'delta') and event.delta > 0):
+			self.canvas.yview_scroll(-2, "units") # Nahoru
+		elif event.num == 5 or (hasattr(event, 'delta') and event.delta < 0):
+			self.canvas.yview_scroll(2, "units")  # Dolů

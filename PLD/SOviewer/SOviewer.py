@@ -1,0 +1,694 @@
+#!/usr/bin/python -u
+# vim: fileencoding=utf-8:nomodified:nowrap:textwidth=0:foldmethod=marker:foldcolumn=4:ruler:showcmd:lcs=tab\:|- list:tabstop=8:noexpandtab:nosmarttab:softtabstop=0:shiftwidth=0
+import tkinter as tk
+from tkinter import filedialog, messagebox, simpledialog
+import re
+import json # NOVÉ: Import pro práci s JSON souborem
+from PIL import Image, ImageTk
+
+# NOVÉ: Název konfiguračního souboru (uloží se do stejné složky jako skript)
+CONFIG_FILE = "SOviewer.json"
+PISMO = "DejaVu Sans Mono"
+PISMO = "Courier New"
+PISMO = "Courier 10 Pitch"
+PISMO = "Consolas"
+PISMO = "Courier"
+FONT =  ("Misc Fixed", 11)
+FONT_BOLD = ("Misc Fixed Wide",11)
+# --- Definice barev pro stavy signálů ---
+OLD_STATE_COLORS = {
+	'0': '#4A90E2', # Modrá
+	'1': '#E24A4A', # Červená
+	'L': '#7EC8E3', # Světle modrá
+	'H': '#E37E7E', # Světle červená
+	'X': '#AAAAAA', # Šedá
+	'*': '#FFFFFF', # Bílá (High-Z)
+	'Z': '#F5E642', # Žlutá
+}
+STATE_COLORS = {
+	'0': '#0000FF', # Modrá
+	'1': '#FF0000', # Červená
+	'L': '#8080FF', # Světle modrá
+	'H': '#FF8080', # Světle červená
+	'X': '#AAAAAA', # Šedá
+	'*': '#FFFFFF', # Bílá (High-Z)
+	'Z': '#F5E642', # Žlutá
+}
+
+def parse_order_string(order_str):
+	"""Vlastní bezpečný parser pro ORDER řádek (řeší čárky a uvozovky)"""
+	tokens = []
+	current_token = []
+	in_quotes = False
+	
+	for ch in order_str:
+		if ch == '!':
+			pass
+		elif ch == '"':
+			in_quotes = not in_quotes
+			current_token.append(ch)
+		elif ch == ',' and not in_quotes:
+			tokens.append("".join(current_token).strip())
+			current_token = []
+		else:
+			current_token.append(ch)
+			
+	if current_token:
+		tokens.append("".join(current_token).strip())
+		
+	return tokens
+
+
+class KiCadViewer:
+	def __init__(self, root, file_path):
+		self.root = root
+		self.top = tk.Toplevel(root)
+		self.top.title(f"KiCad Schema: {file_path}")
+		self.top.geometry("2500x1070")
+		
+		self.btn_frame = tk.Frame(self.top)
+		self.btn_frame.pack(fill=tk.X)
+		self.calib_btn = tk.Button(self.btn_frame, text="Kalibrovat pozadí", command=self.open_calibration_dialog)
+		self.calib_btn.pack(side=tk.LEFT, padx=5, pady=5)
+		
+		# --- NOVÉ: Stavová proměnná a přepínač Minimalizovaného zobrazení ---
+		self.min_mode = tk.BooleanVar(value=True) # Výchozí stav: True (jen MIN/LEDs), alt. False (zobrazuje se MAX)
+		self.mode_chk = tk.Checkbutton(
+			self.btn_frame, 
+			text="Pouze LED body (Min)", 
+			variable=self.min_mode, 
+			command=self.draw # Při kliknutí se rovnou překreslí plátno
+		)
+		self.mode_chk.pack(side=tk.LEFT, padx=15, pady=5)
+		
+		# Původní nápověda pro klávesnici
+		self.info_label = tk.Label(self.btn_frame, text=" [ Klávesnice: Šipky = Posun bg | +/- = Měřítko bg ]", fg="gray")
+		self.info_label.pack(side=tk.LEFT, padx=5, pady=5)
+		
+		self.canvas = tk.Canvas(self.top, bg="white")
+		self.canvas.pack(fill=tk.BOTH, expand=True)
+		
+		self.aaso_viewer = None 
+		
+		# Přidání tlačítek do vašeho stávajícího btn_frame v KiCadVieweru
+		self.prev_btn = tk.Button(self.btn_frame, text="← Předchozí", command=self.trigger_aaso_prev)
+		self.prev_btn.pack(side=tk.LEFT, padx=5, pady=5)
+		
+		self.next_btn = tk.Button(self.btn_frame, text="Následující →", command=self.trigger_aaso_next)
+		self.next_btn.pack(side=tk.LEFT, padx=5, pady=5)
+
+		# Klávesové zkratky: PageUp a PageDown budou přepínat simulaci,
+		# zatímco klasické šipky vám zůstanou na posun pozadí
+		self.top.bind("<Prior>", lambda e: self.trigger_aaso_prev()) # PageUp
+		self.top.bind("<Next>", lambda e: self.trigger_aaso_next())  # PageDown
+		
+		self.scale = 1.0
+		self.offset_x = 0.0
+		self.offset_y = 0.0
+		self.pan_start_x = 0
+		self.pan_start_y = 0
+		
+		# Výchozí hodnoty pro pozadí
+		self.bg_offset_x = 0.0      
+		self.bg_offset_y = 0.0      
+		self.bg_scale_factor = 1.0  
+
+		# NOVÉ: Načtení konfigurace ze souboru (přepíše výchozí hodnoty, pokud soubor existuje)
+		self.load_config()
+		
+		self.wires = []
+		self.labels = []
+		self.highlight_rects = {}
+		self.current_h_map = {} 
+		
+		self.font = (PISMO, 10)
+		self.char_w = 8
+		self.char_h = 16
+		
+		try:
+			self.orig_bg_image = Image.open(BACKGROUND_FILE)
+		except Exception as e:
+			print(f"Nepodařilo se načíst obrázek: {e}")
+			self.orig_bg_image = None
+		self.tk_bg_image = None
+		
+		self.parse_kicad(file_path)
+		self.draw()
+		
+		self.canvas.bind("<MouseWheel>", self.on_zoom)
+		self.canvas.bind("<Button-4>", self.on_zoom)
+		self.canvas.bind("<Button-5>", self.on_zoom)
+		self.canvas.bind("<ButtonPress-1>", self.on_pan_start)
+		self.canvas.bind("<B1-Motion>", self.on_pan_move)
+		
+		self.top.bind("<KeyPress>", self.on_key_press)
+		self.canvas.focus_set()
+
+		# NOVÉ: Zachytění zavření okna křížkem pro uložení konfigurace
+		self.top.protocol("WM_DELETE_WINDOW", self.on_close)
+
+	# --- NOVÉ METODY PRO KONFIGURACI ---
+	def load_config(self):
+		"""Načte konfiguraci pozadí z JSON souboru."""
+		try:
+			with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
+				cfg = json.load(f)
+				self.bg_offset_x = cfg.get("bg_offset_x", 0.0)
+				self.bg_offset_y = cfg.get("bg_offset_y", 0.0)
+				self.bg_scale_factor = cfg.get("bg_scale_factor", 1.0)
+				print(f"Načtena konfigurace pozadí ze souboru {CONFIG_FILE}")
+		except (FileNotFoundError, json.JSONDecodeError, KeyError):
+			# Pokud soubor neexistuje, je prázdný nebo poškozený, prostě použijeme výchozí hodnoty
+			pass
+
+	def save_config(self):
+		"""Uloží aktuální konfiguraci pozadí do JSON souboru."""
+		try:
+			cfg = {
+				"bg_offset_x": self.bg_offset_x,
+				"bg_offset_y": self.bg_offset_y,
+				"bg_scale_factor": self.bg_scale_factor
+			}
+			with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
+				json.dump(cfg, f, indent=4)
+		except Exception as e:
+			print(f"Chyba při ukládání konfigurace: {e}")
+
+	def on_close(self):
+		"""Uloží konfiguraci a zavře okno."""
+		self.save_config()
+		self.top.destroy()
+	# -----------------------------------
+
+	def parse_kicad(self, file_path):
+		try:
+			with open(file_path, 'r', encoding='utf-8') as f:
+				content = f.read()
+		except Exception as e:
+			messagebox.showerror("Chyba", f"Nelze číst KiCad soubor:\n{e}")
+			return
+
+		wire_pattern = r'\((wire|bus)\s+\(pts\s+\(xy\s+([\d\.-]+)\s+([\d\.-]+)\)\s+\(xy\s+([\d\.-]+)\s+([\d\.-]+)\)\s*\)'
+		for match in re.finditer(wire_pattern, content):
+			w_type = match.group(1)
+			x1, y1, x2, y2 = map(float, match.groups()[1:])
+			self.wires.append((w_type, x1, y1, x2, y2))
+
+		label_pattern = r'\((global_label|label|hierarchical_label)\s+"([^"]+)"[^(]*?\(at\s+([\d\.-]+)\s+([\d\.-]+)\s+([\d\.-]+)\)'
+		for match in re.finditer(label_pattern, content):
+			name = match.group(2)
+			name=name.replace('~','').replace('{','').replace('}','')
+			x, y, rot = float(match.group(3)), float(match.group(4)), float(match.group(5))
+			self.labels.append((name, x, y, rot))
+			# print(f"{match.group(1)} - {name} - {x} {y} [{rot}]")
+
+		global_label_pattern = r'\((global_label|label|hierarchical_label)\s+"([^"]+)"[^(]*\([^)]*\)[^(]*?\(at\s+([\d\.-]+)\s+([\d\.-]+)\s+([\d\.-]+)\)'
+		for match in re.finditer(global_label_pattern, content):
+			name = match.group(2)
+			name=name.replace('~','').replace('{','').replace('}','')
+			x, y, rot = float(match.group(3)), float(match.group(4)), float(match.group(5))
+			self.labels.append((name, x, y, rot))
+			# print(f"{match.group(1)} + {name} - {x} {y} [{rot}]")
+
+	def world_to_screen(self, wx, wy):
+		sx = (wx - self.offset_x) * self.scale
+		sy = (wy - self.offset_y) * self.scale
+		return sx, sy
+
+	def set_highlights(self, h_map):
+		"""Překreslení barev bez překreslování plátna (voláno z Aa.SO)"""
+		self.current_h_map = h_map 
+		
+		for name, rects in self.highlight_rects.items():
+			for r in rects:
+				self.canvas.itemconfig(r, state='hidden')
+				
+		for name, color in h_map.items():
+			if name in self.highlight_rects:
+				for r in self.highlight_rects[name]:
+					self.canvas.itemconfig(r, fill=color, state='normal')
+
+
+	def open_calibration_dialog(self):
+		dialog = tk.Toplevel(self.top)
+		dialog.title("Kalibrace pozadí")
+		dialog.geometry("350x220")
+		dialog.transient(self.top)
+		dialog.grab_set()
+		
+		disp_x = self.bg_offset_x * self.scale
+		disp_y = self.bg_offset_y * self.scale
+		
+		tk.Label(dialog, text="Posun X (obraz. px):").grid(row=0, column=0, padx=10, pady=5, sticky="e")
+		entry_x = tk.Entry(dialog)
+		entry_x.insert(0, f"{disp_x:.2f}")
+		entry_x.grid(row=0, column=1, padx=10, pady=5)
+		
+		tk.Label(dialog, text="Posun Y (obraz. px):").grid(row=1, column=0, padx=10, pady=5, sticky="e")
+		entry_y = tk.Entry(dialog)
+		entry_y.insert(0, f"{disp_y:.2f}")
+		entry_y.grid(row=1, column=1, padx=10, pady=5)
+		
+		tk.Label(dialog, text="Měřítko bg (world/px):").grid(row=2, column=0, padx=10, pady=5, sticky="e")
+		entry_scale = tk.Entry(dialog)
+		entry_scale.insert(0, f"{self.bg_scale_factor:.4f}")
+		entry_scale.grid(row=2, column=1, padx=10, pady=5)
+		
+		def save_and_close():
+			try:
+				# Převedeme zadání z pixelů obrazovky zpět do world souřadnic
+				self.bg_offset_x = float(entry_x.get()) / self.scale
+				self.bg_offset_y = float(entry_y.get()) / self.scale
+				self.bg_scale_factor = float(entry_scale.get())
+				dialog.destroy()
+				self.draw()
+			except ValueError:
+				pass
+
+		tk.Button(dialog, text="Uložit a překreslit", command=save_and_close).grid(row=3, column=0, columnspan=2, pady=15)
+
+	def on_key_press(self, event):
+		# Krok v pixelech obrazovky
+		step_px = 10.0 if (event.state & 0x0001) else 1.0
+		
+		# Převod pixelů obrazovky na world souřadnice
+		step_world = step_px / self.scale
+		
+		if event.keysym == "Left":
+			self.bg_offset_x -= step_world
+		elif event.keysym == "Right":
+			self.bg_offset_x += step_world
+		elif event.keysym == "Up":
+			self.bg_offset_y -= step_world
+		elif event.keysym == "Down":
+			self.bg_offset_y += step_world
+		elif event.keysym in ("plus", "equal", "KP_Add"):
+			self.bg_scale_factor = max(0.001, self.bg_scale_factor - 0.005)
+		elif event.keysym in ("minus", "hyphen", "KP_Subtract"):
+			self.bg_scale_factor += 0.005
+		else:
+			return
+			
+		self.draw()
+
+	def draw(self):
+		self.canvas.delete("all")
+		self.highlight_rects = {}
+		
+		if self.orig_bg_image:
+			canvas_w = self.canvas.winfo_width()
+			canvas_h = self.canvas.winfo_height()
+			if canvas_w <= 1: canvas_w = 900
+			if canvas_h <= 1: canvas_h = 700
+
+			img_w, img_h = self.orig_bg_image.size
+
+			# Společný transformátor: 1 pixel pozadí = bg_scale_factor world jednotek
+			# Výsledné zvětšení na obrazovce = self.scale / self.bg_scale_factor
+			combined_scale = self.scale / self.bg_scale_factor
+
+			# Pozice levého horního rohu obrázku na obrazovce (v pixelech)
+			screen_offset_x = (self.bg_offset_x - self.offset_x) * self.scale
+			screen_offset_y = (self.bg_offset_y - self.offset_y) * self.scale
+
+			if combined_scale > 0:
+				# Obrácený výpočet: Jaké pixele originálu odpovídají viditelnému oknu (0,0) až (canvas_w, canvas_h)?
+				# 0 = px1 * combined_scale + screen_offset_x  =>  px1 = -screen_offset_x / combined_scale
+				# canvas_w = px2 * combined_scale + screen_offset_x  =>  px2 = (canvas_w - screen_offset_x) / combined_scale
+				
+				px1 = -screen_offset_x / combined_scale
+				py1 = -screen_offset_y / combined_scale
+				px2 = (canvas_w - screen_offset_x) / combined_scale
+				py2 = (canvas_h - screen_offset_y) / combined_scale
+				
+				crop_x1 = max(0, int(px1))
+				crop_y1 = max(0, int(py1))
+				crop_x2 = min(img_w, int(px2) + 1)
+				crop_y2 = min(img_h, int(py2) + 1)
+				
+				if crop_x2 > crop_x1 and crop_y2 > crop_y1:
+					cropped_img = self.orig_bg_image.crop((crop_x1, crop_y1, crop_x2, crop_y2))
+					
+					draw_x = crop_x1 * combined_scale + screen_offset_x
+					draw_y = crop_y1 * combined_scale + screen_offset_y
+					draw_w = (crop_x2 - crop_x1) * combined_scale
+					draw_h = (crop_y2 - crop_y1) * combined_scale
+					
+					final_w = int(draw_w)
+					final_h = int(draw_h)
+					
+					if final_w > 0 and final_h > 0:
+						resized_img = cropped_img.resize((final_w, final_h), Image.Resampling.NEAREST)
+						self.tk_bg_image = ImageTk.PhotoImage(resized_img)
+						self.canvas.create_image(draw_x, draw_y, anchor=tk.NW, image=self.tk_bg_image)
+
+		  # Vykreslení drátů a busů (používá standardní world_to_screen)
+		# --- ÚPRAVA: Vykreslení drátů a busů POUZE v režimu MAX ---
+		if not self.min_mode.get():
+			for w_type, x1, y1, x2, y2 in self.wires:
+				sx1, sy1 = self.world_to_screen(x1, y1)
+				sx2, sy2 = self.world_to_screen(x2, y2)
+				width = max(1, int(3 * self.scale)) if w_type == 'bus' else max(1, int(1 * self.scale))
+				self.canvas.create_line(sx1, sy1, sx2, sy2, width=width, fill="black")
+			
+		font_size = max(6, int(10 * self.scale/5))
+		draw_font = (PISMO, font_size)
+		
+		temp_id = self.canvas.create_text(0, 0, text="W", font=draw_font, anchor="w")
+		bbox = self.canvas.bbox(temp_id)
+		if bbox:
+			curr_char_w = bbox[2] - bbox[0]
+			curr_char_h = bbox[3] - bbox[1]
+		else:
+			curr_char_w, curr_char_h = 8, 16
+		self.canvas.delete(temp_id)
+
+		for name, x, y, rot in self.labels:
+			sx, sy = self.world_to_screen(x, y)
+			
+			clean_name = re.sub(r'[\[\]~]', '', name).lstrip('!')
+			
+			w = len(name) * curr_char_w
+			h = curr_char_h
+			
+			if clean_name not in self.highlight_rects:
+				self.highlight_rects[clean_name] = []
+				
+			# --- ÚPRAVA: Větvení podle režimu (Obdélník vs Kolečko) ---
+			if not self.min_mode.get():
+				# Režim MAX: Klasický skrytý obdélník pro zvýraznění textu
+				rect = self.canvas.create_rectangle(
+					sx - 2, sy - (h / 2) - 2, sx + w + 2, sy + (h / 2) + 2, 
+					fill="", outline="", state='hidden'
+				)
+				self.highlight_rects[clean_name].append(rect)
+				self.canvas.create_text(sx, sy, text=name, font=draw_font, fill="blue", anchor="w", angle = 90 if rot==90 else 0)
+			else:
+				# Režim MIN: Místo obdélníku vytvoříme skryté kolečko (LED) v kotevním bodě
+				# Velikost kolečka se přizpůsobuje zoomu (např. poloměr r=4px základní velikosti)
+				r = max(3, h * 0.5 /2 )
+				circle = self.canvas.create_oval(
+					sx - r, sy - r, sx + r, sy + r, 
+					fill="", outline="black", state='hidden'
+				)
+				self.highlight_rects[clean_name].append(circle)
+			
+
+		self.set_highlights(self.current_h_map)
+
+	def on_zoom(self, event):
+		mx, my = event.x, event.y
+		wx = mx / self.scale + self.offset_x
+		wy = my / self.scale + self.offset_y
+		
+		if event.num == 5 or (hasattr(event, 'delta') and event.delta < 0):
+			factor = 0.9
+		else:
+			factor = 1.1
+			
+		if not (0.05 < self.scale * factor < 50.0):
+			return
+			
+		self.scale *= factor
+		self.offset_x = wx - mx / self.scale
+		self.offset_y = wy - my / self.scale
+		self.draw()
+
+	def on_pan_start(self, event):
+		self.pan_start_x = event.x
+		self.pan_start_y = event.y
+		self.canvas.focus_set()
+
+	def on_pan_move(self, event):
+		dx = event.x - self.pan_start_x
+		dy = event.y - self.pan_start_y
+		self.offset_x -= dx / self.scale
+		self.offset_y -= dy / self.scale
+		self.pan_start_x = event.x
+		self.pan_start_y = event.y
+		self.draw()
+
+	def trigger_aaso_prev(self):
+		"""Vyvolá předchozí vektor v okně simulace, pokud je propojeno."""
+		if self.aaso_viewer:
+			self.aaso_viewer.prev_vector()
+
+	def trigger_aaso_next(self):
+		"""Vyvolá následující vektor v okně simulace, pokud je propojeno."""
+		if self.aaso_viewer:
+			self.aaso_viewer.next_vector()
+
+class AaSOViewer:
+	def __init__(self, root, file_path, kicad_viewer):
+		self.root = root
+		self.kicad_viewer = kicad_viewer
+		self.top = tk.Toplevel(root)
+		self.top.title(f"Simulation Output: {file_path}")
+		self.top.geometry("2500x300")
+		
+		# Horní ovládací panel (zůstává stejný)
+		control_frame = tk.Frame(self.top)
+		control_frame.pack(side=tk.TOP, fill=tk.X, pady=5)
+		
+		tk.Button(control_frame, text="← Předchozí (Up)", command=self.prev_vector).pack(side=tk.LEFT, padx=10)
+		tk.Button(control_frame, text="Následující (Down) →", command=self.next_vector).pack(side=tk.LEFT, padx=10)
+		self.info_label = tk.Label(control_frame, text="0 / 0")
+		self.info_label.pack(side=tk.LEFT, padx=20)
+		
+		tk.Button(control_frame, text="Ukončit program", command=root.destroy, bg="lightcoral").pack(side=tk.RIGHT, padx=10)
+		
+		# --- ÚPRAVA: Rámec pro Canvas a Scrollbary pro správné rozložení ---
+		main_frame = tk.Frame(self.top)
+		main_frame.pack(fill=tk.BOTH, expand=True)
+		
+		# 1. Vytvoření svislého (Y) scrollbaru (umístěn vpravo)
+		v_scrollbar = tk.Scrollbar(main_frame, orient="vertical")
+		v_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+		
+		# 2. Vytvoření vodorovného (X) scrollbaru (umístěn dole)
+		h_scrollbar = tk.Scrollbar(main_frame, orient="horizontal")
+		h_scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
+		
+		# 3. Vytvoření samotného Canvasu
+		self.canvas = tk.Canvas(main_frame, bg="white")
+		self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+		
+		# 4. Propojení obou scrollbarů s Canvasem
+		self.canvas.configure(
+			xscrollcommand=h_scrollbar.set,
+			yscrollcommand=v_scrollbar.set
+		)
+		h_scrollbar.config(command=self.canvas.xview)
+		v_scrollbar.config(command=self.canvas.yview)
+		
+		self.fields = {}
+		self.orders_expanded = []
+		self.vectors = []
+		self.current_vector_idx = -1
+		
+		self.char_w = 8
+		self.char_h = 16
+		
+		self.parse_aaso(file_path)
+		
+		# --- ÚPRAVA: Nastavení scrollregionu pro X i Y osu ---
+		total_w = len(self.orders_expanded) * self.char_w + 50
+		# Zde zadejte odhadovanou maximální výšku obsahu (např. 800 místo původních 200),
+		# nebo to nechte dynamicky spočítat podle počtu řádků
+		total_h = 1000 
+		self.canvas.config(scrollregion=(0, 0, total_w, total_h))
+		
+		self.draw()
+		
+		# Ovládání šipkami (zůstává stejné)
+		self.top.bind("<Up>", lambda e: self.prev_vector())
+		self.top.bind("<Down>", lambda e: self.next_vector())
+		self.top.bind("<Prior>", lambda e: self.prev_vector()) # PageUp
+		self.top.bind("<Next>", lambda e: self.next_vector())  # PageDown
+		self.top.focus_set()
+		# --- NOVÉ: Navázání kolečka myši pro svislý posun ---
+		self.canvas.bind("<MouseWheel>", self.on_canvas_y_scroll)
+		# Podpora pro Linux
+		self.canvas.bind("<Button-4>", self.on_canvas_y_scroll)
+		self.canvas.bind("<Button-5>", self.on_canvas_y_scroll)
+		
+		self.top.focus_set()
+
+	# --- NOVÁ METODA: Obsluha kolečka myši ---
+	def on_canvas_y_scroll(self, event):
+		"""Posouvá Canvas svisle nahoru nebo dolů podle pohybu kolečka."""
+		if event.num == 4 or (hasattr(event, 'delta') and event.delta > 0):
+			self.canvas.yview_scroll(-2, "units") # Nahoru
+		elif event.num == 5 or (hasattr(event, 'delta') and event.delta < 0):
+			self.canvas.yview_scroll(2, "units")  # Dolů
+
+	def parse_aaso(self, file_path):
+		try:
+			with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+				lines = f.readlines()
+		except Exception as e:
+			messagebox.showerror("Chyba", f"Nelze číst Aa.SO soubor:\n{e}")
+			return
+
+		current_comments = []
+		
+		for line in lines:
+			line_stripped = line.strip()
+			
+			field_match = re.match(r'^\s*\d+:\s*FIELD\s+(\w+)\s*=\s*\[(.*?)\];', line_stripped)
+			if field_match:
+				name = field_match.group(1)
+				members = [m.strip() for m in field_match.group(2).split(',')]
+				self.fields[name] = members
+				continue
+
+			order_match = re.match(r'^\s*\d+:\s*ORDER:\s*(.*) \d\d:', line_stripped) # '\d\d:' bordel od cupl - prida cislo dalsi radky 34:
+			if order_match:
+				order_str = order_match.group(1)
+				tokens = parse_order_string(order_str)
+				
+				for token in tokens:
+					if token.startswith('%'):
+						try:
+							for _ in range(int(token[1:])):
+								self.orders_expanded.append(('space', ' '))
+						except: pass
+					elif token.startswith('"') and token.endswith('"'):
+						for ch in token[1:-1]:
+							self.orders_expanded.append(('text', ch))
+					elif token in self.fields:
+						for member in self.fields[token]:
+							clean_name = member.lstrip('!')
+							self.orders_expanded.append(('signal', clean_name))
+							print(clean_name)
+					else:
+						clean_name = token.lstrip('!')
+						self.orders_expanded.append(('signal', clean_name))
+						print(clean_name)
+				continue
+
+			vec_match = re.match(r'^\s*(\d{4}):\s*(.*)', line_stripped)
+			if vec_match:
+				self.vectors.append({
+					'num': vec_match.group(1),
+					'str': vec_match.group(2),
+					'comments': current_comments
+				})
+				current_comments = []
+				continue
+				
+			if line_stripped:
+				# current_comments.append(line_stripped)
+				current_comments.append(line.rstrip())
+
+	def draw(self):
+		self.canvas.delete("all")
+		if not self.orders_expanded or not self.vectors:
+			self.canvas.create_text(10, 10, anchor="nw", text="Nebyla nalezena platná data.", fill="red")
+			return
+			
+		temp_id = self.canvas.create_text(0, 0, text="W", font=FONT, anchor="nw")
+		bbox = self.canvas.bbox(temp_id)
+		self.char_w = bbox[2] - bbox[0]
+		self.char_h = bbox[3] - bbox[1]
+		self.canvas.delete(temp_id)
+
+		y_header = 120
+		y_values = y_header + self.char_h + 10
+		y_comments = y_values + self.char_h + 20
+		last_y = y_values +  self.char_h + 20  #pokud nevymyslim skutecnou hodnotu
+
+		for i, (typ, text) in enumerate(self.orders_expanded):
+			x = i * self.char_w
+			if typ == 'signal':
+				self.canvas.create_text(x, y_header, anchor="nw", text=text, font=FONT, fill="black", angle =90)
+			elif typ == 'text':
+				self.canvas.create_text(x, y_header, anchor="sw", text=text, font=FONT, fill="gray")
+
+		highlight_map = {}
+		if self.current_vector_idx >= 0 and self.current_vector_idx < len(self.vectors):
+			vec = self.vectors[self.current_vector_idx]
+			vec_str = vec['str']
+			old_vec = None
+			old_vec_str = ""
+			if self.current_vector_idx >= 1: # ma predchozi
+				old_vec = self.vectors[self.current_vector_idx-1]
+				old_vec_str = old_vec['str']
+			
+			if len(vec_str) < len(self.orders_expanded):
+				vec_str = vec_str.ljust(len(self.orders_expanded))
+				
+			for i, (typ, text) in enumerate(self.orders_expanded):
+				x = i * self.char_w
+				char = vec_str[i] if i < len(vec_str) else ' '
+				old_char = old_vec_str[i] if i < len(old_vec_str) else ' '
+				
+				if char!=old_char:
+					self.canvas.create_rectangle(
+						x - 1, y_values - 1, x + self.char_w + 1, y_values + self.char_h + 1, 
+						fill="#80FF80", outline=""
+					)
+				self.canvas.create_text(x, y_values, anchor="nw", text=char, font=FONT_BOLD, fill="black" if char==old_char else "red")
+				
+				if typ == 'signal':
+					if char in STATE_COLORS:
+						highlight_map[text] = STATE_COLORS[char]
+					else:
+						highlight_map[text] = '#000000' # Black
+			
+			for j, comment in enumerate(vec['comments']):
+				self.canvas.create_text(10, y_comments + j * 15, anchor="nw", text=comment, font=FONT, fill="green")
+				last_y = y_comments + j * 15
+				
+			self.info_label.config(text=f"Vektor {vec['num']}  [{self.current_vector_idx + 1} / {len(self.vectors)}]")
+
+		self.kicad_viewer.set_highlights(highlight_map)
+		# Na konec metody draw() v AaSOViewer:
+		total_h = last_y + self.char_h + 20  # Finální Y souřadnice + rezerva
+		total_w = len(self.orders_expanded) * self.char_w + 50
+		
+		# Dynamicky aktualizujeme rolovací oblast Canvasu podle nového obsahu
+		self.canvas.config(scrollregion=(0, 0, total_w, total_h))
+		
+		# Volitelné: Vrátí pohled posuvníku na začátek (nahoru) při změně stránky
+		self.canvas.yview_moveto(0) 
+
+	def next_vector(self):
+		if self.vectors and self.current_vector_idx < len(self.vectors) - 1:
+			self.current_vector_idx += 1
+			self.draw()
+
+	def prev_vector(self):
+		if self.vectors and self.current_vector_idx > 0:
+			self.current_vector_idx -= 1
+			self.draw()
+
+
+if __name__ == "__main__":
+	root = tk.Tk()
+	root.withdraw() 
+	
+	SCHEMATIC_FILE = "schema.kicad_sch" 
+	AASO_FILE = "pld.SO"
+	BACKGROUND_FILE = "background.png"
+
+	import os
+	if not os.path.exists(AASO_FILE):
+		AASO_FILE = filedialog.askopenfilename(title="Vyberte Simulation Output *.SO", filetypes=[("Simulation Output", "*.SO *.so")])
+	if not os.path.exists(SCHEMATIC_FILE):
+		SCHEMATIC_FILE = filedialog.askopenfilename(title="Vyberte KiCad soubor schématu *.kicad_sch", filetypes=[("KiCad Schematic", "*.kicad_sch")])
+	if not os.path.exists(BACKGROUND_FILE):
+		BACKGROUND_FILE = filedialog.askopenfilename(title="Vyberte background *.png", filetypes=[("background", "*.png *.PNG")])
+
+	kicad_viewer = None
+	aaso_viewer = None
+
+	if SCHEMATIC_FILE:
+		kicad_viewer = KiCadViewer(root, SCHEMATIC_FILE)
+	if AASO_FILE and kicad_viewer:
+		aaso_viewer = AaSOViewer(root, AASO_FILE, kicad_viewer)
+		kicad_viewer.aaso_viewer = aaso_viewer
+	elif AASO_FILE and not kicad_viewer:
+		messagebox.showwarning("Chybí schéma", "Pro zobrazení Aa.SO je nutné nejprve načíst KiCad schéma.")
+
+	root.mainloop()

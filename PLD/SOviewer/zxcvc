@@ -1,0 +1,595 @@
+B_READ
+D3
+A_SHARE_SELECT
+CA2
+Dev_RW
+HALT
+D6
+A8
+D3
+A8
+Dev_NMI
+B_SHARE_DIRTY
+Reset
+mA_SHARE_DIRTY
+Dev_Sel_4
+mA_S_SELECT
+Dev_1
+A10
+Dev_Sel_5
+B_READ
+D2
+CA6
+mA_S_WRITE
+GND
+vIRQB
+B_S_16
+CA0
+FIRQ
+GA13
+A2
+D2
+CA11
+CA3
+CA0
+A11
+mB_S_SELECT
+mB_SHARE_GRANTED
+D7
+D4
+D5
+Dev_2
+A_SHARE_REQUEST
+D1
+CA7
+CA3
+Dev_Sel_6
+ROM
+GA13
+mA_SHARE_GRANTED
+A_SHARE_GRANTED
+mA_S_16
+CA11
+D6
+A_SHARE_GRANTED
+Dev_4
+mA_S_16
+mA_HALT
+CA11
+CA1
+mB_S_16
+mA_SHARE_SELECT
+mB_HALT
+ROM
+CA7
+mA_HALT
+MRDY
+D6
+DMAslashBREQ
+B_SHARE_GRANTED
+D3
+A_READ
+CA12
+mB_G_ENABLE
++5V
+GND
+A_READ
+D6
+Dev_Sel_3
+A_HALT
+D3
+A_S_16
+Dev_Sel_2
+BA
+vCB2
+D0
+Reset
+D3
+Dev_Sel_6
+D4
+Rx
+RW
+D5
+IRQ
+CA6
+D0
+mA_SHARE_REQUEST
+Dev_Sel_7
+vCA1
+CA5
+mB_HALT
+RW
+D2
+Dev_2
+B_S_16
+mA_G_ENABLE
+D4
+mA_G_A_DIR
+Dev_E
+B_SHARE_REQUEST
+D0
+mB_SHARE_SELECT
+Dev_RW
+A7
+NMI
+CA2
+CA3
+D4
+mA_SHARE_DIRTY
+A13
+Dev_Sel_2
+RW
+D1
+CA8
+Dev_4
+D6
+D5
+Dev_3
+A12
+mB_SHARE_SELECT
+A6
+HALT
+D6
+CA0
+mA_G_A_DIR
+mB_READ
+CA11
+Dev_FIRQ
+mA_S_READ
+Dev_IRQ
+Dev_Sel_1
+D6
+FIRQ
+Dev_2
+CA0
+D5
+A_SHARE_GRANTED
+CA0
+D1
+Dev_Sel_3
+CA6
+A_HALT
+IRQ
+B_SHARE_DIRTY
+Q
+E
+CA8
+Dev_3
+mB_S_READ
+DMAslashBREQ
+D2
+B_SHARE_SELECT
+Read
+B_SHARE_GRANTED
+mA_SHARE_GRANTED
+A10
+B_SHARE_REQUEST
+mA_S_READ
+CA10
+Dev_1
+CA10
+Dev_Sel_3
+D1
+BA
+D0
+D3
+B_SHARE_GRANTED
+A8
+mB_G_ENABLE
+Dev_IRQ
+Dev_IRQ
+E
+D7
+CA8
+CA1
+CA7
+CA3
+D5
+vIRQA
++5V
+GA12
+vCA2
+CA2
+CA3
+mB_SHARE_REQUEST
+CA1
+B_HALT
+CA15
+D7
+NMI
+mB_HALT
+Write
+D0
+IRQ
+RAM
+A_SHARE_DIRTY
+D2
+A_SHARE_DIRTY
+D4
+A14
+mB_G_D_DIR
+mB_SHARE_DIRTY
+GA16
+A12
+Reset
+DMAslashBREQ
+A6
+B_SHARE_REQUEST
+mB_S_SELECT
+NMI
+mB_SHARE_DIRTY
+D5
+GA14
+Read
+A0
+HALT
+Dev_Sel_6
+D7
+GA15
+D4
+CA15
+D1
+B_SHARE_SELECT
+GND
+vCB1
+Dev_Sel_4
+Dev_E
+CA13
+A1
+D1
+Reset
+D5
+A4
+mB_S_READ
+D0
+CA2
+mB_S_WRITE
+D3
+GA14
+GA12
+B_S_16
+BA
+ROM
+CA12
+DMAslashBREQ
+GA12
+D0
+RAM
+A12
+A3
+A_SHARE_REQUEST
+CA2
+A11
+mB_SHARE_REQUEST
+D7
+Dev_Sel_2
+Dev_Sel_7
+D3
+RW
+FIRQ
+CA9
+Q
+GA16
+CA4
+A1
+CA9
+Dev_Sel_5
+D1
+D5
+Dev_Sel_4
+A2
+D4
+CA5
+A1
+Dev_Sel_3
+CA1
+Dev_NMI
+D2
+mB_G_A_DIR
+MRDY
+GA14
+A2
+A9
+A13
+GA13
++5V
+D4
+mA_G_ENABLE
+GA15
+Dev_1
+BootSrc
+B_SHARE_DIRTY
+A4
+A7
+E
+D3
+RomMapped
+B_HALT
+Dev_Sel_1
+ROM
+D5
+GA12
+D6
+CA14
+CA10
+Dev_NMI
+CA11
+CA10
+NMI
+A4
+mB_HALT
+D4
+A9
+CA7
+A15
+Dev_Sel_2
+D3
+B_SHARE_GRANTED
+A10
+A0
+Dev_Sel_7
+Tx
+GA13
+Dev_FIRQ
+D1
+mA_READ
+D1
+CA5
+Dev_3
+Dev_E
+A5
+A0
+Q
+Dev_Sel_4
+CA5
+D0
+CA1
+CA10
+RAM
+E
+Dev_Sel_1
+CA0
+mA_S_SELECT
+A5
+mA_G_D_DIR
+B_READ
+FIRQ
+RomMapped
+A_SHARE_SELECT
+CA0
+CA13
+BootSrc
+GA15
+GND
+D0
+A_SHARE_SELECT
+A5
+mA_HALT
+D7
+mA_G_D_DIR
+A_S_16
+A15
+E
+mB_SHARE_GRANTED
+A_READ
+A9
+mA_READ
+D6
+CA8
+mA_SHARE_REQUEST
+Dev_FIRQ
+A14
+A3
+Read
+D2
+E
+CA6
+Write
+Dev_RW
+D0
+Write
+A_S_16
+Dev_Sel_5
+A15
+D7
+CA1
+Dev_4
+RAM
++5V
+Dev_Sel_7
+vCB1
+D2
+B_S_16
+A_HALT
+A_S_16
+MRDY
+CA9
+CA4
+mA_HALT
+D4
+CA5
+Dev_Sel_6
+mB_G_A_DIR
+A_SHARE_GRANTED
+CA14
+A13
+B_SHARE_SELECT
+D2
+A6
+B_HALT
+CA9
+mB_READ
+MRDY
+IRQ
+Dev_Sel_1
+IRQ
+BS
+RW
+A14
+D2
+BS
+mB_S_16
+CA4
+CA8
+mA_S_WRITE
+CA6
+BS
+D7
+D5
+mB_S_WRITE
+CA7
+Reset
+mA_SHARE_SELECT
+D7
+CA9
+D1
+CA4
+D6
+GA14
+mB_G_D_DIR
+Dev_Sel_5
+A3
+D7
+A11
+A7
+CA4
+A_SHARE_DIRTY
+A_SHARE_REQUEST
+token = [DATA,]
+token = [%1,]
+token = [CADDR,]
+token = [%1,]
+token = [E,]
+token = [Q,]
+token = [%1,]
+token = ["Rw:"]
+token = [,]
+token = [Rw,]
+token = [!Read,]
+token = [!Write,]
+token = [%1,]
+token = ["R:"]
+token = [,]
+token = [!Reset,]
+token = [in_HALT_mode,]
+token = [%1,]
+token = ["G:"]
+token = [,]
+token = [GA16,]
+token = [GADDR,]
+token = [%1,]
+token = [A_S_16,]
+token = [B_S_16,]
+token = [%1,]
+token = ["H:"]
+token = [,]
+token = [!A_HALT,]
+token = [!B_HALT,]
+token = [!HALT,]
+token = [BA,]
+token = [%1,]
+token = ["C:"]
+token = [,]
+token = [!Dev_FIRQ,]
+token = [!Dev_IRQ,]
+token = [!Dev_NMI,]
+token = [!DMA_BREQ,]
+token = [BS,]
+token = [MRDY,]
+token = [%1,]
+token = ["OE:"]
+token = [,]
+token = [!RAM,]
+token = [!ROM,]
+token = [%1,]
+token = [!Dev_Sel_lines,]
+token = [%1,]
+token = ["Sg:"]
+token = [,]
+token = [!A_S_SELECT,]
+token = [!B_S_SELECT,]
+token = [%1,]
+token = [!A_G_ENABLE,]
+token = [!B_G_ENABLE,]
+token = [%1,]
+token = ["In:"]
+token = [,]
+token = [A_READ,]
+token = [B_READ,]
+token = [%1,]
+token = [A_SHARE_REQUEST,]
+token = [B_SHARE_REQUEST,]
+token = [%1,]
+token = [A_SHARE_SELECT,]
+token = [B_SHARE_SELECT,]
+token = [%1,]
+token = ["Out:"]
+token = [,]
+token = [A_SHARE_DIRTY,]
+token = [B_SHARE_DIRTY,]
+token = [%1,]
+token = [A_SHARE_GRANTED,]
+token = [B_SHARE_GRANTED,]
+token = [%1,]
+token = [!A_S_READ,]
+token = [!B_S_READ,]
+token = [%1,]
+token = [!A_S_WRITE,]
+token = [!B_S_WRITE,]
+token = [%1,]
+token = [A_G_A_DIR,]
+token = [B_G_A_DIR,]
+token = [%1,]
+token = [A_G_D_DIR,]
+token = [B_G_D_DIR,]
+token = [%3,]
+token = ["Rs:"]
+token = [,]
+token = [ROM_SIZE,]
+token = [%1,]
+token = [BootSrc,]
+token = [RomMapped,]
+token = [%1,]
+token = [addr_in_REGS,]
+token = [addr_in_DEVS,]
+token = [%1,]
+token = ["E1:"]
+token = [,]
+token = [EMS1_A1,]
+token = [EMS1_A0,]
+token = [%1,]
+token = [EMS1_B4,]
+token = [EMS1_B3,]
+token = [EMS1_B2,]
+token = [EMS1_B1,]
+token = [EMS1_B0,]
+token = [%1,]
+token = ["E2:"]
+token = [,]
+token = [EMS2_A1,]
+token = [EMS2_A0,]
+token = [%1,]
+token = [EMS2_B4,]
+token = [EMS2_B3,]
+token = [EMS2_B2,]
+token = [EMS2_B1,]
+token = [EMS2_B0,]
+token = [%1,]
+token = ["Ow:"]
+token = [,]
+token = [CHIPA_A,]
+token = [CHIPA_C,]
+token = [CHIPB_A,]
+token = [CHIPB_C,]
+token = [%1,]
+token = [CHIPA_Dc,]
+token = [CHIPA_Dm,]
+token = [CHIPB_Dc,]
+token = [CHIPB_Dm,]
+token = [%2,]
+token = ["T:"]
+token = [,TIMER_EN,]
+token = [%1,]
+token = [COUNT,]
+token = [%1,]
+token = [COUNT_R]

@@ -1076,11 +1076,13 @@
 	A_S_SELECT =
 		  CHIPA_C & EMS_WINDOW & ACTIVE_MHFA /* for CPU */
 		# CHIPA_A & A_SHARE_SELECT           /* for MHF */
+		# in_HALT_mode & A_HALT & A_SHARE_SELECT /* MHF in_HALT_mode */
 		;
 	
 	B_S_SELECT =
 		  CHIPB_C & EMS_WINDOW & ACTIVE_MHFB /* for CPU */
 		# CHIPB_A & B_SHARE_SELECT           /* for MHF */
+		# in_HALT_mode & B_HALT & B_SHARE_SELECT /* MHF in_HALT_mode */
 		;
 	
 	/* }}} */
@@ -1142,9 +1144,9 @@
 	/************************************************************/
 	
 	A_G_ENABLE = !in_HALT_mode & CHIPA_C & EMS_WINDOW & ACTIVE_MHFA & E 
-		# in_HALT_mode & A_HALT;
+		# in_HALT_mode & A_HALT & A_SHARE_SELECT;
 	B_G_ENABLE = !in_HALT_mode & CHIPB_C & EMS_WINDOW & ACTIVE_MHFB & E
-		# in_HALT_mode & !A_HALT & B_HALT;
+		# in_HALT_mode & !A_HALT & B_HALT & B_SHARE_SELECT;
 	
 	/* }}} */
 	
