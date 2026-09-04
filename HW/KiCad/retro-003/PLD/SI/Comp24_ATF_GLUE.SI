@@ -11,30 +11,33 @@
 	Device  f1508isptqfp100;
 
 MSG "### PSI macros, use PSI2SI.py Aa.PSI Aa.SI ###";
-MSG "### Generated 2026.08.28 03:01:49 ###";
+MSG "### Generated 2026.09.05 00:53:41 ###";
 
 
-MSG "### Pullups: Dev_Sel_7..1, ROM, RAM, A_S_16, B_S_16, A_HALT, B_HALT, Dev_FIRQ, Dev_IRQ, Dev_NMI, DMA_BREQ, MRDY, Reset";
+MSG "### Pullups: Dev_Sel_7..1, ROM_Sel, RAM_Sel, A_S_16, B_S_16, A_HALT, B_HALT, Dev_FIRQ, Dev_IRQ, Dev_NMI, DMA_BREQ, MRDY, Reset";
 MSG "### Pridat: Pullups: A_READ, B_READ";
 MSG "### Pridat: Pulldowns: A_SHARE_REQUEST, B_SHARE_REQUEST";
 
 
 
-ORDER: 	DATA, 	%1, CADDR, 	%1, E, Q, 	%1, "Rw:", Rw, !Read, !Write,	%1, "R:", !Reset, in_HALT_mode, 	%1, "G:", GA16, GADDR,	%1, A_S_16, B_S_16,	%1, "H:", !A_HALT, !B_HALT, !HALT, BA,	%1, "C:", !Dev_FIRQ, !Dev_IRQ, !Dev_NMI, !DMA_BREQ, BS, MRDY, 	%1, "OE:", !RAM, !ROM,	%1, !Dev_Sel_lines, 	%1, "Sg:", !A_S_SELECT, !B_S_SELECT, %1, !A_G_ENABLE, !B_G_ENABLE,	%1, "In:",  A_READ, B_READ, %1, A_SHARE_REQUEST, B_SHARE_REQUEST, %1, A_SHARE_SELECT, B_SHARE_SELECT, 	%1, "Out:",  A_SHARE_DIRTY, B_SHARE_DIRTY, %1, A_SHARE_GRANTED, B_SHARE_GRANTED, %1, !A_S_READ, !B_S_READ, %1, !A_S_WRITE, !B_S_WRITE, %1, A_G_A_DIR, B_G_A_DIR, %1, A_G_D_DIR, B_G_D_DIR, 	%3, "Rs:", ROM_SIZE,	%1, BootSrc, RomMapped, 	%1, addr_in_REGS, addr_in_DEVS, 	%1, "E1:",  EMS1_A1, EMS1_A0, %1, EMS1_B4, EMS1_B3, EMS1_B2, EMS1_B1, EMS1_B0,	%1, "E2:",  EMS2_A1, EMS2_A0, %1, EMS2_B4, EMS2_B3, EMS2_B2, EMS2_B1, EMS2_B0,	%1, "Ow:", CHIPA_A, CHIPA_C, CHIPB_A, CHIPB_C, %1, CHIPA_Dc, CHIPA_Dm, CHIPB_Dc, CHIPB_Dm, 	%2, "T:",TIMER_EN, %1, COUNT, %1, COUNT_R,	" |";
+ORDER:DATA,%1,CADDR,%1,E,Q,%1,"Rw:",Rw,!Read,!Write,%1,"R:",!Reset,in_HALT_mode,%1,"G:",GA16,GADDR,%1,A_S_16,B_S_16,%1,"H:",!A_HALT,!B_HALT,!HALT,BA,%1,"C:",!Dev_FIRQ,!Dev_IRQ,!Dev_NMI,!DMA_BREQ,BS,MRDY,%1,"OE:",!RAM_Sel,!ROM_Sel,%1,!Dev_Sel_lines,%1,"Sg:",!A_S_SELECT,!B_S_SELECT,%1,!A_G_ENABLE,!B_G_ENABLE,%1,"In:",A_READ,B_READ,%1,A_SHARE_REQUEST,B_SHARE_REQUEST,%1,A_SHARE_SELECT,B_SHARE_SELECT,%1,"Out:",A_SHARE_COOP,B_SHARE_COOP,%1,A_SHARE_GRANTED,B_SHARE_GRANTED,%1,!A_S_READ,!B_S_READ,%1,!A_S_WRITE,!B_S_WRITE,%1,A_G_A_DIR,B_G_A_DIR,%1,A_G_D_DIR,B_G_D_DIR,%3,"Rs:",ROM_SIZE,%1,BootSrc,RomMapped,%1,addr_in_REGS,addr_in_DEVS,%1,"E1:",EMS1_A1,EMS1_A0,%1,EMS1_B4,EMS1_B3,EMS1_B2,EMS1_B1,EMS1_B0,%1,"E2:",EMS2_A1,EMS2_A0,%1,EMS2_B4,EMS2_B3,EMS2_B2,EMS2_B1,EMS2_B0,%1,"Ow:",CHIPA_A,CHIPA_C,CHIPB_A,CHIPB_C,%1,CHIPA_Dc,CHIPA_Dm,CHIPB_Dc,CHIPB_Dm,%2,"T:",TIMER_EN,%1,COUNT,%1,COUNT_R,%1;
 
 VECTORS:
 
+$MSG "## #: ZZZZZZZZ 1111111111111111 01 Rw:1HH R:0L G:LHHHH ZZ H:11Z0 C:ZZZZZZ OE:** ******** Sg:HH HH In:ZZ ZZ ZZ Out:LL LL HH HH LL LL   Rs:LLL 0L LL E1:LL LHLLL E2:LL LHLLH Ow:LLLL LLLL  T:L LLLLLLLLLLLL LLLL";
 ZZZZZZZZ 1111111111111111 01 1HH 0L LHHHH ZZ 11Z0 ZZZZZZ ** "*" HH HH ZZ ZZ ZZ LL LL HH HH LL LL   LLL 0L LL LL LHLLL LL LHLLH LLLL LLLL  L LLLLLLLLLLLL LLLL 
 $MSG "### Defaults set";
 $MSG "## Reset ma kondenzator a 'vyssi prah citlivosti', zacina na nule,  spina jako posledni";
 $MSG "## A_HALT je pulldown dolu => HALT je aktivni => BA je aktivni, nez reset skonci";
+$MSG "## BA aktivni => nastane in_HALT_mode => A_SHARE_COOP je aktivni (protoze mam A_HALT) a B_SHARE_COOP je NEaktivni (protoze mam A_HALT)";
+$MSG "## NOTE: jeste je na to moc brzo (Reset teprve zacina), ale jakmile MHF nabootuje a ma X_SHARE_COOP aktivni, tak je nejspis MHFA, nebo oproti nemu bootovalo velmi pomalu";
 $MSG "## Rw je Read, protoze A_READ je pullup";
 $MSG "## CADDR je HiZ, protoze je HALT";
-"*" 'Z' 01 H** 0* *"*" 11 01*1 *ZZZZZ ** "H" ** ** 11 00 ZZ ** ** ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
+"*" 'Z' 01 H** 0* *"*" 11 01*1 *ZZZZZ ** "H" ** ** 11 00 ZZ ** ** ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
 $MSG "## B_HALT ma taky pulldown (ale otestujeme spravnou polaritu)";
-"*" 'Z' 01 H** 0* *"*" 11 00*1 *ZZZZZ ** "H" ** ** 11 00 ZZ ** ** ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
+"*" 'Z' 01 H** 0* *"*" 11 00*1 *ZZZZZ ** "H" ** ** 11 00 ZZ ** ** ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
 $MSG "## Reset konecne konci, nastava regulatni in_HALT_mode";
-"*" 'Z' 01 H** 1* *"*" 11 00*1 *ZZZZZ ** "H" ** ** 11 00 ZZ ** ** ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
+"*" 'Z' 01 H** 1* *"*" 11 00*1 *ZZZZZ ** "H" ** ** 11 00 ZZ ** ** ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
 $MSG "## Initial HALT";
 /* 
 	(Reset ma kondenzator a "vyssi prah citlivosti", spina jako posledni)
@@ -42,79 +45,421 @@ $MSG "## Initial HALT";
 	* `A_HALT` je pulldownem drzeny dole
 		* GLUE logic tudiz podrzi dole `HALT`
 		* (CPU je v haltu a zacne nabihat jeho reset, vsechny signaly v HiZ)
-		* (Arduino staruje a ma vsechny piny HiZ)
+		* (ATmega2560 staruje a ma vsechny piny HiZ)
 		* (GLUE po resetu odpojilo brany k Arduinu)
 	* Clock se rozbiha na nejakych 4 MHz
-* po delsi dobe nastartuje Arduino (veci v setup a tak)
+* po delsi dobe nastartuje ATmega2560 (veci v setup a tak)
 	* `A_HALT` nastavi na **LOW** a aktivne ho tam drzi (zadna zmena)
-	* Arduino nacte z SD karty, nebo FLASH, nebo nejak obsah ROM
+	* ATmega2560 nacte z SD karty, nebo FLASH, nebo nejak obsah ROM
 */
 $MSG "## MHF nabootovalo a aktivne prebira A_HALT a vsechny ostatni sve piny (ale zatim zadna zmena)";
 $MSG "## MHF nacte z SD karty, nebo FLASH, nebo nejak obsah ROM";
-$MSG "## pri in_HALT_mode ma MHF gate otevrene (pokud neni druhe v poradi) (A_G_ENABLE=L B_G_ENABLE=H):";
-"*" 'Z' 01 H** 1* *"*" 11 00*1 *ZZZZZ ** "H" ** LH 11 00 ZZ ** ** ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-$MSG "## MHF_A zacne plnit SystemRAM";
-$MSG "## nejdriv pro jistotu nastavim A_READ=1, aby se SystemRAM nahodile nemazala (MHF ma data HiZ)";
-$MSG "## A_SHARE_SELECT=0 (manage SystemRAM) + A_SHARE_REQUEST=1 (Wants to own) (=>A_SHARE_GRANTED=1)";
-"*" 'Z' 01 H** 1* *"*" 11 00*1 *ZZZZZ ** "H" ** LH 11 10 0Z ** H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-$MSG "## mam A_HALT, dostal jsem A_SHARE_GRANTED=1 + A_SHARE_DIRTY=1 => muzu pouzivat SystemRAM";
-$MSG "## ########################################";
-$MSG "## nastavim A_READ=1 (=> ctu SystemRAM, to je pro ni OK, MHF ma data=HiZ), nastavim CADDR/GADDR, nastavim A_S_16 pro spravnou pulku";
+$MSG "## pri in_HALT_mode ma MHF gate rizene A_SHARE_SELECT & A_SHARE_REQUEST (pokud neni druhe v poradi) (A_G_ENABLE=H B_G_ENABLE=H):";
+$MSG "## Zatim jsme nepozadali o aktivaci (A_SHARE_REQUEST), tak jsou zavrene";
+"*" 'Z' 01 H** 1* *"*" 11 00*1 *ZZZZZ ** "H" ** HH 11 00 ZZ ** ** ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
 $MSG "## clock(L,H)";
-"Z" 'FFFF' 01 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFF' 11 HLH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFF' 10 HLH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFF' 00 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-$MSG "## adresa vyrana, jdu zapsat - nejdriv nastavim zapis (a nezajimam se, co tam jde)";
+"*" 'Z' 01 HHH 1* *"*" 11 00*1 *ZZZZZ ** "H" ** HH 11 00 ZZ ** ** ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"*" 'Z' 11 HLH 1* *"*" 11 00*1 *ZZZZZ ** "H" ** HH 11 00 ZZ ** ** ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"*" 'Z' 10 HLH 1* *"*" 11 00*1 *ZZZZZ ** "H" ** HH 11 00 ZZ ** ** ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"*" 'Z' 00 HHH 1* *"*" 11 00*1 *ZZZZZ ** "H" ** HH 11 00 ZZ ** ** ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+
+
+$MSG "## MHFA zacne plnit SystemRAM";
+$MSG "## nejdriv pro jistotu nastavim A_READ=1, aby se SystemRAM nahodile nemazala (MHF ma data HiZ)";
+"*" 'Z' 00 HHH 1* *"*" 11 00*1 *ZZZZZ ** "H" ** HH 11 00 ZZ ** ** ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Plan: Zapsat(treba na '1 FFFF') nejaka data (treba 5A) A_SHARE_SELECT=0 (manage SystemRAM) + A_SHARE_REQUEST=1 (Wants to own) (=>A_SHARE_GRANTED=1)";
+$MSG "## A_SHARE_SELECT=0";
+"*" 'Z' 00 HHH 1* *"*" 11 00*1 *ZZZZZ ** "H" ** HH 11 00 0Z ** ** ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## A_SHARE_REQUEST=1 => A_G_ENABLE active";
+"*" 'Z' 00 HHH 1* *"*" 11 00*1 *ZZZZZ ** "H" ** LH 11 10 0Z ** ** ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Should have A_SHARE_GRANTED=H (test it)";
+"*" 'Z' 00 HHH 1* *"*" 11 00*1 *ZZZZZ ** "H" ** LH 11 10 0Z ** H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## mam A_HALT, dostal jsem A_SHARE_GRANTED=1 + A_SHARE_COOP=1 => muzu pouzivat SystemRAM";
+$MSG "## ########################################";
+$MSG "## nastavim A_READ=1 (=> ctu SystemRAM, to je pro ni OK, MHF dostava data, ale ATmega ma data=HiZ a SharedRAM.CS (A_S_SELECT) neni active), nastavim CADDR/GADDR, nastavim A_S_16 pro spravnou pulku";
+"*" 'Z' 00 HHH 1* *"*" 11 00*1 *ZZZZZ ** "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## blind_write(A,5A) - do some tests";
+"Z" 'FFFF' 00 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Tests end";
+$MSG "## clock(L,H)";
+"Z" 'FFFF' 01 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFF' 11 HLH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFF' 10 HLH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFF' 00 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## adresa vybrana, jdu zapsat - nejdriv ATmega2560 nastavi zapis (a jde tam jako data co gate vycte z HiZ) az potom zapne svuj vystup a nastavi data, jinak by se potloukla s gate (ktera by cetla data z RAM)";
 $MSG "## clock(H,L)";
-"Z" 'FFFF' 01 LHH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 01 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFF' 11 LHL 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 01 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFF' 10 LHL 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 01 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFF' 00 LHH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 01 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
+"Z" 'FFFF' 01 LHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFF' 11 LHL 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFF' 10 LHL 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFF' 00 LHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
 $MSG "## pak zapisu data";
 $MSG "## clock(H,L)";
-"Z" 'FFFF' 01 LHH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 01 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFF' 11 LHL 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 01 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFF' 10 LHL 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 01 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFF' 00 LHH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 01 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-$MSG "## Prepnu na cteni - ted na sbernici cpou data jak SystemRAM, tak MHF, ale jsou stejna, tak to nevadi";
+'5A' 'FFFF' 01 LHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'5A' 'FFFF' 11 LHL 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'5A' 'FFFF' 10 LHL 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'5A' 'FFFF' 00 LHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Prepnu na cteni - ted na vnitrni sbernici MHF cpou data jak SystemRAM/gate, tak ATmega2560, ale jsou stejna, tak to nevadi (a v zapeti ATmega2560 vypne vystup)";
 $MSG "## clock(L,H)";
-"Z" 'FFFF' 01 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFF' 11 HLH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFF' 10 HLH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFF' 00 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
+'5A' 'FFFF' 01 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'5A' 'FFFF' 11 HLH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'5A' 'FFFF' 10 HLH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'5A' 'FFFF' 00 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
 $MSG "## ########################################";
 $MSG "## MHF da data HiZ, nastavi dalsi adresu, zapise dalsi byte a tak porad dokola";
 $MSG "## nastavim A_READ=1 (=> ctu SystemRAM, to je pro ni OK, MHF ma data=HiZ), nastavim CADDR/GADDR";
+$MSG "## blind_write(A,49) - do some tests";
+"Z" 'FFFE' 00 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Tests end";
 $MSG "## clock(L,H)";
-"Z" 'FFFE' 01 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFE' 11 HLH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFE' 10 HLH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFE' 00 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-$MSG "## adresa vyrana, jdu zapsat - nejdriv nastavim zapis (a nezajimam se, co tam jde)";
+"Z" 'FFFE' 01 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFE' 11 HLH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFE' 10 HLH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFE' 00 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## adresa vybrana, jdu zapsat - nejdriv ATmega2560 nastavi zapis (a jde tam jako data co gate vycte z HiZ) az potom zapne svuj vystup a nastavi data, jinak by se potloukla s gate (ktera by cetla data z RAM)";
 $MSG "## clock(H,L)";
-"Z" 'FFFE' 01 LHH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 01 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFE' 11 LHL 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 01 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFE' 10 LHL 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 01 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFE' 00 LHH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 01 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
+"Z" 'FFFE' 01 LHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFE' 11 LHL 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFE' 10 LHL 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFE' 00 LHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
 $MSG "## pak zapisu data";
 $MSG "## clock(H,L)";
-"Z" 'FFFE' 01 LHH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 01 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFE' 11 LHL 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 01 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFE' 10 LHL 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 01 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFE' 00 LHH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 01 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-$MSG "## Prepnu na cteni - ted na sbernici cpou data jak SystemRAM, tak MHF, ale jsou stejna, tak to nevadi";
+'49' 'FFFE' 01 LHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'49' 'FFFE' 11 LHL 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'49' 'FFFE' 10 LHL 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'49' 'FFFE' 00 LHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Prepnu na cteni - ted na vnitrni sbernici MHF cpou data jak SystemRAM/gate, tak ATmega2560, ale jsou stejna, tak to nevadi (a v zapeti ATmega2560 vypne vystup)";
 $MSG "## clock(L,H)";
-"Z" 'FFFE' 01 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFE' 11 HLH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFE' 10 HLH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
-"Z" 'FFFE' 00 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
+'49' 'FFFE' 01 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'49' 'FFFE' 11 HLH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'49' 'FFFE' 10 HLH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'49' 'FFFE' 00 HHH 1* H'F' 11 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
 $MSG "## ########################################";
 $MSG "## dokud nejsou vsechna data zapsana";
 $MSG "## test zapisu do oblasti registru (pisu do SystemRAM)";
-"Z" 'A000' 00 HHH 1* L'A' 01 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
+$MSG "## blind_write(A,12) - do some tests";
+"Z" 'A000' 00 HHH 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Tests end";
+$MSG "## clock(L,H)";
+"Z" 'A000' 01 HHH 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'A000' 11 HLH 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'A000' 10 HLH 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'A000' 00 HHH 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## adresa vybrana, jdu zapsat - nejdriv ATmega2560 nastavi zapis (a jde tam jako data co gate vycte z HiZ) az potom zapne svuj vystup a nastavi data, jinak by se potloukla s gate (ktera by cetla data z RAM)";
+$MSG "## clock(H,L)";
+"Z" 'A000' 01 LHH 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'A000' 11 LHL 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'A000' 10 LHL 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'A000' 00 LHH 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## pak zapisu data";
+$MSG "## clock(H,L)";
+'12' 'A000' 01 LHH 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'12' 'A000' 11 LHL 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'12' 'A000' 10 LHL 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'12' 'A000' 00 LHH 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Prepnu na cteni - ted na vnitrni sbernici MHF cpou data jak SystemRAM/gate, tak ATmega2560, ale jsou stejna, tak to nevadi (a v zapeti ATmega2560 vypne vystup)";
+$MSG "## clock(L,H)";
+'12' 'A000' 01 HHH 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'12' 'A000' 11 HLH 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'12' 'A000' 10 HLH 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'12' 'A000' 00 HHH 1* L'A' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
 $MSG "## test zapisu do oblasti EMS1 (pisu do SystemRAM)";
-"Z" '8000' 00 HHH 1* L'8' 01 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
+$MSG "## blind_write(A,34) - do some tests";
+"Z" '8000' 00 HHH 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Tests end";
+$MSG "## clock(L,H)";
+"Z" '8000' 01 HHH 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '8000' 11 HLH 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '8000' 10 HLH 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '8000' 00 HHH 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## adresa vybrana, jdu zapsat - nejdriv ATmega2560 nastavi zapis (a jde tam jako data co gate vycte z HiZ) az potom zapne svuj vystup a nastavi data, jinak by se potloukla s gate (ktera by cetla data z RAM)";
+$MSG "## clock(H,L)";
+"Z" '8000' 01 LHH 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '8000' 11 LHL 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '8000' 10 LHL 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '8000' 00 LHH 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## pak zapisu data";
+$MSG "## clock(H,L)";
+'34' '8000' 01 LHH 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'34' '8000' 11 LHL 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'34' '8000' 10 LHL 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'34' '8000' 00 LHH 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Prepnu na cteni - ted na vnitrni sbernici MHF cpou data jak SystemRAM/gate, tak ATmega2560, ale jsou stejna, tak to nevadi (a v zapeti ATmega2560 vypne vystup)";
+$MSG "## clock(L,H)";
+'34' '8000' 01 HHH 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'34' '8000' 11 HLH 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'34' '8000' 10 HLH 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'34' '8000' 00 HHH 1* L'8' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
 $MSG "## test zapisu do oblasti EMS2 (pisu do SystemRAM)";
-"Z" '9000' 00 HHH 1* L'9' 01 00*1 *ZZZZZ L* "H" ** LH 11 10 0Z H* H* ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*"
+$MSG "## blind_write(A,56) - do some tests";
+"Z" '9000' 00 HHH 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Tests end";
+$MSG "## clock(L,H)";
+"Z" '9000' 01 HHH 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '9000' 11 HLH 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '9000' 10 HLH 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '9000' 00 HHH 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## adresa vybrana, jdu zapsat - nejdriv ATmega2560 nastavi zapis (a jde tam jako data co gate vycte z HiZ) az potom zapne svuj vystup a nastavi data, jinak by se potloukla s gate (ktera by cetla data z RAM)";
+$MSG "## clock(H,L)";
+"Z" '9000' 01 LHH 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '9000' 11 LHL 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '9000' 10 LHL 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '9000' 00 LHH 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## pak zapisu data";
+$MSG "## clock(H,L)";
+'56' '9000' 01 LHH 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'56' '9000' 11 LHL 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'56' '9000' 10 LHL 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'56' '9000' 00 LHH 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 01 10 0Z H* H* ** ** H* H*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Prepnu na cteni - ted na vnitrni sbernici MHF cpou data jak SystemRAM/gate, tak ATmega2560, ale jsou stejna, tak to nevadi (a v zapeti ATmega2560 vypne vystup)";
+$MSG "## clock(L,H)";
+'56' '9000' 01 HHH 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'56' '9000' 11 HLH 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'56' '9000' 10 HLH 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'56' '9000' 00 HHH 1* L'9' 01 00*1 *ZZZZZ L* "H" H* LH 11 10 0Z H* H* ** ** H* L*   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
 $MSG "## ########################################";
+$MSG "## ### clear SharedRAM";
+$MSG "## ########################################";
+$MSG "## Cil: A_S_16=Z, gates closed, Shared=active, A_S_READ/A_S_WRITE podle A_READ, A_S_SELECT active, MHF si muze psat co chce";
+$MSG "## A_SHARE_SELECT=1 (manage SharedRAM) => RAM_Sel NOT active, A_G_ENABLE NOT active, SharedRAM active";
+$MSG "## A_S_16 je ovladan ATmega2560 a pouzivan pro pristup k lokalni SharedRAM primo, jedine co muzeme udelat je ho ignorovat == drzet RAM_Sel not active, dokud se neuplatni B_S_16, nebo neskonci in_HALT_mode";
+"Z" "Z" 00 *HH 1* *"Z" 11 00*1 *ZZZZZ H* "H" L* HH 11 10 1Z H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## clock(L,H)";
+"Z" "Z" 01 *HH 1* *"Z" 11 00*1 *ZZZZZ H* "H" L* HH 11 10 1Z H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" "Z" 11 *LH 1* *"Z" 11 00*1 *ZZZZZ H* "H" L* HH 11 10 1Z H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" "Z" 10 *LH 1* *"Z" 11 00*1 *ZZZZZ H* "H" L* HH 11 10 1Z H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" "Z" 00 *HH 1* *"Z" 11 00*1 *ZZZZZ H* "H" L* HH 11 10 1Z H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## zapis do lokalni SharedRAM primo: vybrana je podle A_SHARE_REQUEST, A_READ nastavuje A_S_READ a A_S_WRITE";
+$MSG "## A_SHARE_REQUEST=0 vypnu A_S_SELECT";
+"Z" "Z" 00 *HH 1* *"Z" 11 00*1 *ZZZZZ H* "H" H* HH 11 00 1Z H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## ATmega2560 si nastavi si SharedAddressA0..15 a B_S_16 podle potreby, pak si zapne data";
+$MSG "## pak nastavi A_READ=0 , zatin se nic nedeje, neni A_S_SELECT";
+"Z" "Z" 00 *HH 1* *"Z" 11 00*1 *ZZZZZ H* "H" H* HH 01 00 1Z H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## ted nastavi A_SHARE_REQUEST=1 => A_S_SELECT se aktivuje a tim zapise spravnou hodnotu";
+"Z" "Z" 00 *HH 1* *"Z" 11 00*1 *ZZZZZ H* "H" L* HH 01 10 1Z H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## pocka jeden takt, shodi A_SHARE_REQUEST a dal muze menit A_READ, data a adresy po libosti";
+$MSG "## A_SHARE_REQUEST=0 vypnu A_S_SELECT";
+"Z" "Z" 00 *HH 1* *"Z" 11 00*1 *ZZZZZ H* "H" H* HH 01 00 1Z H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## ATmega2560 si da data HiZ a muze nastavit dalsi adresu a opakovat";
+"Z" "Z" 00 *HH 1* *"Z" 11 00*1 *ZZZZZ H* "H" H* HH 01 00 1Z H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## uklidime si vystupy:";
+$MSG "## tady se jeste da vratit i k zapisu do SystemRAM a tocit se v kruhu";
+"Z" "Z" 00 *HH 1* *"Z" 11 00*1 *ZZZZZ H* "H" H* HH 11 00 0Z H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Prestanu sledovat nedostupnost RAM, je na MHFB anby s ni zacal cvicit";
+"Z" "Z" 00 *HH 1* *"Z" 11 00*1 *ZZZZZ ** "H" H* HH 11 00 0Z H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## MHFB prisel na radu";
+"Z" "Z" 00 *HH 1* *"Z" 11 00*1 *ZZZZZ ** "H" H* HH 11 00 0Z H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## ########################################";
+$MSG "## ## konecne jsme kompletne hotovi s MHFA";
+$MSG "## ########################################";
+$MSG "## koncime - A_HALT=1";
+$MSG "## MHFA uz je v normalnim stavu";
+"Z" "Z" 00 *HH 1* *"Z" 11 10*1 *ZZZZZ ** "H" H* HH 11 00 0Z H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+
+$MSG "## MHFB zacne plnit SystemRAM";
+$MSG "## nejdriv pro jistotu nastavim B_READ=1, aby se SystemRAM nahodile nemazala (MHF ma data HiZ)";
+"Z" "Z" 00 *HH 1* *"Z" 11 10*1 *ZZZZZ ** "H" H* HH 11 00 0Z H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Plan: Zapsat(treba na '1 FFFF') nejaka data (treba 5A) B_SHARE_SELECT=0 (manage SystemRAM) + B_SHARE_REQUEST=1 (Wants to own) (=>B_SHARE_GRANTED=1)";
+$MSG "## B_SHARE_SELECT=0";
+"Z" "Z" 00 *HH 1* *"Z" 11 10*1 *ZZZZZ ** "H" H* HH 11 00 00 H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## B_SHARE_REQUEST=1 => B_G_ENABLE active";
+"Z" "Z" 00 *HH 1* *"Z" 11 10*1 *ZZZZZ ** "H" H* HL 11 01 00 H* H* ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Should have B_SHARE_GRANTED=H (test it)";
+"Z" "Z" 00 *HH 1* *"Z" 11 10*1 *ZZZZZ ** "H" H* HL 11 01 00 H* HH ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## mam B_HALT, dostal jsem B_SHARE_GRANTED=1 + B_SHARE_COOP=1 => muzu pouzivat SystemRAM";
+$MSG "## ########################################";
+$MSG "## nastavim B_READ=1 (=> ctu SystemRAM, to je pro ni OK, MHF dostava data, ale ATmega ma data=HiZ a SharedRAM.CS (B_S_SELECT) neni active), nastavim CADDR/GADDR, nastavim B_S_16 pro spravnou pulku";
+"Z" "Z" 00 *HH 1* *"Z" 11 10*1 *ZZZZZ ** "H" H* HL 11 01 00 HH HH ** ** H* **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## blind_write(B,5A) - do some tests";
+"Z" 'FFFF' 00 HHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Tests end";
+$MSG "## clock(L,H)";
+"Z" 'FFFF' 01 HHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFF' 11 HLH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFF' 10 HLH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFF' 00 HHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## adresa vybrana, jdu zapsat - nejdriv ATmega2560 nastavi zapis (a jde tam jako data co gate vycte z HiZ) az potom zapne svuj vystup a nastavi data, jinak by se potloukla s gate (ktera by cetla data z RAM)";
+$MSG "## clock(H,L)";
+"Z" 'FFFF' 01 LHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFF' 11 LHL 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFF' 10 LHL 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFF' 00 LHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## pak zapisu data";
+$MSG "## clock(H,L)";
+'5A' 'FFFF' 01 LHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'5A' 'FFFF' 11 LHL 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'5A' 'FFFF' 10 LHL 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'5A' 'FFFF' 00 LHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Prepnu na cteni - ted na vnitrni sbernici MHF cpou data jak SystemRAM/gate, tak ATmega2560, ale jsou stejna, tak to nevadi (a v zapeti ATmega2560 vypne vystup)";
+$MSG "## clock(L,H)";
+'5A' 'FFFF' 01 HHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'5A' 'FFFF' 11 HLH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'5A' 'FFFF' 10 HLH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'5A' 'FFFF' 00 HHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## ########################################";
+$MSG "## MHF da data HiZ, nastavi dalsi adresu, zapise dalsi byte a tak porad dokola";
+$MSG "## nastavim B_READ=1 (=> ctu SystemRAM, to je pro ni OK, MHF ma data=HiZ), nastavim CADDR/GADDR";
+$MSG "## blind_write(B,49) - do some tests";
+"Z" 'FFFE' 00 HHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Tests end";
+$MSG "## clock(L,H)";
+"Z" 'FFFE' 01 HHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFE' 11 HLH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFE' 10 HLH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFE' 00 HHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## adresa vybrana, jdu zapsat - nejdriv ATmega2560 nastavi zapis (a jde tam jako data co gate vycte z HiZ) az potom zapne svuj vystup a nastavi data, jinak by se potloukla s gate (ktera by cetla data z RAM)";
+$MSG "## clock(H,L)";
+"Z" 'FFFE' 01 LHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFE' 11 LHL 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFE' 10 LHL 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'FFFE' 00 LHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## pak zapisu data";
+$MSG "## clock(H,L)";
+'49' 'FFFE' 01 LHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'49' 'FFFE' 11 LHL 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'49' 'FFFE' 10 LHL 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'49' 'FFFE' 00 LHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Prepnu na cteni - ted na vnitrni sbernici MHF cpou data jak SystemRAM/gate, tak ATmega2560, ale jsou stejna, tak to nevadi (a v zapeti ATmega2560 vypne vystup)";
+$MSG "## clock(L,H)";
+'49' 'FFFE' 01 HHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'49' 'FFFE' 11 HLH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'49' 'FFFE' 10 HLH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'49' 'FFFE' 00 HHH 1* H'F' 11 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## ########################################";
+$MSG "## dokud nejsou vsechna data zapsana";
+$MSG "## test zapisu do oblasti registru (pisu do SystemRAM)";
+$MSG "## blind_write(B,12) - do some tests";
+"Z" 'A000' 00 HHH 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Tests end";
+$MSG "## clock(L,H)";
+"Z" 'A000' 01 HHH 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'A000' 11 HLH 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'A000' 10 HLH 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'A000' 00 HHH 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## adresa vybrana, jdu zapsat - nejdriv ATmega2560 nastavi zapis (a jde tam jako data co gate vycte z HiZ) az potom zapne svuj vystup a nastavi data, jinak by se potloukla s gate (ktera by cetla data z RAM)";
+$MSG "## clock(H,L)";
+"Z" 'A000' 01 LHH 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'A000' 11 LHL 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'A000' 10 LHL 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" 'A000' 00 LHH 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## pak zapisu data";
+$MSG "## clock(H,L)";
+'12' 'A000' 01 LHH 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'12' 'A000' 11 LHL 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'12' 'A000' 10 LHL 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'12' 'A000' 00 LHH 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Prepnu na cteni - ted na vnitrni sbernici MHF cpou data jak SystemRAM/gate, tak ATmega2560, ale jsou stejna, tak to nevadi (a v zapeti ATmega2560 vypne vystup)";
+$MSG "## clock(L,H)";
+'12' 'A000' 01 HHH 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'12' 'A000' 11 HLH 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'12' 'A000' 10 HLH 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'12' 'A000' 00 HHH 1* L'A' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## test zapisu do oblasti EMS1 (pisu do SystemRAM)";
+$MSG "## blind_write(B,34) - do some tests";
+"Z" '8000' 00 HHH 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Tests end";
+$MSG "## clock(L,H)";
+"Z" '8000' 01 HHH 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '8000' 11 HLH 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '8000' 10 HLH 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '8000' 00 HHH 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## adresa vybrana, jdu zapsat - nejdriv ATmega2560 nastavi zapis (a jde tam jako data co gate vycte z HiZ) az potom zapne svuj vystup a nastavi data, jinak by se potloukla s gate (ktera by cetla data z RAM)";
+$MSG "## clock(H,L)";
+"Z" '8000' 01 LHH 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '8000' 11 LHL 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '8000' 10 LHL 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '8000' 00 LHH 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## pak zapisu data";
+$MSG "## clock(H,L)";
+'34' '8000' 01 LHH 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'34' '8000' 11 LHL 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'34' '8000' 10 LHL 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'34' '8000' 00 LHH 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Prepnu na cteni - ted na vnitrni sbernici MHF cpou data jak SystemRAM/gate, tak ATmega2560, ale jsou stejna, tak to nevadi (a v zapeti ATmega2560 vypne vystup)";
+$MSG "## clock(L,H)";
+'34' '8000' 01 HHH 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'34' '8000' 11 HLH 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'34' '8000' 10 HLH 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'34' '8000' 00 HHH 1* L'8' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## test zapisu do oblasti EMS2 (pisu do SystemRAM)";
+$MSG "## blind_write(B,56) - do some tests";
+"Z" '9000' 00 HHH 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Tests end";
+$MSG "## clock(L,H)";
+"Z" '9000' 01 HHH 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '9000' 11 HLH 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '9000' 10 HLH 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '9000' 00 HHH 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## adresa vybrana, jdu zapsat - nejdriv ATmega2560 nastavi zapis (a jde tam jako data co gate vycte z HiZ) az potom zapne svuj vystup a nastavi data, jinak by se potloukla s gate (ktera by cetla data z RAM)";
+$MSG "## clock(H,L)";
+"Z" '9000' 01 LHH 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '9000' 11 LHL 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '9000' 10 LHL 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" '9000' 00 LHH 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## pak zapisu data";
+$MSG "## clock(H,L)";
+'56' '9000' 01 LHH 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'56' '9000' 11 LHL 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'56' '9000' 10 LHL 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'56' '9000' 00 LHH 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 10 01 00 HH HH ** ** HH *H   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Prepnu na cteni - ted na vnitrni sbernici MHF cpou data jak SystemRAM/gate, tak ATmega2560, ale jsou stejna, tak to nevadi (a v zapeti ATmega2560 vypne vystup)";
+$MSG "## clock(L,H)";
+'56' '9000' 01 HHH 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'56' '9000' 11 HLH 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'56' '9000' 10 HLH 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+'56' '9000' 00 HHH 1* L'9' 10 10*1 *ZZZZZ L* "H" HH HL 11 01 00 HH HH ** ** HH *L   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## ########################################";
+$MSG "## ### clear SharedRAM";
+$MSG "## ########################################";
+$MSG "## Cil: B_S_16=Z, gates closed, Shared=active, B_S_READ/B_S_WRITE podle B_READ, B_S_SELECT active, MHF si muze psat co chce";
+$MSG "## B_SHARE_SELECT=1 (manage SharedRAM) => RAM_Sel NOT active, B_G_ENABLE NOT active, SharedRAM active";
+$MSG "## B_S_16 je ovladan ATmega2560 a pouzivan pro pristup k lokalni SharedRAM primo, jedine co muzeme udelat je ho ignorovat == drzet RAM_Sel not active, dokud se neuplatni B_S_16, nebo neskonci in_HALT_mode";
+"Z" "Z" 00 *HH 1* *"Z" 11 10*1 *ZZZZZ H* "H" HL HH 11 01 01 HH HH ** ** HH **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## clock(L,H)";
+"Z" "Z" 01 *HH 1* *"Z" 11 10*1 *ZZZZZ H* "H" HL HH 11 01 01 HH HH ** ** HH **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" "Z" 11 *LH 1* *"Z" 11 10*1 *ZZZZZ H* "H" HL HH 11 01 01 HH HH ** ** HH **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" "Z" 10 *LH 1* *"Z" 11 10*1 *ZZZZZ H* "H" HL HH 11 01 01 HH HH ** ** HH **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"Z" "Z" 00 *HH 1* *"Z" 11 10*1 *ZZZZZ H* "H" HL HH 11 01 01 HH HH ** ** HH **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## zapis do lokalni SharedRAM primo: vybrana je podle B_SHARE_REQUEST, B_READ nastavuje B_S_READ a B_S_WRITE";
+$MSG "## B_SHARE_REQUEST=0 vypnu B_S_SELECT";
+"Z" "Z" 00 *HH 1* *"Z" 11 10*1 *ZZZZZ H* "H" HH HH 11 00 01 HH HH ** ** HH **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## ATmega2560 si nastavi si SharedAddressA0..15 a B_S_16 podle potreby, pak si zapne data";
+$MSG "## pak nastavi B_READ=0 , zatin se nic nedeje, neni B_S_SELECT";
+"Z" "Z" 00 *HH 1* *"Z" 11 10*1 *ZZZZZ H* "H" HH HH 10 00 01 HH HH ** ** HH **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## ted nastavi B_SHARE_REQUEST=1 => B_S_SELECT se aktivuje a tim zapise spravnou hodnotu";
+"Z" "Z" 00 *HH 1* *"Z" 11 10*1 *ZZZZZ H* "H" HL HH 10 01 01 HH HH ** ** HH **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## pocka jeden takt, shodi B_SHARE_REQUEST a dal muze menit B_READ, data a adresy po libosti";
+$MSG "## B_SHARE_REQUEST=0 vypnu B_S_SELECT";
+"Z" "Z" 00 *HH 1* *"Z" 11 10*1 *ZZZZZ H* "H" HH HH 10 00 01 HH HH ** ** HH **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## ATmega2560 si da data HiZ a muze nastavit dalsi adresu a opakovat";
+"Z" "Z" 00 *HH 1* *"Z" 11 10*1 *ZZZZZ H* "H" HH HH 10 00 01 HH HH ** ** HH **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## uklidime si vystupy:";
+$MSG "## tady se jeste da vratit i k zapisu do SystemRAM a tocit se v kruhu";
+"Z" "Z" 00 *HH 1* *"Z" 11 10*1 *ZZZZZ H* "H" HH HH 11 00 00 HH HH ** ** HH **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## Prestanu sledovat nedostupnost RAM, je na CPU anby s ni zacal cvicit";
+"Z" "Z" 00 *HH 1* *"Z" 11 10*1 *ZZZZZ ** "H" HH HH 11 00 00 HH HH ** ** HH **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## CPU prisel na radu";
+"Z" "Z" 00 *HH 1* *"Z" 11 10*1 *ZZZZZ ** "H" HH HH 11 00 00 HH HH ** ** HH **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## ########################################";
+$MSG "## ## konecne jsme kompletne hotovi s MHFB";
+$MSG "## ########################################";
+$MSG "## koncime - B_HALT=1";
+$MSG "## MHFB uz je v normalnim stavu";
+"Z" "Z" 00 *HH 1* *"*" 11 1110 *ZZZZZ ** "H" HH HH 11 00 00 LL LL ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+$MSG "## ########################################";
+$MSG "## ## Normal boot for CPU";
+$MSG "## ########################################";
+$MSG "## CPU prisel na radu";
+$MSG "## uz NEJSME in_HALT_mode, plati jina pravidla";
+$MSG "## CPU vypadnul z HALTu a pamatuje si Reset, takze bootuje z FFFF";
+$MSG "### READ_MEM(FFFF) ###";
+"*" 'FFFF' 01 1HH 1* *"*" 11 1110 *ZZZZZ ** "H" HH HH 11 00 00 LL LL ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"*" 'FFFF' 11 1LH 1* *"*" 11 1110 *ZZZZZ ** "H" HH HH 11 00 00 LL LL ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"*" 'FFFF' 10 1LH 1* *"*" 11 1110 *ZZZZZ ** "H" HH HH 11 00 00 LL LL ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"*" 'FFFF' 00 1HH 1* *"*" 11 1110 *ZZZZZ ** "H" HH HH 11 00 00 LL LL ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+
+$MSG "## ########################################";
+$MSG "## ## Normal boot for CPU";
+$MSG "## ########################################";
+$MSG "## CPU prisel na radu";
+"*" 'FFFF' 00 1HH 1* *"*" 11 1110 *ZZZZZ ** "H" HH HH 11 00 00 LL LL ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 
+"*" 'FFFF' 00 1HH 1* *"*" 11 1110 *ZZZZZ ** "H" HH HH 11 00 00 LL LL ** ** ** **   "*" 1* ** ** ***** ** ***** **** ****  * "*" "*" 

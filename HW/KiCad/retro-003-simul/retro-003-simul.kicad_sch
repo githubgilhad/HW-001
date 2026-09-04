@@ -17750,7 +17750,7 @@
 		)
 		(uuid "0604dd8b-2f1a-433e-96cc-3db4a9379f18")
 	)
-	(text "RAM"
+	(text "RAM_Sel"
 		(exclude_from_sim no)
 		(at 549.91 621.03 0)
 		(effects
@@ -17796,7 +17796,7 @@
 		)
 		(uuid "1de648ae-d1a2-4a87-9448-46d00dc7c381")
 	)
-	(text "External RAM for Arduino"
+	(text "External RAM_Sel for Arduino"
 		(exclude_from_sim no)
 		(at 1659.89 173.99 0)
 		(effects
@@ -17855,7 +17855,7 @@
 		)
 		(uuid "2e4b3a85-3704-4d29-b410-10d1acacd6c1")
 	)
-	(text "Dev_0 RAM"
+	(text "Dev_0 RAM_Sel"
 		(exclude_from_sim no)
 		(at 567.69 759.46 0)
 		(effects
@@ -18238,7 +18238,7 @@
 		)
 		(uuid "a5b7c28c-c59a-456e-a625-392d4e2cd105")
 	)
-	(text "External RAM for Arduino"
+	(text "External RAM_Sel for Arduino"
 		(exclude_from_sim no)
 		(at 151.13 177.8 0)
 		(effects
@@ -18514,7 +18514,7 @@
 		)
 		(uuid "e2555ecc-d4c5-479c-925b-6c1eaf228ec2")
 	)
-	(text "ROM"
+	(text "ROM_Sel"
 		(exclude_from_sim no)
 		(at 1049.02 635 0)
 		(effects
@@ -18596,7 +18596,7 @@
 		)
 		(uuid "ec1a6d1b-d641-4fca-893f-a2d96aa848fc")
 	)
-	(text "EMS\nRAM 8000-9FFF A000-BFFFF\n(shared between Arduino and HD6309)"
+	(text "EMS\nRAM_Sel 8000-9FFF A000-BFFFF\n(shared between Arduino and HD6309)"
 		(exclude_from_sim no)
 		(at 1178.56 265.43 0)
 		(effects
@@ -18619,7 +18619,7 @@
 		)
 		(uuid "ec74e81c-f6bb-499b-90fe-c04183e4dc67")
 	)
-	(text "EMS\nRAM 8000-9FFF A000-BFFFF\n(shared between Arduino and HD6309)"
+	(text "EMS\nRAM_Sel 8000-9FFF A000-BFFFF\n(shared between Arduino and HD6309)"
 		(exclude_from_sim no)
 		(at 632.46 269.24 0)
 		(effects
@@ -18630,7 +18630,7 @@
 		)
 		(uuid "ecf527ed-cb8d-43ec-bbc8-d7d14da315bc")
 	)
-	(text "Dev_Sel_0 = RAM\nDev_Sel_1 = OnBoard VIA\nDev_Sel_2 = OnBoard ACIA\n\nDev_Sel_3 = Bus_1\nDev_Sel_4 = Bus_2\nDev_Sel_5 = Bus_3\nDev_Sel_6 = Bus_4\n\nDev_Sel_7 = OnBoard future use"
+	(text "Dev_Sel_0 = RAM_Sel\nDev_Sel_1 = OnBoard VIA\nDev_Sel_2 = OnBoard ACIA\n\nDev_Sel_3 = Bus_1\nDev_Sel_4 = Bus_2\nDev_Sel_5 = Bus_3\nDev_Sel_6 = Bus_4\n\nDev_Sel_7 = OnBoard future use"
 		(exclude_from_sim no)
 		(at 966.47 426.72 0)
 		(effects
@@ -19049,7 +19049,7 @@
 		)
 		(uuid "c6d1ee03-8c44-429a-80d3-71f4e8c4a69b")
 	)
-	(text_box "Native RAM 32K"
+	(text_box "Native RAM_Sel 32K"
 		(exclude_from_sim no)
 		(at 360.68 688.6354 0)
 		(size 18.7325 2.7391)
@@ -19176,7 +19176,7 @@
 		)
 		(uuid "e958c811-e2f8-4333-9130-5c2be54932b4")
 	)
-	(text_box "Native RAM ~ ROM 23.75K"
+	(text_box "Native RAM_Sel ~ ROM_Sel 23.75K"
 		(exclude_from_sim no)
 		(at 360.68 676.91 0)
 		(size 31.4324 2.7391)
@@ -57580,7 +57580,7 @@
 		)
 		(uuid "055f816f-4aff-4ccd-861f-c0959185fd76")
 	)
-	(label "~{ROM}"
+	(label "~{ROM_Sel}"
 		(at 1384.3 523.24 180)
 		(effects
 			(font
@@ -58110,7 +58110,7 @@
 		)
 		(uuid "102a84b1-df2c-461c-b0a3-0ec5c660fde8")
 	)
-	(label "B_SHARE_DIRTY"
+	(label "B_SHARE_COOP"
 		(at 857.25 429.26 180)
 		(effects
 			(font
@@ -58420,7 +58420,7 @@
 		)
 		(uuid "16f99ab5-4cd6-431c-9a71-0fa3112cfab8")
 	)
-	(label "~{RAM}"
+	(label "~{RAM_Sel}"
 		(at 1066.8 585.47 0)
 		(effects
 			(font
@@ -58490,7 +58490,7 @@
 		)
 		(uuid "193a7ebc-d429-4ffc-be1e-813488424fb7")
 	)
-	(label "A_SHARE_DIRTY"
+	(label "A_SHARE_COOP"
 		(at 857.25 426.72 180)
 		(effects
 			(font
@@ -59240,7 +59240,7 @@
 		)
 		(uuid "2d920784-71f3-400a-973e-0abc657337ab")
 	)
-	(label "B_SHARE_DIRTY"
+	(label "B_SHARE_COOP"
 		(at 1041.4 196.85 0)
 		(effects
 			(font
@@ -60100,7 +60100,7 @@
 		)
 		(uuid "440d0524-e9b7-4aba-ab89-b9aa54f8d5fc")
 	)
-	(label "~{RAM}"
+	(label "~{RAM_Sel}"
 		(at 1384.3 537.21 180)
 		(effects
 			(font
@@ -60680,7 +60680,7 @@
 		)
 		(uuid "527509b7-f08f-4ec2-9ae2-cf7c5da56535")
 	)
-	(label "B_SHARE_DIRTY"
+	(label "B_SHARE_COOP"
 		(at 109.22 566.42 180)
 		(effects
 			(font
@@ -61200,7 +61200,7 @@
 		)
 		(uuid "60b91d1e-25c4-412a-804a-52bd1f4a1187")
 	)
-	(label "B_SHARE_DIRTY"
+	(label "B_SHARE_COOP"
 		(at 989.33 82.55 180)
 		(effects
 			(font
@@ -61630,7 +61630,7 @@
 		)
 		(uuid "6d7b8900-0b55-41b0-acfa-672409d200af")
 	)
-	(label "~{RAM}"
+	(label "~{RAM_Sel}"
 		(at 948.69 431.8 0)
 		(effects
 			(font
@@ -62040,7 +62040,7 @@
 		)
 		(uuid "7516e798-dd5e-4f3d-abc6-ce6174d8c5df")
 	)
-	(label "A_SHARE_DIRTY"
+	(label "A_SHARE_COOP"
 		(at 269.24 566.42 0)
 		(effects
 			(font
@@ -62720,7 +62720,7 @@
 		)
 		(uuid "848e73db-cff1-4ac5-8d7e-a614ef0fb4cb")
 	)
-	(label "A_SHARE_DIRTY"
+	(label "A_SHARE_COOP"
 		(at 824.23 83.82 0)
 		(effects
 			(font
@@ -63000,7 +63000,7 @@
 		)
 		(uuid "8b354079-8367-4418-8f23-a4ce2f0a7b5a")
 	)
-	(label "~{ROM}"
+	(label "~{ROM_Sel}"
 		(at 948.69 434.34 0)
 		(effects
 			(font
@@ -63380,7 +63380,7 @@
 		)
 		(uuid "95713920-9bc0-4ac1-ad01-243bb6fbd0b7")
 	)
-	(label "A_SHARE_DIRTY"
+	(label "A_SHARE_COOP"
 		(at 664.21 104.14 180)
 		(effects
 			(font
@@ -63780,7 +63780,7 @@
 		)
 		(uuid "9f58cf80-8e3c-42c0-b752-58b874621e80")
 	)
-	(label "RAM"
+	(label "RAM_Sel"
 		(at 154.94 469.9 0)
 		(effects
 			(font
@@ -64080,7 +64080,7 @@
 		)
 		(uuid "a658b652-2494-4032-86ef-ab4c5c5be45f")
 	)
-	(label "B_SHARE_DIRTY"
+	(label "B_SHARE_COOP"
 		(at 894.08 83.82 180)
 		(effects
 			(font
@@ -64310,7 +64310,7 @@
 		)
 		(uuid "aa1a5461-953d-41e1-b9a6-3a882bb3a668")
 	)
-	(label "ROM"
+	(label "ROM_Sel"
 		(at 191.77 469.9 0)
 		(effects
 			(font
@@ -64640,7 +64640,7 @@
 		)
 		(uuid "afdb5e2c-80c8-4bc8-8426-3463a34c956b")
 	)
-	(label "B_SHARE_DIRTY"
+	(label "B_SHARE_COOP"
 		(at 1094.74 196.85 180)
 		(effects
 			(font
@@ -64700,7 +64700,7 @@
 		)
 		(uuid "b0bbf854-ffb2-4b81-a552-d894ab6bac82")
 	)
-	(label "A_SHARE_DIRTY"
+	(label "A_SHARE_COOP"
 		(at 919.48 82.55 0)
 		(effects
 			(font
@@ -65210,7 +65210,7 @@
 		)
 		(uuid "be570225-45a2-4abc-92f9-1b051e13a3b1")
 	)
-	(label "A_SHARE_DIRTY"
+	(label "A_SHARE_COOP"
 		(at 1154.43 105.41 0)
 		(effects
 			(font
@@ -65900,7 +65900,7 @@
 		)
 		(uuid "cfbc80d6-99f3-48b7-9db8-58a24fd60ad9")
 	)
-	(label "B_SHARE_DIRTY"
+	(label "B_SHARE_COOP"
 		(at 590.55 104.14 0)
 		(effects
 			(font
@@ -65980,7 +65980,7 @@
 		)
 		(uuid "d11cba81-72df-4eba-9482-f2ffe5d1ce94")
 	)
-	(label "B_SHARE_DIRTY"
+	(label "B_SHARE_COOP"
 		(at 1228.09 105.41 180)
 		(effects
 			(font
@@ -66440,7 +66440,7 @@
 		)
 		(uuid "dd45fb02-5f61-41ed-9454-7cb90d1f16e7")
 	)
-	(label "A_SHARE_DIRTY"
+	(label "A_SHARE_COOP"
 		(at 1094.74 137.16 180)
 		(effects
 			(font
@@ -66790,7 +66790,7 @@
 		)
 		(uuid "e744c594-2fd9-4311-bbe8-a48f9a1399a6")
 	)
-	(label "A_SHARE_DIRTY"
+	(label "A_SHARE_COOP"
 		(at 1041.4 137.16 0)
 		(effects
 			(font
@@ -67290,7 +67290,7 @@
 		)
 		(uuid "f29f646a-f144-4c89-a34a-f537d20a4bfb")
 	)
-	(label "~{ROM}"
+	(label "~{ROM_Sel}"
 		(at 1062.99 693.42 180)
 		(effects
 			(font
@@ -67360,7 +67360,7 @@
 		)
 		(uuid "f3e23d44-e14b-49a9-b122-19380f7e4fec")
 	)
-	(label "~{ROM}"
+	(label "~{ROM_Sel}"
 		(at 468.63 53.34 180)
 		(effects
 			(font
@@ -67380,7 +67380,7 @@
 		)
 		(uuid "f41ad41b-2a2b-473a-825c-168c20fbcbe9")
 	)
-	(label "~{RAM}"
+	(label "~{RAM_Sel}"
 		(at 468.63 55.88 180)
 		(effects
 			(font
@@ -68064,7 +68064,7 @@
 			)
 		)
 	)
-	(global_label "B_SHARE_DIRTY"
+	(global_label "B_SHARE_COOP"
 		(shape input)
 		(at 629.92 78.74 90)
 		(fields_autoplaced yes)
@@ -69586,7 +69586,7 @@
 			)
 		)
 	)
-	(global_label "A_SHARE_DIRTY"
+	(global_label "A_SHARE_COOP"
 		(shape input)
 		(at 1385.57 269.24 0)
 		(fields_autoplaced yes)
@@ -69898,7 +69898,7 @@
 			)
 		)
 	)
-	(global_label "B_SHARE_DIRTY"
+	(global_label "B_SHARE_COOP"
 		(shape input)
 		(at 425.45 273.05 180)
 		(fields_autoplaced yes)
@@ -74034,7 +74034,7 @@
 			)
 		)
 	)
-	(global_label "A_SHARE_DIRTY"
+	(global_label "A_SHARE_COOP"
 		(shape input)
 		(at 1188.72 80.01 90)
 		(fields_autoplaced yes)
@@ -113038,7 +113038,7 @@
 				)
 			)
 		)
-		(property "Value" "RAM"
+		(property "Value" "RAM_Sel"
 			(at 1436.6875 534.67 0)
 			(effects
 				(font
@@ -115513,7 +115513,7 @@
 				)
 			)
 		)
-		(property "Value" "ROM"
+		(property "Value" "ROM_Sel"
 			(at 1436.6875 520.7 0)
 			(effects
 				(font

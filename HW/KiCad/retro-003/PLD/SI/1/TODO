@@ -5,5 +5,4 @@ Pridat: Pullups: A_READ, B_READ
 Pridat: Pulldowns: A_SHARE_REQUEST, B_SHARE_REQUEST
 (pro chvili po zapnuti, nez se atmega probudi a ujme se toho sama)
 
-$ PSI2SI.py Comp24_ATF_GLUE.PSI Comp24_ATF_GLUE.SI; cp Comp24_ATF_GLUE.SI /mnt/sdb/3/VirtualBox/WindowsXP/Windows\ XP/Shared/;read -n 1 -s -r -p "Stiskni klávesu..." ;SOview.py /mnt/sdb/3/VirtualBox/WindowsXP/Windows\ XP/Shared/COMP24_ATF_GLUE.so 
-
+$ PSI2SI.py Comp24_ATF_GLUE.PSI Comp24_ATF_GLUE.SI; cp Comp24_ATF_GLUE.SI ../../Comp24_ATF_GLUE.PLD /mnt/sdb/3/VirtualBox/WindowsXP/Windows\ XP/Shared/;read -n 1 -s -r -p "Stiskni klávesu..." ;SOview.py /mnt/sdb/3/VirtualBox/WindowsXP/Windows\ XP/Shared/Comp24_ATF_GLUE.so ; cp /mnt/sdb/3/VirtualBox/WindowsXP/Windows\ XP/Shared/Comp24_ATF_GLUE.so  /home/gilhad/GIT-ghub/HD6309/HW-001/PLD/SOviewer

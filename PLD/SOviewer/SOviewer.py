@@ -5,6 +5,8 @@ from tkinter import filedialog, messagebox, simpledialog
 import re
 import json # NOVÉ: Import pro práci s JSON souborem
 from PIL import Image, ImageTk
+import argparse
+import os
 
 # NOVÉ: Název konfiguračního souboru (uloží se do stejné složky jako skript)
 CONFIG_FILE = "SOviewer.json"
@@ -28,9 +30,9 @@ OLD_STATE_COLORS = {
 STATE_COLORS = {
 	'0': '#0000FF', # Modrá
 	'1': '#FF0000', # Červená
-	'L': '#8080FF', # Světle modrá
+	'L': '#C0C0FF', # Světle modrá
 	'H': '#FF8080', # Světle červená
-	'X': '#AAAAAA', # Šedá
+	'X': '#404040', # Šedá
 	'*': '#FFFFFF', # Bílá (High-Z)
 	'Z': '#F5E642', # Žlutá
 }
@@ -542,7 +544,7 @@ class AaSOViewer:
 				self.fields[name] = members
 				continue
 
-			order_match = re.match(r'^\s*\d+:\s*ORDER:\s*(.*) \d\d:', line_stripped) # '\d\d:' bordel od cupl - prida cislo dalsi radky 34:
+			order_match = re.match(r'^\s*\d+:\s*ORDER:\s*(.*)( \d\d:)?', line_stripped) # '\d\d:' bordel od cupl - prida cislo dalsi radky 34:
 			if order_match:
 				order_str = order_match.group(1)
 				tokens = parse_order_string(order_str)
@@ -560,11 +562,11 @@ class AaSOViewer:
 						for member in self.fields[token]:
 							clean_name = member.lstrip('!')
 							self.orders_expanded.append(('signal', clean_name))
-							print(clean_name)
+							# print(clean_name)
 					else:
 						clean_name = token.lstrip('!')
 						self.orders_expanded.append(('signal', clean_name))
-						print(clean_name)
+						# print(clean_name)
 				continue
 
 			vec_match = re.match(r'^\s*(\d{4}):\s*(.*)', line_stripped)
@@ -637,7 +639,7 @@ class AaSOViewer:
 						highlight_map[text] = '#000000' # Black
 			
 			for j, comment in enumerate(vec['comments']):
-				self.canvas.create_text(10, y_comments + j * 15, anchor="nw", text=comment, font=FONT, fill="green")
+				self.canvas.create_text(10, y_comments + j * 15, anchor="nw", text=comment, font=FONT, fill="green" if not "user expected" in comment else "red")
 				last_y = y_comments + j * 15
 				
 			self.info_label.config(text=f"Vektor {vec['num']}  [{self.current_vector_idx + 1} / {len(self.vectors)}]")
@@ -671,8 +673,18 @@ if __name__ == "__main__":
 	SCHEMATIC_FILE = "schema.kicad_sch" 
 	AASO_FILE = "pld.SO"
 	BACKGROUND_FILE = "background.png"
+	parser = argparse.ArgumentParser( description="Zobrazi Simulation Output *.SO podle KiCad schema *.kicad_sch na zadanem pozadi *.png")
+	parser.add_argument( "-o", "--so", type=str, help="Simulation Output *.SO")
+	parser.add_argument( "-s", "--schema", type=str, help="KiCad schema *.kicad_sc")
+	parser.add_argument( "-b", "--background", type=str, help="background (prinscreen z KiCad) *.png")
+	args = parser.parse_args()
+	if args.so:
+		AASO_FILE = args.so
+	if args.schema:
+		SCHEMATIC_FILE = args.schema
+	if args.background:
+		BACKGROUND_FILE = args.background
 
-	import os
 	if not os.path.exists(AASO_FILE):
 		AASO_FILE = filedialog.askopenfilename(title="Vyberte Simulation Output *.SO", filetypes=[("Simulation Output", "*.SO *.so")])
 	if not os.path.exists(SCHEMATIC_FILE):

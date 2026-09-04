@@ -135,8 +135,8 @@
 	
 	Name     Comp24_ATF_GLUE;
 	PartNo   0003;
-	Date     2026-08-27;
-	Revision 0.4;
+	Date     2026-09-05;
+	Revision 0.5;
 	Designer Gilhad;
 	Company  None ;
 	Assembly None ;
@@ -194,7 +194,7 @@
 	/************************************************************/
 	/* mix MHF_A/MHF_B lines                      24..55 OK {{{ */
 	/************************************************************/
-			/* X_S_16: pokud CPU vlastni shared RAM, je to Output a ovlada jeji A16 */
+			/* X_S_16: pokud CPU vlastni SharedRAM, je to Output a ovlada jeji A16 */
 			/* X_S_16: pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */
 	
 	PIN  24 = A_S_16;		/* IO connected to SharedRAM.A16 and MHF MCU */
@@ -203,8 +203,8 @@
 	PIN  28 = !B_HALT;		/* I MHF request 0=HALT active, PCB 50k pullup, MHF 5k pulldown */
 	PIN  29 = A_READ;		/* I MHF request 1=Read, 0=Write */
 	PIN  30 = B_READ;		/* I MHF request 1=Read, 0=Write */
-	PIN  31 = A_SHARE_DIRTY;	/* O Dirty+Wanted: if(SHARE_GRANTED){WANTS:1=CPU wants SharedRAM}else{DIRTY:1=CPU already got SharedRAM} */
-	PIN  32 = B_SHARE_DIRTY;	/* O Dirty+Wanted: if(SHARE_GRANTED){WANTS:1=CPU wants SharedRAM}else{DIRTY:1=CPU already got SharedRAM} */
+	PIN  31 = A_SHARE_COOP;	/* O Dirty+Wanted: if(SHARE_GRANTED){WANTS:1=CPU wants SharedRAM}else{DIRTY:1=CPU already got SharedRAM} ; in_HALT_mode=  active cart */
+	PIN  32 = B_SHARE_COOP;	/* O Dirty+Wanted: if(SHARE_GRANTED){WANTS:1=CPU wants SharedRAM}else{DIRTY:1=CPU already got SharedRAM} ; in_HALT_mode=  active cart */
 	PIN  33 = A_SHARE_GRANTED;	/* O MHF owns SharedRAM 1=Active */
 	PIN  35 = B_SHARE_GRANTED;	/* O MHF owns SharedRAM 1=Active */
 	PIN  36 = A_SHARE_REQUEST;	/* I MHF wants own SharedRAM 1=Active */
@@ -244,8 +244,8 @@
 	PIN  69 = !Dev_Sel_2;
 	PIN  68 = !Dev_Sel_1;
 	
-	PIN  65 = !ROM;		/* O CS for ROM */
-	PIN  67 = !RAM;		/* O CS for RAM */
+	PIN  65 = !ROM_Sel;		/* O CS for ROM */
+	PIN  67 = !RAM_Sel;		/* O CS for RAM */
 	
 	PIN  64 = !Write;
 	PIN  63 = !Read;
@@ -296,9 +296,9 @@
 	 +---------------+---------------+---------------------------------------------+
 	 |   TYP     hex | RANGE         | CONTENT                                     |
 	 +---------------+---------------+---------------------------------------------+
-	 |   0000     0  | 0000..FFFF    | HALT / BA 128 kB System RAM for free use    |
+	 |   0000     0  | 0000..FFFF    | HALT / BA 128 kB SystemRAM for free use     |
 	 +---------------+---------------+---------------------------------------------+
-	 |   0000     0  | 0000..7FFF    | Native RAM 32K (or more)                    |
+	 |   0000     0  | 0000..7FFF    | SystemRAM 32K (or more)                     |
 	 +---------------+---------------+---------------------------------------------+
 	 |   0001     1  | 8000..8FFF    | EMS1 4K                                     |
 	 +---------------+---------------+---------------------------------------------+
@@ -559,7 +559,7 @@
 		;
 	/* }}} */
 	/************************************************************/
-	/* CPU / MHF requests                                OK {{{ */
+	/* CPU requests                                      OK {{{ */
 	/************************************************************/
 	
 	CPU_REQ_A = 
@@ -569,9 +569,6 @@
 	      EMS1_is_MHFB
 	   #  EMS2_is_MHFB;
 	
-	
-	MHF_REQ_A = A_SHARE_REQUEST;
-	MHF_REQ_B = B_SHARE_REQUEST;
 	
 	/* }}} */
 	/************************************************************/
@@ -591,7 +588,7 @@
 	*/
 	
 	CHIPA_C = !Reset & CPU_REQ_A & ( CHIPA_C # !CHIPA_A );
-	CHIPA_A = !Reset & MHF_REQ_A & ( CHIPA_A # !CHIPA_C );
+	CHIPA_A = !Reset & A_SHARE_REQUEST & ( CHIPA_A # !CHIPA_C );
 	
 	/* }}} */
 	/************************************************************/
@@ -599,7 +596,7 @@
 	/************************************************************/
 	
 	CHIPB_C = !Reset & CPU_REQ_B & ( CHIPB_C # !CHIPB_A );
-	CHIPB_A = !Reset & MHF_REQ_B & ( CHIPB_A # !CHIPB_C );
+	CHIPB_A = !Reset & B_SHARE_REQUEST & ( CHIPB_A # !CHIPB_C );
 	
 	/* }}} */
 	/************************************************************/
@@ -658,7 +655,7 @@
 	/*
 	AA:
 	
-	00 System RAM
+	00 SystemRAM
 	01 MHF_A
 	10 MHF_B
 	11 ROM
@@ -733,7 +730,7 @@
 	/*
 	AA:
 	
-	00 System RAM
+	00 SystemRAM
 	01 MHF_A
 	10 MHF_B
 	11 ROM
@@ -914,20 +911,26 @@
 	Rw.OE =	  in_HALT_mode; /* driven only in HALT mode */
 	/* }}} */
 	/************************************************************/
-	/* SYSTEM RAM / ROM SELECT                              {{{ */
+	/* SystemRAM / ROM SELECT                               {{{ */
 	/************************************************************/
 	
 	
-	RAM =	  in_HALT_mode                              /* v HALT rezimu je RAM vybrana permanentne */
-		# addr_in_NATIVE_RAM_LO                     /* normal RAM */
-		# addr_in_EMS1_WINDOW & EMS1_is_SYS         /* Sys RAM selected in EMS1 */
-		# addr_in_EMS2_WINDOW & EMS2_is_SYS         /* Sys RAM selected in EMS2 */
-		# addr_in_MAYBE_RAM_HI & ! addr_in_ROM_AREA /* Hi RAM under ROM */
+	RAM_Sel =
+		  in_HALT_mode & (
+			   !A_SHARE_SELECT & A_SHARE_REQUEST & A_SHARE_COOP
+			 # !B_SHARE_SELECT & B_SHARE_REQUEST & B_SHARE_COOP
+			)                                   /* v HALT rezimu je SystemRAM vybrana na pozadani */
+		# !in_HALT_mode & (
+			  addr_in_NATIVE_RAM_LO                     /* normal SystemRAM */
+			# addr_in_EMS1_WINDOW & EMS1_is_SYS         /* SystemRAM selected in EMS1 */
+			# addr_in_EMS2_WINDOW & EMS2_is_SYS         /* SystemRAM selected in EMS2 */
+			# addr_in_MAYBE_RAM_HI & ! addr_in_ROM_AREA /* SystemRAM under ROM */
+			)
 		;
-	RAM.OE =   ! (BA & !in_HALT_mode); /* somebody else is doing DMA or what */
+	RAM_Sel.OE =   ! (BA & !in_HALT_mode); /* somebody else is doing DMA or what */
 	
-	/* ROM je  bezne ovladan ATF1, s vyjimkou HALT rezimu (kde vybran neni) a EMS oken, kdy to prevezme ATF2 a ridi se dle MHF_x a nastaveni EMS  */
-	ROM = !in_HALT_mode & (
+	/* ROM v HALT rezimu vybran neni a u EMS oken se to ridi dle nastaveni EMS  */
+	ROM_Sel = !in_HALT_mode & (
 		  addr_in_ROM_AREA              /* native ROM */
 		# addr_in_EMS1_WINDOW & EMS1_is_ROM
 		# addr_in_EMS2_WINDOW & EMS2_is_ROM
@@ -935,9 +938,9 @@
 		);
 	
 	/*  IO connected to SharedRAM.A16 and MHF MCU */
-			/* pokud CPU vlastni shared RAM, je to Output a ovlada jeji A16 */
+			/* pokud CPU vlastni SharedRAM, je to Output a ovlada jeji A16 */
 			/* pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */
-			/* pokud CPU NEvlastni shared RAM, MHF si jeji A16 ridi sam */
+			/* pokud CPU NEvlastni SharedRAM, MHF si jeji A16 ridi sam */
 	A_S_16 = 	  addr_in_EMS1_WINDOW & EMS1_is_MHFA & CHIPA_C & EMS1_B4
 			# addr_in_EMS2_WINDOW & EMS2_is_MHFA & CHIPA_C & EMS2_B4
 			;
@@ -947,9 +950,9 @@
 			);
 	
 	/*  IO connected to SharedRAM.A16 and MHF MCU */
-			/* pokud CPU vlastni shared RAM, je to Output a ovlada jeji A16 */
+			/* pokud CPU vlastni SharedRAM, je to Output a ovlada jeji A16 */
 			/* pokud je HALT a BA a MHF vybral SystemRAM, je to input a ovlada GA16 */
-			/* pokud CPU NEvlastni shared RAM, MHF si jeji A16 ridi sam */
+			/* pokud CPU NEvlastni SharedRAM, MHF si jeji A16 ridi sam */
 	B_S_16 = 	  addr_in_EMS1_WINDOW & EMS1_is_MHFB & CHIPB_C & EMS1_B4
 			# addr_in_EMS2_WINDOW & EMS2_is_MHFB & CHIPB_C & EMS2_B4
 			;
@@ -960,10 +963,10 @@
 	
 	/* }}} */
 	/************************************************************/
-	/* SYSTEM RAM / ROM SELECT                              {{{ */
+	/* ?_SHARE_COOP/?_SHARE_GRANTED                         {{{ */
 	/************************************************************/
 	/*
-	/* O Dirty+Wanted+BA: BA?1:if(SHARE_GRANTED){WANTS:1=CPU wants SharedRAM}else{DIRTY:1=CPU already got SharedRAM} */
+	/* O Dirty+Wanted+BA: BA?1:if(SHARE_GRANTED){WANTS:1=CPU wants SharedRAM}else{DIRTY:1=CPU already got SharedRAM}; in_HALT_mode=  active cart  */
 	/* in HALT state 1= writing SystemRAM is possible
 	 * if SHARE_GRANTED 1= CPU already wants SharedRAM (=please release it soon)
 	 * if !SHARE_GRANTED 1 = CPU already got SharedRAM (=and maybe modified it)
@@ -971,19 +974,21 @@
 	 */
 	/* AI NOTE: Asymmetrical HALT priority!
 	 * During boot (HALT mode), MHF_A has strict priority over MHF_B.
-	 * A_SHARE_DIRTY signals BA immediately. 
-	 * B_SHARE_DIRTY only signals BA if A_HALT is released (!A_HALT).
+	 * A_SHARE_COOP signals BA immediately. 
+	 * B_SHARE_COOP only signals BA if A_HALT is released (!A_HALT).
 	 */
-	A_SHARE_DIRTY =	  in_HALT_mode
+	A_SHARE_COOP =	  in_HALT_mode
 			# A_SHARE_GRANTED & ( EMS1_is_MHFA # EMS2_is_MHFA )
 			# !A_SHARE_GRANTED & CHIPA_Dm
 			;
-	B_SHARE_DIRTY =	  in_HALT_mode & !A_HALT /* write if MHF_A released it alredy */
+	B_SHARE_COOP =	  in_HALT_mode & !A_HALT /* write if MHF_A released it alredy */
 			# B_SHARE_GRANTED & ( EMS1_is_MHFB # EMS2_is_MHFB )
 			# !B_SHARE_GRANTED & CHIPB_Dm
 			;
-	A_SHARE_GRANTED =	A_SHARE_REQUEST & CHIPA_A;
-	B_SHARE_GRANTED =	B_SHARE_REQUEST & CHIPB_A;
+	A_SHARE_GRANTED =  in_HALT_mode & A_SHARE_COOP
+			# !in_HALT_mode & A_SHARE_REQUEST & CHIPA_A;
+	B_SHARE_GRANTED =  in_HALT_mode & B_SHARE_COOP
+			# !in_HALT_mode & B_SHARE_REQUEST & CHIPB_A;
 	
 	
 	/* }}} */
@@ -1076,13 +1081,13 @@
 	A_S_SELECT =
 		  CHIPA_C & EMS_WINDOW & ACTIVE_MHFA /* for CPU */
 		# CHIPA_A & A_SHARE_SELECT           /* for MHF */
-		# in_HALT_mode & A_HALT & A_SHARE_SELECT /* MHF in_HALT_mode */
+		# in_HALT_mode & A_HALT & A_SHARE_SELECT & A_SHARE_REQUEST /* MHF in_HALT_mode */
 		;
 	
 	B_S_SELECT =
 		  CHIPB_C & EMS_WINDOW & ACTIVE_MHFB /* for CPU */
 		# CHIPB_A & B_SHARE_SELECT           /* for MHF */
-		# in_HALT_mode & B_HALT & B_SHARE_SELECT /* MHF in_HALT_mode */
+		# in_HALT_mode & B_HALT & B_SHARE_SELECT & B_SHARE_REQUEST /* MHF in_HALT_mode */
 		;
 	
 	/* }}} */
@@ -1144,9 +1149,9 @@
 	/************************************************************/
 	
 	A_G_ENABLE = !in_HALT_mode & CHIPA_C & EMS_WINDOW & ACTIVE_MHFA & E 
-		# in_HALT_mode & A_HALT & A_SHARE_SELECT;
+		# in_HALT_mode & A_HALT &           !A_SHARE_SELECT & A_SHARE_REQUEST;
 	B_G_ENABLE = !in_HALT_mode & CHIPB_C & EMS_WINDOW & ACTIVE_MHFB & E
-		# in_HALT_mode & !A_HALT & B_HALT & B_SHARE_SELECT;
+		# in_HALT_mode & !A_HALT & B_HALT & !B_SHARE_SELECT & B_SHARE_REQUEST;
 	
 	/* }}} */
 	

@@ -3,8 +3,8 @@
 
 	Name     Comp24_ATF_GLUE;
 	PartNo   0003;
-	Date     2026-08-27;
-	Revision 0.4;
+	Date     2026-09-05;
+	Revision 0.5;
 	Designer Gilhad;
 	Company  None ;
 	Assembly None ;
@@ -15,17 +15,17 @@
 MSG "### PSI macros, use PSI2SI.py Aa.PSI Aa.SI ###";
 MSG "### Generated {date} {time} ###";
 #end_macro }}}
-#call Header()
+#call Header() //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /* Definujeme sirky sbernic z PLD (ostatni neuvedene piny maji automaticky sirku 1) */
 #field_size DATA=8 CADDR=16 GADDR=4  REG_SELECTOR=4 DEV_SELECTOR=3 ROM_SIZE=2 COUNT=12 COUNT_R = 4 Dev_Sel_lines=8
-MSG "### Pullups: Dev_Sel_7..1, ROM, RAM, A_S_16, B_S_16, A_HALT, B_HALT, Dev_FIRQ, Dev_IRQ, Dev_NMI, DMA_BREQ, MRDY, Reset";
+MSG "### Pullups: Dev_Sel_7..1, ROM_Sel, RAM_Sel, A_S_16, B_S_16, A_HALT, B_HALT, Dev_FIRQ, Dev_IRQ, Dev_NMI, DMA_BREQ, MRDY, Reset";
 MSG "### Pridat: Pullups: A_READ, B_READ";
 MSG "### Pridat: Pulldowns: A_SHARE_REQUEST, B_SHARE_REQUEST";
 #// {{{ Macros
 #macro test_addr_in_RAM {{{
-#set RAM = L
-#set ROM = H
+#set RAM_Sel = L
+#set ROM_Sel = H
 #set addr_in_DEVS = L
 #set addr_in_REGS = L
 #set Dev_Sel_lines = "H"
@@ -33,8 +33,8 @@ MSG "### Pridat: Pulldowns: A_SHARE_REQUEST, B_SHARE_REQUEST";
 #set B_G_ENABLE = H
 #end_macro }}}
 #macro test_addr_in_ROM {{{
-#set RAM = H
-#set ROM = L
+#set RAM_Sel = H
+#set ROM_Sel = L
 #set addr_in_DEVS = L
 #set addr_in_REGS = L
 #set Dev_Sel_lines = "H"
@@ -42,8 +42,8 @@ MSG "### Pridat: Pulldowns: A_SHARE_REQUEST, B_SHARE_REQUEST";
 #set B_G_ENABLE = H
 #end_macro }}}
 #macro test_addr_in_DEV(num) {{{
-#set RAM = H
-#set ROM = H
+#set RAM_Sel = H
+#set ROM_Sel = H
 #set addr_in_DEVS = H
 #set addr_in_REGS = L
 #set Dev_Sel_lines = "{0xFF ^ (1 << num)}"
@@ -51,7 +51,7 @@ MSG "### Pridat: Pulldowns: A_SHARE_REQUEST, B_SHARE_REQUEST";
 #set B_G_ENABLE = H
 #end_macro }}}
 #macro test_addr_in_REG {{{
-#call test_addr_in_DEV(0)
+#call test_addr_in_DEV(0) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set addr_in_REGS = H
 #end_macro }}}
 #def_macro clock(readval,writeval) {{{ vygeneruje E+Q cyklus, read je "H rv rv H" cyklus, write podobne
@@ -60,22 +60,52 @@ MSG "### Pridat: Pulldowns: A_SHARE_REQUEST, B_SHARE_REQUEST";
 #set Q = 1
 #set Read = H
 #set Write = H
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set E = 1
 #set Q = 1
 #set Read = {readval}
 #set Write = {writeval}
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set E = 1
 #set Q = 0
 #set Read = {readval}
 #set Write = {writeval}
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set E = 0
 #set Q = 0
 #set Read = H
 #set Write = H
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#end_macro }}}
+#macro blind_write(side,val) {{{  jak zapsat na (uz zadanou) adresu v halt rezimu
+#msg blind_write({side},{val}) - do some tests
+#set DATA="Z" /* SystemRAM poskytuje data */
+#// otestuju nasteveni (dusledek A_SHARE_SELECT=0 (manage SystemRAM) + A_SHARE_REQUEST=1)
+#set RAM_Sel=L
+#set {side}_G_ENABLE=L
+#set {side}_G_A_DIR=H
+#set {side}_G_D_DIR=L
+#// test, ze nejdriv ctu - #set {side}_READ=1
+#set Rw=H
+#// in clock() #set Read=L
+#// in clock() #set Write=H
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#// je to spousta testu, ale vse by melo byt uz davno nastavene, ale az ted to potrebuju mit
+#msg Tests end
+#call clock(L,H) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg adresa vybrana, jdu zapsat - nejdriv ATmega2560 nastavi zapis (a jde tam jako data co gate vycte z HiZ) az potom zapne svuj vystup a nastavi data, jinak by se potloukla s gate (ktera by cetla data z RAM)
+#set {side}_READ=0
+#set {side}_G_D_DIR=H
+#set Rw=L
+#call clock(H,L) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg pak zapisu data
+#set DATA='{val}' /* zapisuje MHF */
+#call clock(H,L) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg Prepnu na cteni - ted na vnitrni sbernici MHF cpou data jak SystemRAM/gate, tak ATmega2560, ale jsou stejna, tak to nevadi (a v zapeti ATmega2560 vypne vystup)
+#set {side}_READ=1
+#set Rw=H
+#set {side}_G_D_DIR=L
+#call clock(L,H) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #end_macro }}}
 #def_macro READ_MEM(addr) {{{
 $MSG "### READ_MEM({addr}) ###";
@@ -86,16 +116,16 @@ $MSG "### READ_MEM({addr}) ###";
 #set DATA  = "*"
 #set E = 0;
 #set Q = 1;
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set E = 1;
 #set Read  = L
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set Q = 0;
 #set Read  = L
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set E = 0;
 #set Read  = H
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #end_macro }}}
 #def_macro WRITE_MEM(addr,val) {{{
 $MSG "### WRITE_MEM({addr},{val}) ###";
@@ -106,16 +136,16 @@ $MSG "### WRITE_MEM({addr},{val}) ###";
 #set DATA = '{val}'
 #set E = 0;
 #set Q = 1;
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set E = 1;
 #set Write = L
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set Q = 0;
 #set Write = L
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set E = 0;
 #set Write = H
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #end_macro }}}
 #def_macro TEST_MEM(addr,val) {{{
 $MSG "### TEST_MEM({addr},{val}) ###";
@@ -126,24 +156,24 @@ $MSG "### TEST_MEM({addr},{val}) ###";
 #set DATA = 'Z'
 #set E = 0;
 #set Q = 1;
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set E = 1;
 #set DATA = "{val}"
 #set Read  = L
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set Q = 0;
 #set DATA = "{val}"
 #set Read  = L
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set E = 0;
 #set DATA = 'Z'
 #set Read  = H
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #end_macro }}}
 
 #def_macro READ_REG(reg_num) {{{
 $MSG "### READ_REG({reg_num}) ###";
-#call test_addr_in_REG()
+#call test_addr_in_REG() //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set CADDR   = {'A000'+reg_num}
 #set Rw   = 1
 #set Read  = H
@@ -151,20 +181,20 @@ $MSG "### READ_REG({reg_num}) ###";
 #set DATA = "*"
 #set E = 0;
 #set Q = 1;
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set E = 1;
 #set Read  = L
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set Q = 0;
 #set Read  = L
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set E = 0;
 #set Read  = H
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #end_macro }}}
 #def_macro WRITE_REG(reg_num, value) {{{
 $MSG "### WRITE_REG({reg_num}, {value}) ###";
-#call test_addr_in_REG()
+#call test_addr_in_REG() //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set CADDR   = {'A000'+reg_num}
 #set Rw   = 0
 #set Read  = H
@@ -172,23 +202,23 @@ $MSG "### WRITE_REG({reg_num}, {value}) ###";
 #set E = 0; 
 #set Q = 1;
 #set DATA={value}
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set E = 1;
 #set Write = L
 #set DATA={value}
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set Q = 0;
 #set Write = L
 #set DATA={value}
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set E = 0;
 #set Write = H
 #set DATA={value}
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #end_macro }}}
 #def_macro TEST_REG(reg_num, value) {{{
 $MSG "### TEST_REG({reg_num}, {value}) ###";
-#call test_addr_in_REG()
+#call test_addr_in_REG() //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set CADDR   = {'A000'+reg_num}
 #set Rw   = 1
 #set Read  = H
@@ -196,19 +226,19 @@ $MSG "### TEST_REG({reg_num}, {value}) ###";
 #set E = 0; 
 #set Q = 1;
 #set DATA="Z"
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set E = 1;
 #set Read = L
 #set DATA="{value}"
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set Q = 0;
 #set Read = L
 #set DATA="{value}"
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set E = 0;
 #set Read = H
 #set DATA="Z"
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #end_macro }}}
 
 #def_macro Defaults {{{
@@ -242,8 +272,8 @@ $MSG "### Defaults set";
 #set  BS = Z 
 #set  MRDY = Z 
 #//
-#set  RAM = * 
-#set  ROM = * 
+#set  RAM_Sel = * 
+#set  ROM_Sel = * 
 #set  Dev_Sel_lines = "H" 
 #//
 #set  A_S_SELECT = * 
@@ -258,8 +288,8 @@ $MSG "### Defaults set";
 #set  A_SHARE_SELECT = Z
 #set  B_SHARE_SELECT = Z
 #//
-#set  /* outputs */ A_SHARE_DIRTY = * 
-#set  B_SHARE_DIRTY = * 
+#set  /* outputs */ A_SHARE_COOP = * 
+#set  B_SHARE_COOP = * 
 #set  A_SHARE_GRANTED = * 
 #set  B_SHARE_GRANTED = * 
 #set  A_S_READ = * 
@@ -316,11 +346,11 @@ ORDER:
 	%1, A_S_16, B_S_16,
 	%1, "H:", !A_HALT, !B_HALT, !HALT, BA,
 	%1, "C:", !Dev_FIRQ, !Dev_IRQ, !Dev_NMI, !DMA_BREQ, BS, MRDY, 
-	%1, "OE:", !RAM, !ROM,
+	%1, "OE:", !RAM_Sel, !ROM_Sel,
 	%1, !Dev_Sel_lines, 
 	%1, "Sg:", !A_S_SELECT, !B_S_SELECT, %1, !A_G_ENABLE, !B_G_ENABLE,
 	%1, "In:", /* inputs */ A_READ, B_READ, %1, A_SHARE_REQUEST, B_SHARE_REQUEST, %1, A_SHARE_SELECT, B_SHARE_SELECT, 
-	%1, "Out:", /* outputs */ A_SHARE_DIRTY, B_SHARE_DIRTY, %1, A_SHARE_GRANTED, B_SHARE_GRANTED, %1, !A_S_READ, !B_S_READ, %1, !A_S_WRITE, !B_S_WRITE, %1, A_G_A_DIR, B_G_A_DIR, %1, A_G_D_DIR, B_G_D_DIR, 
+	%1, "Out:", /* outputs */ A_SHARE_COOP, B_SHARE_COOP, %1, A_SHARE_GRANTED, B_SHARE_GRANTED, %1, !A_S_READ, !B_S_READ, %1, !A_S_WRITE, !B_S_WRITE, %1, A_G_A_DIR, B_G_A_DIR, %1, A_G_D_DIR, B_G_D_DIR, 
 	%3, "Rs:",/* nodes */ ROM_SIZE,
 	%1, BootSrc, RomMapped, 
 	%1, addr_in_REGS, addr_in_DEVS, 
@@ -328,64 +358,67 @@ ORDER:
 	%1, "E2:", /* EMS2 mapping */ EMS2_A1, EMS2_A0, %1, EMS2_B4, EMS2_B3, EMS2_B2, EMS2_B1, EMS2_B0,
 	%1, "Ow:",/* ownership */ CHIPA_A, CHIPA_C, CHIPB_A, CHIPB_C, %1, CHIPA_Dc, CHIPA_Dm, CHIPB_Dc, CHIPB_Dm, 
 	%2, "T:",TIMER_EN, %1, COUNT, %1, COUNT_R,
-	" |";
+	%1;
 
 VECTORS:
-/* DATA   CADDR           EQ Rw: R: G:       H:   C:     OE     Sg:   In:      Out:                Rs:       E1:      E2:      Ow:        T:                 */
+/* DATA   CADDR           EQ Rw: R: G:       H:   C:     CS     Sg:   In:      Out:                Rs:       E1:      E2:      Ow:        T:                 */
+#msg #: ZZZZZZZZ 1111111111111111 01 Rw:1HH R:0L G:LHHHH ZZ H:11Z0 C:ZZZZZZ OE:** ******** Sg:HH HH In:ZZ ZZ ZZ Out:LL LL HH HH LL LL   Rs:LLL 0L LL E1:LL LHLLL E2:LL LHLLH Ow:LLLL LLLL  T:L LLLLLLLLLLLL LLLL
 ZZZZZZZZ 1111111111111111 01 1HH 0L LHHHH ZZ 11Z0 ZZZZZZ ** "*" HH HH ZZ ZZ ZZ LL LL HH HH LL LL   LLL 0L LL LL LHLLL LL LHLLH LLLL LLLL  L LLLLLLLLLLLL LLLL 
 #hide {{{
-#call Defaults()
+#call Defaults() //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set Reset=0
 $MSG "### Reset activated";
-#gen_vector
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set Reset=1
 $MSG "### Reset deactivated";
-#gen_vector
-#call READ_REG(0)
-#call WRITE_REG(0,C7)
-#call TEST_REG(0,C7)
-#call READ_REG(7)
-#call READ_REG(7)
-#call READ_REG(7)
-#call READ_REG(7)
-#call test_addr_in_RAM()
-#call WRITE_MEM(1234,5A)
-#call READ_MEM(1234)
-#call TEST_MEM(1234,"Z")
-#call test_addr_in_ROM()
-#call READ_MEM(FFFF)
-#call test_addr_in_REG()
-#call TEST_MEM(A000,C7)
-#call test_addr_in_DEV(1)
-#call TEST_MEM(A021,"Z")
-#call TEST_MEM(A031,"Z")
-#call test_addr_in_DEV(2)
-#call TEST_MEM(A041,"Z")
-#call TEST_MEM(A051,"Z")
-#call test_addr_in_DEV(7)
-#call TEST_MEM(A0F1,"Z")
-#call TEST_MEM(A0FF,"Z")
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call READ_REG(0) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call WRITE_REG(0,C7) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call TEST_REG(0,C7) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call READ_REG(7) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call READ_REG(7) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call READ_REG(7) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call READ_REG(7) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call test_addr_in_RAM() //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call WRITE_MEM(1234,5A) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call READ_MEM(1234) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call TEST_MEM(1234,"Z") //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call test_addr_in_ROM() //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call READ_MEM(FFFF) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call test_addr_in_REG() //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call TEST_MEM(A000,C7) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call test_addr_in_DEV(1) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call TEST_MEM(A021,"Z") //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call TEST_MEM(A031,"Z") //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call test_addr_in_DEV(2) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call TEST_MEM(A041,"Z") //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call TEST_MEM(A051,"Z") //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call test_addr_in_DEV(7) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call TEST_MEM(A0F1,"Z") //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call TEST_MEM(A0FF,"Z") //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 $MSG "################################################################################";
 $MSG "### BOOT TEST";
 $MSG "################################################################################";
 #unhide }}}
-#call Defaults()
+#call Defaults() //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg Reset ma kondenzator a 'vyssi prah citlivosti', zacina na nule,  spina jako posledni
-#set Reset=0
+#set Reset=0 // HW set
 #msg A_HALT je pulldown dolu => HALT je aktivni => BA je aktivni, nez reset skonci
-#set A_HALT = 0
-#set BA=1
+#set A_HALT = 0 // HW set
+#set BA=1 // CPU set
+#msg BA aktivni => nastane in_HALT_mode => A_SHARE_COOP je aktivni (protoze mam A_HALT) a B_SHARE_COOP je NEaktivni (protoze mam A_HALT)
+#msg NOTE: jeste je na to moc brzo (Reset teprve zacina), ale jakmile MHF nabootuje a ma X_SHARE_COOP aktivni, tak je nejspis MHFA, nebo oproti nemu bootovalo velmi pomalu
 #msg Rw je Read, protoze A_READ je pullup
 #set Rw = H
 #msg CADDR je HiZ, protoze je HALT
 #set CADDR = 'Z'
-#gen_vector
+#gen_vector //  ---------------------------------------------------------------------------------------------------------------------------------------------------------------- 
 #msg B_HALT ma taky pulldown (ale otestujeme spravnou polaritu)
-#set B_HALT = 0
-#gen_vector
+#set B_HALT = 0 // HW set
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg Reset konecne konci, nastava regulatni in_HALT_mode
-#set Reset=1
-#gen_vector
+#set Reset=1 // HW set
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg Initial HALT
 #comm_start
 	(Reset ma kondenzator a "vyssi prah citlivosti", spina jako posledni)
@@ -393,57 +426,52 @@ $MSG "##########################################################################
 	* `A_HALT` je pulldownem drzeny dole
 		* GLUE logic tudiz podrzi dole `HALT`
 		* (CPU je v haltu a zacne nabihat jeho reset, vsechny signaly v HiZ)
-		* (Arduino staruje a ma vsechny piny HiZ)
+		* (ATmega2560 staruje a ma vsechny piny HiZ)
 		* (GLUE po resetu odpojilo brany k Arduinu)
 	* Clock se rozbiha na nejakych 4 MHz
-* po delsi dobe nastartuje Arduino (veci v setup a tak)
+* po delsi dobe nastartuje ATmega2560 (veci v setup a tak)
 	* `A_HALT` nastavi na **LOW** a aktivne ho tam drzi (zadna zmena)
-	* Arduino nacte z SD karty, nebo FLASH, nebo nejak obsah ROM
+	* ATmega2560 nacte z SD karty, nebo FLASH, nebo nejak obsah ROM
 #comm_end
 #msg MHF nabootovalo a aktivne prebira A_HALT a vsechny ostatni sve piny (ale zatim zadna zmena)
 #msg MHF nacte z SD karty, nebo FLASH, nebo nejak obsah ROM
-#msg pri in_HALT_mode ma MHF gate otevrene (pokud neni druhe v poradi) (A_G_ENABLE=L B_G_ENABLE=H):
-#set A_G_ENABLE=L
+#msg pri in_HALT_mode ma MHF gate rizene A_SHARE_SELECT & A_SHARE_REQUEST (pokud neni druhe v poradi) (A_G_ENABLE=H B_G_ENABLE=H):
+#msg Zatim jsme nepozadali o aktivaci (A_SHARE_REQUEST), tak jsou zavrene
+#set A_HALT=0 // ATmega2560 sets
+#set A_G_ENABLE=H
 #set B_G_ENABLE=H
-#gen_vector
-#msg MHF_A zacne plnit SystemRAM
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call clock(L,H) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+#// {{{ MHFA in_HALT_mode
+#msg MHFA zacne plnit SystemRAM
 #msg nejdriv pro jistotu nastavim A_READ=1, aby se SystemRAM nahodile nemazala (MHF ma data HiZ)
-#set A_READ=1
-#msg A_SHARE_SELECT=0 (manage SystemRAM) + A_SHARE_REQUEST=1 (Wants to own) (=>A_SHARE_GRANTED=1)
-#set A_SHARE_SELECT=0
-#set A_SHARE_REQUEST=1
+#set A_READ=1 // ATmega2560 sets
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg Plan: Zapsat(treba na '1 FFFF') nejaka data (treba 5A) A_SHARE_SELECT=0 (manage SystemRAM) + A_SHARE_REQUEST=1 (Wants to own) (=>A_SHARE_GRANTED=1)
+#msg A_SHARE_SELECT=0
+#set A_SHARE_SELECT=0 // ATmega2560 sets
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg A_SHARE_REQUEST=1 => A_G_ENABLE active
+#set A_SHARE_REQUEST=1 // ATmega2560 sets
+#set A_G_ENABLE=L
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg Should have A_SHARE_GRANTED=H (test it)
 #set A_SHARE_GRANTED=H
-#gen_vector
-#msg mam A_HALT, dostal jsem A_SHARE_GRANTED=1 + A_SHARE_DIRTY=1 => muzu pouzivat SystemRAM
-#set A_SHARE_DIRTY=H
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg mam A_HALT, dostal jsem A_SHARE_GRANTED=1 + A_SHARE_COOP=1 => muzu pouzivat SystemRAM
+#set A_SHARE_COOP=H
 #msg ########################################
-#msg  nastavim A_READ=1 (=> ctu SystemRAM, to je pro ni OK, MHF ma data=HiZ), nastavim CADDR/GADDR, nastavim A_S_16 pro spravnou pulku
-#set A_READ=1
-#set CADDR='FFFF'
-#set GADDR='F'
-#set A_S_16 = 1
-#set GA16 = H
-#set DATA="Z" /* SystemRAM poskytuje data */
-#set RAM=L
-#set Rw=H
-#set Read=L
-#set Write=H
-#call clock(L,H)
-#msg adresa vyrana, jdu zapsat - nejdriv nastavim zapis (a nezajimam se, co tam jde)
-#set A_READ=0
-#set Rw=L
-#set Read=H
-#set Write=L
-#call clock(H,L)
-#msg pak zapisu data
-#set DATA="Z" /* zapisuje MHF */
-#call clock(H,L)
-#msg Prepnu na cteni - ted na sbernici cpou data jak SystemRAM, tak MHF, ale jsou stejna, tak to nevadi
-#set A_READ=1
-#set Rw=H
-#set Read=L
-#set Write=H
-#call clock(L,H)
+#msg  nastavim A_READ=1 (=> ctu SystemRAM, to je pro ni OK, MHF dostava data, ale ATmega ma data=HiZ a SharedRAM.CS (A_S_SELECT) neni active), nastavim CADDR/GADDR, nastavim A_S_16 pro spravnou pulku
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#set A_READ=1 // ATmega2560 sets
+#set CADDR='FFFF' // ATmega2560 sets
+#set GADDR='F' // ATmega2560 sets
+#set A_S_16 = 1 // ATmega2560 sets
+#set GA16 = H // z A_S_16
+#set A_S_SELECT=H // overeni, ze si neskodim
+#call blind_write(A,5A) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg ########################################
 #msg MHF da data HiZ, nastavi dalsi adresu, zapise dalsi byte a tak porad dokola
 #msg nastavim A_READ=1 (=> ctu SystemRAM, to je pro ni OK, MHF ma data=HiZ), nastavim CADDR/GADDR
@@ -452,27 +480,7 @@ $MSG "##########################################################################
 #set GADDR='F'
 #set A_S_16 = 1
 #set GA16 = H
-#set DATA="Z" /* SystemRAM poskytuje data */
-#set RAM=L
-#set Rw=H
-#set Read=L
-#set Write=H
-#call clock(L,H)
-#msg adresa vyrana, jdu zapsat - nejdriv nastavim zapis (a nezajimam se, co tam jde)
-#set A_READ=0
-#set Rw=L
-#set Read=H
-#set Write=L
-#call clock(H,L)
-#msg pak zapisu data
-#set DATA="Z" /* zapisuje MHF */
-#call clock(H,L)
-#msg Prepnu na cteni - ted na sbernici cpou data jak SystemRAM, tak MHF, ale jsou stejna, tak to nevadi
-#set A_READ=1
-#set Rw=H
-#set Read=L
-#set Write=H
-#call clock(L,H)
+#call blind_write(A,49) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg ########################################
 #msg dokud nejsou vsechna data zapsana
 #msg test zapisu do oblasti registru (pisu do SystemRAM)
@@ -480,17 +488,217 @@ $MSG "##########################################################################
 #set GADDR='A'
 #set A_S_16 = 0
 #set GA16 = L
-#gen_vector
+#call blind_write(A,12) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg test zapisu do oblasti EMS1 (pisu do SystemRAM)
 #set CADDR='8000'
 #set GADDR='8'
 #set A_S_16 = 0
 #set GA16 = L
-#gen_vector
+#call blind_write(A,34) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg test zapisu do oblasti EMS2 (pisu do SystemRAM)
 #set CADDR='9000'
 #set GADDR='9'
 #set A_S_16 = 0
 #set GA16 = L
-#gen_vector
+#call blind_write(A,56) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg ########################################
+#msg ### clear SharedRAM
+#msg ########################################
+#msg Cil: A_S_16=Z, gates closed, Shared=active, A_S_READ/A_S_WRITE podle A_READ, A_S_SELECT active, MHF si muze psat co chce
+#msg A_SHARE_SELECT=1 (manage SharedRAM) => RAM_Sel NOT active, A_G_ENABLE NOT active, SharedRAM active
+#msg A_S_16 je ovladan ATmega2560 a pouzivan pro pristup k lokalni SharedRAM primo, jedine co muzeme udelat je ho ignorovat == drzet RAM_Sel not active, dokud se neuplatni B_S_16, nebo neskonci in_HALT_mode
+#set A_SHARE_SELECT=1
+#set A_S_16=1 // ~ nahodne se menici hodnota
+#set GA16=*
+#set Rw=*
+#set A_G_D_DIR=* // ~ nevim, co tu bude, ale protoze se RAM_Sel neaktivuje (ani nic jineho), tak je to jedno - MHFA si pise pro sebe
+#set RAM_Sel=H
+#set A_G_ENABLE=H
+#set A_S_SELECT=L
+#set A_READ=1
+#set DATA="Z"
+#set CADDR="Z"
+#set GADDR="Z"
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call clock(L,H) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg zapis do lokalni SharedRAM primo: vybrana je podle A_SHARE_REQUEST, A_READ nastavuje A_S_READ a A_S_WRITE
+#msg A_SHARE_REQUEST=0 vypnu A_S_SELECT
+#set A_SHARE_REQUEST=0
+#set A_S_SELECT=H
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg ATmega2560 si nastavi si SharedAddressA0..15 a B_S_16 podle potreby, pak si zapne data
+#msg pak nastavi A_READ=0 , zatin se nic nedeje, neni A_S_SELECT
+#set A_READ=0
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg ted nastavi A_SHARE_REQUEST=1 => A_S_SELECT se aktivuje a tim zapise spravnou hodnotu
+#set A_SHARE_REQUEST=1
+#set A_S_SELECT=L
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg pocka jeden takt, shodi A_SHARE_REQUEST a dal muze menit A_READ, data a adresy po libosti 
+#msg A_SHARE_REQUEST=0 vypnu A_S_SELECT
+#set A_SHARE_REQUEST=0
+#set A_S_SELECT=H
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg ATmega2560 si da data HiZ a muze nastavit dalsi adresu a opakovat
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg uklidime si vystupy:
+#set A_SHARE_REQUEST=0
+#set A_READ=1
+#set A_SHARE_SELECT=0
+#msg tady se jeste da vratit i k zapisu do SystemRAM a tocit se v kruhu
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg Prestanu sledovat nedostupnost RAM, je na MHFB anby s ni zacal cvicit
+#set RAM_Sel=*
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg MHFB prisel na radu
+#set GA16=*
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg ########################################
+#msg ## konecne jsme kompletne hotovi s MHFA 
+#msg ########################################
+#msg koncime - A_HALT=1
+#set A_HALT=1
+#msg MHFA uz je v normalnim stavu
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#// }}}
+
+#// {{{ MHFB in_HALT_mode
+#msg MHFB zacne plnit SystemRAM
+#msg nejdriv pro jistotu nastavim B_READ=1, aby se SystemRAM nahodile nemazala (MHF ma data HiZ)
+#set B_READ=1 // ATmega2560 sets
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg Plan: Zapsat(treba na '1 FFFF') nejaka data (treba 5A) B_SHARE_SELECT=0 (manage SystemRAM) + B_SHARE_REQUEST=1 (Wants to own) (=>B_SHARE_GRANTED=1)
+#msg B_SHARE_SELECT=0
+#set B_SHARE_SELECT=0 // ATmega2560 sets
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg B_SHARE_REQUEST=1 => B_G_ENABLE active
+#set B_SHARE_REQUEST=1 // ATmega2560 sets
+#set B_G_ENABLE=L
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg Should have B_SHARE_GRANTED=H (test it)
+#set B_SHARE_GRANTED=H
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg mam B_HALT, dostal jsem B_SHARE_GRANTED=1 + B_SHARE_COOP=1 => muzu pouzivat SystemRAM
+#set B_SHARE_COOP=H
+#msg ########################################
+#msg  nastavim B_READ=1 (=> ctu SystemRAM, to je pro ni OK, MHF dostava data, ale ATmega ma data=HiZ a SharedRAM.CS (B_S_SELECT) neni active), nastavim CADDR/GADDR, nastavim B_S_16 pro spravnou pulku
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#set B_READ=1 // ATmega2560 sets
+#set CADDR='FFFF' // ATmega2560 sets
+#set GADDR='F' // ATmega2560 sets
+#set B_S_16 = 1 // ATmega2560 sets
+#set GA16 = H // z B_S_16
+#set B_S_SELECT=H // overeni, ze si neskodim
+#call blind_write(B,5A) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg ########################################
+#msg MHF da data HiZ, nastavi dalsi adresu, zapise dalsi byte a tak porad dokola
+#msg nastavim B_READ=1 (=> ctu SystemRAM, to je pro ni OK, MHF ma data=HiZ), nastavim CADDR/GADDR
+#set B_READ=1
+#set CADDR='FFFE'
+#set GADDR='F'
+#set B_S_16 = 1
+#set GA16 = H
+#call blind_write(B,49) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg ########################################
+#msg dokud nejsou vsechna data zapsana
+#msg test zapisu do oblasti registru (pisu do SystemRAM)
+#set CADDR='A000'
+#set GADDR='A'
+#set B_S_16 = 0
+#set GA16 = L
+#call blind_write(B,12) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg test zapisu do oblasti EMS1 (pisu do SystemRAM)
+#set CADDR='8000'
+#set GADDR='8'
+#set B_S_16 = 0
+#set GA16 = L
+#call blind_write(B,34) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg test zapisu do oblasti EMS2 (pisu do SystemRAM)
+#set CADDR='9000'
+#set GADDR='9'
+#set B_S_16 = 0
+#set GA16 = L
+#call blind_write(B,56) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg ########################################
+#msg ### clear SharedRAM
+#msg ########################################
+#msg Cil: B_S_16=Z, gates closed, Shared=active, B_S_READ/B_S_WRITE podle B_READ, B_S_SELECT active, MHF si muze psat co chce
+#msg B_SHARE_SELECT=1 (manage SharedRAM) => RAM_Sel NOT active, B_G_ENABLE NOT active, SharedRAM active
+#msg B_S_16 je ovladan ATmega2560 a pouzivan pro pristup k lokalni SharedRAM primo, jedine co muzeme udelat je ho ignorovat == drzet RAM_Sel not active, dokud se neuplatni B_S_16, nebo neskonci in_HALT_mode
+#set B_SHARE_SELECT=1
+#set B_S_16=1 // ~ nahodne se menici hodnota
+#set GA16=*
+#set Rw=*
+#set B_G_D_DIR=* // ~ nevim, co tu bude, ale protoze se RAM_Sel neaktivuje (ani nic jineho), tak je to jedno - MHFB si pise pro sebe
+#set RAM_Sel=H
+#set B_G_ENABLE=H
+#set B_S_SELECT=L
+#set B_READ=1
+#set DATA="Z"
+#set CADDR="Z"
+#set GADDR="Z"
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call clock(L,H) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg zapis do lokalni SharedRAM primo: vybrana je podle B_SHARE_REQUEST, B_READ nastavuje B_S_READ a B_S_WRITE
+#msg B_SHARE_REQUEST=0 vypnu B_S_SELECT
+#set B_SHARE_REQUEST=0
+#set B_S_SELECT=H
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg ATmega2560 si nastavi si SharedAddressA0..15 a B_S_16 podle potreby, pak si zapne data
+#msg pak nastavi B_READ=0 , zatin se nic nedeje, neni B_S_SELECT
+#set B_READ=0
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg ted nastavi B_SHARE_REQUEST=1 => B_S_SELECT se aktivuje a tim zapise spravnou hodnotu
+#set B_SHARE_REQUEST=1
+#set B_S_SELECT=L
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg pocka jeden takt, shodi B_SHARE_REQUEST a dal muze menit B_READ, data a adresy po libosti 
+#msg B_SHARE_REQUEST=0 vypnu B_S_SELECT
+#set B_SHARE_REQUEST=0
+#set B_S_SELECT=H
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg ATmega2560 si da data HiZ a muze nastavit dalsi adresu a opakovat
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg uklidime si vystupy:
+#set B_SHARE_REQUEST=0
+#set B_READ=1
+#set B_SHARE_SELECT=0
+#msg tady se jeste da vratit i k zapisu do SystemRAM a tocit se v kruhu
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg Prestanu sledovat nedostupnost RAM, je na CPU anby s ni zacal cvicit
+#set RAM_Sel=*
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg CPU prisel na radu
+#set GA16=*
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg ########################################
+#msg ## konecne jsme kompletne hotovi s MHFB 
+#msg ########################################
+#msg koncime - B_HALT=1
+#set B_HALT=1
+#set HALT=1 /* protoze je Z a ma pullup */
+#set BA=0 /* protoze uz nani HALT */
+#set GADDR="*"
+#set A_SHARE_GRANTED=L
+#set B_SHARE_GRANTED=L
+#set A_SHARE_COOP=L
+#set B_SHARE_COOP=L
+#set A_G_A_DIR=*
+#set B_G_A_DIR=*
+#msg MHFB uz je v normalnim stavu
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#// }}}
+#msg ########################################
+#msg ## Normal boot for CPU                  
+#msg ########################################
+#msg CPU prisel na radu
+#msg uz NEJSME in_HALT_mode, plati jina pravidla
+#msg CPU vypadnul z HALTu a pamatuje si Reset, takze bootuje z FFFF
+#call READ_MEM(FFFF)
+
+#msg ########################################
+#msg ## Normal boot for CPU                  
+#msg ########################################
+#msg CPU prisel na radu
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
