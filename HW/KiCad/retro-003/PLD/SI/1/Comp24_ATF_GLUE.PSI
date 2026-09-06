@@ -677,7 +677,7 @@ $MSG "##########################################################################
 #msg koncime - B_HALT=1
 #set B_HALT=1
 #set HALT=1 /* protoze je Z a ma pullup */
-#set BA=0 /* protoze uz nani HALT */
+#set BA=0 /* protoze uz neni HALT */
 #set GADDR="*"
 #set A_SHARE_GRANTED=L
 #set B_SHARE_GRANTED=L
@@ -686,6 +686,8 @@ $MSG "##########################################################################
 #set A_G_A_DIR=*
 #set B_G_A_DIR=*
 #msg MHFB uz je v normalnim stavu
+#msg NOTE: uz neni in_HALT_mode => OBE MHF maji ?_SHARE_GRANTED=L (a ?_SHARE_COOP=L, ale to uz muze CPU casem zmenit)
+#msg NOTE: MHF se prepnou do normalniho modu, ctou PS/2 a podobne
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #// }}}
 #msg ########################################
@@ -694,7 +696,21 @@ $MSG "##########################################################################
 #msg CPU prisel na radu
 #msg uz NEJSME in_HALT_mode, plati jina pravidla
 #msg CPU vypadnul z HALTu a pamatuje si Reset, takze bootuje z FFFF
-#call READ_MEM(FFFF)
+#call READ_MEM(FFFF) // boot vector HIGH
+#call READ_MEM(FFFE) // boot vector LOW
+#call READ_MEM(B000) // say some instruction low in BIOS
+#call WRITE_MEM(7FFF,12) // Top of stack
+#call WRITE_MEM(7FFE,34) // grows down ...
+#set Dev_Sel_lines[0]=L
+#call READ_MEM(A000)
+#set Dev_Sel_lines[0]=H
+#call READ_MEM(8000)
+#call READ_MEM(9000)
+#set Dev_Sel_lines[0]=L
+#call WRITE_MEM(A000,C1)
+#set Dev_Sel_lines[0]=H
+#call READ_MEM(8000)
+#call READ_MEM(9000)
 
 #msg ########################################
 #msg ## Normal boot for CPU                  

@@ -1,0 +1,82 @@
+	def handle_set(self, text, local_vars):
+		text = self.expand_exprs(text, local_vars)
+		# Regex zachytí i případ, kdy je na konci syntaxe pro index (např. DEV_SEL[5]=L)
+		# Skupina 1 bude "DEV_SEL", skupina 2 bude "[5]=L"
+		match = re.match(r'([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)', text)
+		if match:
+			name = match.group(1)
+			value = match.group(2).strip().rstrip(';').strip()
+			self.pending_sets[name] = value
+		else:
+			print(f"Chyba: Špatná syntaxe #set: {text}", file=sys.stderr)
+
+	def handle_gen_vector(self):
+		for name, val_str in self.pending_sets.items():
+			width = self.bus_widths.get(name, 1)
+			
+			# Kontrola, zda se jedná o syntaxi pro nastavení jednotlivého bitu: [index]=hodnota
+			bit_match = re.match(r'\[\s*(\d+)\s*\]\s*=\s*(.)', val_str)
+			
+			if bit_match:
+				idx = int(bit_match.group(1))
+				new_bit_val = bit_match.group(2)
+				
+				# Získání aktuálního stavu bitů, abychom zachovali ostatní bity
+				if name in self.current_state:
+					current_bits = self.current_state[name][0]
+				else:
+					# Pokud signál ještě nemá stav, použijeme '*' (Don't Care) pro celou šířku
+					current_bits = '*' * width
+				
+				# Úprava konkrétního bitu v seznamu
+				if 0 <= idx < len(current_bits):
+					bits_list = list(current_bits)
+					bits_list[idx] = new_bit_val
+					bits = "".join(bits_list)
+				else:
+					# Ošetření chyby, pokud je index mimo rozsah
+					print(f"Varování: Index {idx} je mimo rozsah signálu {name} (šířka {width}). Ponechávám původní hodnotu.", file=sys.stderr)
+					bits = current_bits
+				
+				# Vynutíme přepočet výstupního formátu (aby se správně zobrazila změna jednoho bitu)
+				out_fmt = None
+				
+				self.current_state[name] = (bits, out_fmt)
+				
+			else:
+				# Standardní zpracování (nastavení celého signálu nebo busu)
+				if width == 1:
+					self.current_state[name] = (val_str, None)
+				else:
+					out_fmt, bits = self.expand_bus_value(val_str, width)
+					self.current_state[name] = (bits, out_fmt)
+
+		out_line = ""
+		for item in self.order_struct:
+			if item[0] == 'space':
+				out_line += " " * item[1]
+			elif item[0] == 'str':
+				pass
+			elif item[0] == 'signal':
+				val = self.current_state.get(item[1], ('*', None))[0]
+				out_line += val
+			elif item[0] == 'bus':
+				name, width = item[1], item[2]
+				bits, out_fmt = self.current_state.get(name, ('*' * width, None))
+				
+				if out_fmt:
+					out_line += out_fmt
+				else:
+					is_uniform = all(c == bits[0] for c in bits)
+					if is_uniform:
+						out_line += f"'{bits[0]}'"
+					else:
+						try:
+							hex_val = format(int(bits, 2), 'X')
+							if len(hex_val) % 2 != 0: hex_val = '0' + hex_val
+							out_line += f"'{hex_val}'"
+						except:
+							out_line += bits
+
+		self.output.append(out_line)
+		self.pending_sets.clear()

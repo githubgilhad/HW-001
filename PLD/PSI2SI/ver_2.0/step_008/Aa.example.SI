@@ -1,0 +1,58 @@
+Name     Aa;
+PartNo   0003;
+Date     2026-07-23;
+Revision 0.2;
+Designer Gilhad;
+Company  None;
+Assembly None;
+Location ;
+Device   f1508isptqfp100;
+
+
+MSG "### PSI macros, use PSI2SI.py Aa.PSI Aa.SI ###";
+MSG "### Generated 2026.08.27 21:18:34 ###";
+
+
+
+
+
+
+
+MSG "## Test FIRQ (with [CNT11..6].AP = Reset; /* .AR */ ";
+ORDER: !Dev_FIRQ, %1, !Reset, BA, %1, E, Q, Rw, %1, CA, %1, DATA, %1, " CNT:", COUNT, %1, TIMER_EN, " CNT_R:", CNT_R11, CNT_R10, CNT_R9, CNT_R8 ;
+
+VECTORS:
+
+$MSG "## Reset all";
+Z 00 C01 'A008' "*" "*" *****
+
+$MSG "## write TIMER_EN true";
+Z 10 110 'A008' '80' "*" *****
+Z 10 100 'A008' '80' "*" *****
+
+$MSG "## read TIMER_EN by hands";
+Z 10 001 'A008' "*" "*" *****
+Z 10 011 'A008' "*" "*" *****
+Z 10 111 'A008' "*" "*" *****
+Z 10 101 'A008' "*" "*" *****
+$MSG "### WRITE_REG(8, 80) ###";
+Z 10 010 'A008' '80' "*" *****
+/* Zapisuji data 80 na adresu A008
+Konec zapisu bude za chvilku.
+*/
+Z 10 110 'A008' '80' "*" *****
+Z 10 100 'A008' '80' "*" *****
+/* Zapsano data 80 na adresu A008 */
+Z 10 000 'A008' '80' "*" *****
+$MSG "### READ_REG(0) ###";
+Z 10 011 'A000' "*" "*" *****
+Z 10 111 'A000' "*" "*" *****
+Z 10 101 'A000' "*" "*" *****
+Z 10 001 'A000' "*" "*" *****
+$MSG "### READ_REG(1) ###";
+Z 10 011 'A001' "*" "*" *****
+Z 10 111 'A001' "*" "*" *****
+Z 10 101 'A001' "*" "*" *****
+Z 10 001 'A001' "*" "*" *****
+
+

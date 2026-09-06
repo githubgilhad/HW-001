@@ -454,8 +454,18 @@ class AaSOViewer:
 		
 		tk.Button(control_frame, text="← Předchozí (Up)", command=self.prev_vector).pack(side=tk.LEFT, padx=10)
 		tk.Button(control_frame, text="Následující (Down) →", command=self.next_vector).pack(side=tk.LEFT, padx=10)
-		self.info_label = tk.Label(control_frame, text="0 / 0")
-		self.info_label.pack(side=tk.LEFT, padx=20)
+		# self.info_label = tk.Label(control_frame, text="0 / 0")
+		# self.info_label.pack(side=tk.LEFT, padx=20)
+		# Nahrazení původního Labelu za Entry pro zadávání čísla
+		self.page_entry = tk.Entry(control_frame, width=5, justify="center")
+		self.page_entry.pack(side=tk.LEFT, padx=(20, 2))
+		# Navázání stisku klávesy Enter na novou funkci
+		self.page_entry.bind("<Return>", self.jump_to_vector)
+		self.page_entry.bind("<KP_Enter>", self.jump_to_vector)
+
+		# Štítek, který zobrazí celkový počet a text "Vektor X" okolo
+		self.info_label = tk.Label(control_frame, text="")
+		self.info_label.pack(side=tk.LEFT, padx=(0, 20))
 		
 		tk.Button(control_frame, text="Ukončit program", command=root.destroy, bg="lightcoral").pack(side=tk.RIGHT, padx=10)
 		
@@ -642,7 +652,13 @@ class AaSOViewer:
 				self.canvas.create_text(10, y_comments + j * 15, anchor="nw", text=comment, font=FONT, fill="green" if not "user expected" in comment else "red")
 				last_y = y_comments + j * 15
 				
-			self.info_label.config(text=f"Vektor {vec['num']}  [{self.current_vector_idx + 1} / {len(self.vectors)}]")
+			# self.info_label.config(text=f"Vektor {vec['num']}  [{self.current_vector_idx + 1} / {len(self.vectors)}]")
+			# Vymažeme starý text v Entry a vložíme aktuální pořadové číslo (lidské indexování od 1)
+			self.page_entry.delete(0, tk.END)
+			self.page_entry.insert(0, str(self.current_vector_idx + 1))
+
+			# Aktualizujeme okolní text (název vektoru a celkový počet)
+			self.info_label.config(text=f" (Vektor {vec['num']} / {len(self.vectors)})")
 
 		self.kicad_viewer.set_highlights(highlight_map)
 		# Na konec metody draw() v AaSOViewer:
@@ -663,6 +679,22 @@ class AaSOViewer:
 	def prev_vector(self):
 		if self.vectors and self.current_vector_idx > 0:
 			self.current_vector_idx -= 1
+			self.draw()
+	def jump_to_vector(self, event=None):
+		if not self.vectors:
+			return
+		try:
+			# Načtení zadané hodnoty a převod na index (uživatel zadává od 1, program indexuje od 0)
+			target_idx = int(self.page_entry.get()) - 1
+			# Kontrola, zda je zadané číslo v rámci existujících vektorů
+			if 0 <= target_idx and target_idx < len(self.vectors):
+				self.current_vector_idx = target_idx
+				self.draw()
+			else:
+			# Pokud je číslo mimo rozsah, vrátíme tam aktuální správné číslo
+				self.draw()
+		except ValueError:
+			# Pokud uživatel nezadal platné číslo (např. písmena), vrátíme původní hodnotu
 			self.draw()
 
 
