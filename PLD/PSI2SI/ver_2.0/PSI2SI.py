@@ -176,7 +176,9 @@ class Preprocessor:
 
 	def handle_set(self, text, local_vars):
 		text = self.expand_exprs(text, local_vars)
-		match = re.match(r'([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)', text)
+		# Regex zachytí i případ, kdy je na konci syntaxe pro index (např. DEV_SEL[5]=L)
+		# Skupina 1 bude "DEV_SEL", skupina 2 bude "[5]=L"
+		match = re.match(r'([A-Za-z_][A-Za-z0-9_]*)\s*(?:=\s*)?(.*)', text)
 		if match:
 			name = match.group(1)
 			value = match.group(2).strip().rstrip(';').strip()
@@ -187,11 +189,43 @@ class Preprocessor:
 	def handle_gen_vector(self):
 		for name, val_str in self.pending_sets.items():
 			width = self.bus_widths.get(name, 1)
-			if width == 1:
-				self.current_state[name] = (val_str, None)
-			else:
-				out_fmt, bits = self.expand_bus_value(val_str, width)
+			
+			# Kontrola, zda se jedná o syntaxi pro nastavení jednotlivého bitu: [index]=hodnota
+			bit_match = re.match(r'\[\s*(\d+)\s*\]\s*=\s*(.)', val_str)
+			
+			if bit_match:
+				idx = width -1 - int(bit_match.group(1))
+				new_bit_val = bit_match.group(2)
+				
+				# Získání aktuálního stavu bitů, abychom zachovali ostatní bity
+				if name in self.current_state:
+					current_bits = self.current_state[name][0]
+				else:
+					# Pokud signál ještě nemá stav, použijeme '*' (Don't Care) pro celou šířku
+					current_bits = '*' * width
+				
+				# Úprava konkrétního bitu v seznamu
+				if 0 <= idx < len(current_bits):
+					bits_list = list(current_bits)
+					bits_list[idx] = new_bit_val
+					bits = "".join(bits_list)
+				else:
+					# Ošetření chyby, pokud je index mimo rozsah
+					print(f"Varování: Index {idx} je mimo rozsah signálu {name} (šířka {width}). Ponechávám původní hodnotu.", file=sys.stderr)
+					bits = current_bits
+				
+				# Vynutíme přepočet výstupního formátu (aby se správně zobrazila změna jednoho bitu)
+				out_fmt = None
+				
 				self.current_state[name] = (bits, out_fmt)
+				
+			else:
+				# Standardní zpracování (nastavení celého signálu nebo busu)
+				if width == 1:
+					self.current_state[name] = (val_str, None)
+				else:
+					out_fmt, bits = self.expand_bus_value(val_str, width)
+					self.current_state[name] = (bits, out_fmt)
 
 		out_line = ""
 		for item in self.order_struct:
