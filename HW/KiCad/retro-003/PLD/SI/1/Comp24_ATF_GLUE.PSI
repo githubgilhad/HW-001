@@ -42,6 +42,7 @@ MSG "### Pridat: Pulldowns: A_SHARE_REQUEST, B_SHARE_REQUEST";
 #set B_G_ENABLE = H
 #end_macro }}}
 #macro test_addr_in_DEV(num) {{{
+#msg test_addr_in_DEV({num})
 #set RAM_Sel = H
 #set ROM_Sel = H
 #set addr_in_DEVS = H
@@ -174,47 +175,32 @@ $MSG "### TEST_MEM({addr},{val}) ###";
 #def_macro READ_REG(reg_num) {{{
 $MSG "### READ_REG({reg_num}) ###";
 #call test_addr_in_REG() //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-#set CADDR   = {'A000'+reg_num}
-#set Rw   = 1
-#set Read  = H
-#set Write = H
-#set DATA = "*"
-#set E = 0;
-#set Q = 1;
-#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-#set E = 1;
-#set Read  = L
-#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-#set Q = 0;
-#set Read  = L
-#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-#set E = 0;
-#set Read  = H
-#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call READ_MEM({'A000'+reg_num})
+#set Dev_Sel_lines = "H"
+#set addr_in_REGS=L
+#set addr_in_DEVS=L
 #end_macro }}}
-#def_macro WRITE_REG(reg_num, value) {{{
-$MSG "### WRITE_REG({reg_num}, {value}) ###";
+#def_macro WRITE_REG(reg_num, val) {{{
+$MSG "### WRITE_REG({reg_num}, {val}) ###";
 #call test_addr_in_REG() //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-#set CADDR   = {'A000'+reg_num}
-#set Rw   = 0
-#set Read  = H
-#set Write = H
-#set E = 0; 
-#set Q = 1;
-#set DATA={value}
-#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-#set E = 1;
-#set Write = L
-#set DATA={value}
-#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-#set Q = 0;
-#set Write = L
-#set DATA={value}
-#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-#set E = 0;
-#set Write = H
-#set DATA={value}
-#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call WRITE_MEM({'A000'+reg_num},{val})
+#set Dev_Sel_lines = "H"
+#set addr_in_REGS=L
+#set addr_in_DEVS=L
+#end_macro }}}
+#def_macro READ_DEV(dev_num,reg) {{{
+$MSG "### READ_DEV({dev_num},{reg}) ###";
+#call test_addr_in_DEV({dev_num}) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call READ_MEM({A000+20*dev_num+reg})
+#set Dev_Sel_lines = "H"
+#set addr_in_DEVS = L
+#end_macro }}}
+#def_macro WRITE_DEV(dev_num,reg, val) {{{
+$MSG "### WRITE_DEV({dev_num},{reg}, {val}) ###";
+#call test_addr_in_DEV({dev_num}) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#call WRITE_MEM({A000+20*dev_num+reg},{val})
+#set Dev_Sel_lines = "H"
+#set addr_in_DEVS = L
 #end_macro }}}
 #def_macro TEST_REG(reg_num, value) {{{
 $MSG "### TEST_REG({reg_num}, {value}) ###";
@@ -712,9 +698,55 @@ $MSG "##########################################################################
 #call READ_MEM(8000)
 #call READ_MEM(9000)
 
-#msg ########################################
-#msg ## Normal boot for CPU                  
-#msg ########################################
-#msg CPU prisel na radu
+#set Dev_Sel_lines[1]=L
+#call WRITE_MEM(A021,34)
+#set Dev_Sel_lines[1]=H
+#set Dev_Sel_lines[2]=L
+#call WRITE_MEM(A042,56)
+#set Dev_Sel_lines[2]=H
+#call WRITE_DEV(2,2,56)
+#msg Map SharedRAM A cyklus
+#call READ_REG(1) // EMS should not be ready, but we have still selected ROM, which IS ready bit_0=H
+#set A_SHARE_COOP=*	// CPU touch SharedRAM A, so Cooperates
+#call WRITE_REG(0,40) // request MHFA, from 0
+#set A_SHARE_COOP=H
+
+#call READ_REG(1) // should be ready bit_0=H
+#set A_S_16=* // as in EMS mapping
+#set A_S_SELECT=L
+#set A_G_ENABLE=* // just for write phase
+#call WRITE_MEM(8000,12)
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg MHFA si vsimnul, ze A_SHARE_COOP=H a ze asi ma cekat pokyny, tak se prihlasi (a ostrouha)
+#set A_SHARE_REQUEST=1
+#set A_SHARE_GRANTED=L
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#set A_S_SELECT=H
+#set A_G_ENABLE=H
+#set A_SHARE_GRANTED=* // ted se zmeni
+#set A_SHARE_COOP=*
+#call WRITE_REG(0,08) // SystemRAM, from 8000
+#set RAM_Sel=L
+#set A_SHARE_GRANTED=H
+#set A_SHARE_COOP=L
+#msg MHFA si driv vsimnul, ze A_SHARE_COOP byl H a ze asi ma cekat pokyny, tak se prihlasil ceka a ted prijde na radu (A_SHARE_COOP mezitim spadnul, kdyz nabehnul A_SHARE_GRANTED)
+#call READ_MEM(8000)
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg  MHFA nastastavi, ze chce SharedRAM (0= nechce nic, 1 chce svou SharedRAM)
+#set A_SHARE_SELECT=1 
+#set A_S_16=1 // ~ nahodne se menici hodnota, nastavi si co chce cist
+#set A_READ=1
+#set A_S_SELECT=L // dusledek A_SHARE_SELECT 
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg MHA chce psat - vypne si Select a nastavi adresu a data na sve sbernici
+#set A_SHARE_SELECT=0 
+#set A_S_SELECT=H // dusledek A_SHARE_SELECT 
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg zapne select, cimz zapise
+#set A_SHARE_SELECT=1 
+#set A_S_SELECT=L // dusledek A_SHARE_SELECT 
+#gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#msg a zase ho vypne - a tak porad dokola
+#set A_SHARE_SELECT=0 
+#set A_S_SELECT=H // dusledek A_SHARE_SELECT 
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------

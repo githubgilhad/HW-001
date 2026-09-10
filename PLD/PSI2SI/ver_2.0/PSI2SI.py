@@ -22,7 +22,7 @@ class Preprocessor:
 		self.bus_widths = {}
 		self.order_struct = []
 		self.current_state = {}  # Ukládá tuple: (hodnota_bitu, puvodni_format_string)
-		self.pending_sets = {}
+		self.pending_sets = []
 		
 		self.in_vectors = False
 		self.in_order = False
@@ -120,7 +120,7 @@ class Preprocessor:
 					elif kw == 'end_macro':
 						continue
 					elif kw == 'call':
-						self.handle_call(rest_of_line, local_vars)
+						self.handle_call(self.expand_exprs(rest_of_line, local_vars), local_vars)
 						continue
 					elif kw == 'field_size':
 						self.parse_field_size(rest_of_line)
@@ -182,12 +182,12 @@ class Preprocessor:
 		if match:
 			name = match.group(1)
 			value = match.group(2).strip().rstrip(';').strip()
-			self.pending_sets[name] = value
+			self.pending_sets.append((name, value))
 		else:
 			print(f"Chyba: Špatná syntaxe #set: {text}", file=sys.stderr)
 
 	def handle_gen_vector(self):
-		for name, val_str in self.pending_sets.items():
+		for name, val_str in self.pending_sets:
 			width = self.bus_widths.get(name, 1)
 			
 			# Kontrola, zda se jedná o syntaxi pro nastavení jednotlivého bitu: [index]=hodnota
@@ -203,7 +203,6 @@ class Preprocessor:
 				else:
 					# Pokud signál ještě nemá stav, použijeme '*' (Don't Care) pro celou šířku
 					current_bits = '*' * width
-				
 				# Úprava konkrétního bitu v seznamu
 				if 0 <= idx < len(current_bits):
 					bits_list = list(current_bits)
@@ -216,6 +215,7 @@ class Preprocessor:
 				
 				# Vynutíme přepočet výstupního formátu (aby se správně zobrazila změna jednoho bitu)
 				out_fmt = None
+				print (f"{name},{idx},='{current_bits}',=>'{bits}'")
 				
 				self.current_state[name] = (bits, out_fmt)
 				
@@ -387,7 +387,7 @@ class Preprocessor:
 				return "0x" + token
 			return token
 			
-		expr = re.sub(r'[A-Za-z_][A-Za-z0-9_]*', replace_token, expr)
+		expr = re.sub(r'[A-Za-z0-9_][A-Za-z0-9_]*', replace_token, expr)
 		
 		try:
 			val = eval(expr, {"__builtins__": {}}, local_vars)

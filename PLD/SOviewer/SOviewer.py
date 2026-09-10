@@ -99,6 +99,9 @@ class KiCadViewer:
 		self.next_btn = tk.Button(self.btn_frame, text="Následující →", command=self.trigger_aaso_next)
 		self.next_btn.pack(side=tk.LEFT, padx=5, pady=5)
 
+		self.next_btn = tk.Button(self.btn_frame, text="Save config", command=self.save_config)
+		self.next_btn.pack(side=tk.RIGHT, padx=5, pady=5)
+
 		# Klávesové zkratky: PageUp a PageDown budou přepínat simulaci,
 		# zatímco klasické šipky vám zůstanou na posun pozadí
 		self.top.bind("<Prior>", lambda e: self.trigger_aaso_prev()) # PageUp
@@ -158,6 +161,9 @@ class KiCadViewer:
 				self.bg_offset_x = cfg.get("bg_offset_x", 0.0)
 				self.bg_offset_y = cfg.get("bg_offset_y", 0.0)
 				self.bg_scale_factor = cfg.get("bg_scale_factor", 1.0)
+				self.offset_x = cfg.get("s_offset_x", 0.0) / 1000
+				self.offset_y = cfg.get("s_offset_y", 0.0) / 1000
+				self.scale = cfg.get("s_scale", 1.0)
 				print(f"Načtena konfigurace pozadí ze souboru {CONFIG_FILE}")
 		except (FileNotFoundError, json.JSONDecodeError, KeyError):
 			# Pokud soubor neexistuje, je prázdný nebo poškozený, prostě použijeme výchozí hodnoty
@@ -169,7 +175,10 @@ class KiCadViewer:
 			cfg = {
 				"bg_offset_x": self.bg_offset_x,
 				"bg_offset_y": self.bg_offset_y,
-				"bg_scale_factor": self.bg_scale_factor
+				"bg_scale_factor": self.bg_scale_factor,
+				"s_offset_x": self.offset_x * 1000,
+				"s_offset_y": self.offset_y * 1000,
+				"s_scale": self.scale
 			}
 			with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
 				json.dump(cfg, f, indent=4)
@@ -300,8 +309,8 @@ class KiCadViewer:
 		if self.orig_bg_image:
 			canvas_w = self.canvas.winfo_width()
 			canvas_h = self.canvas.winfo_height()
-			if canvas_w <= 1: canvas_w = 900
-			if canvas_h <= 1: canvas_h = 700
+			if canvas_w <= 1: canvas_w = 2500
+			if canvas_h <= 1: canvas_h = 1070
 
 			img_w, img_h = self.orig_bg_image.size
 
