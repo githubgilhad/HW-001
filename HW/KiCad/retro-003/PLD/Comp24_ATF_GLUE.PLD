@@ -435,10 +435,11 @@
 	/************************************************************/
 	/* CPU bus defaults                                     {{{ */
 	/************************************************************/
+	/*
 	Dev_NMI  ='b'0;
 	Dev_IRQ  ='b'0;
 	DMA_BREQ ='b'0;
-	MRDY     ='b'0;
+	MRDY     ='b'1;
 	BS       ='b'0;
 	
 	Dev_NMI.OE  ='b'0;
@@ -446,6 +447,7 @@
 	DMA_BREQ.OE ='b'0;
 	MRDY.OE     ='b'0;
 	BS.OE       ='b'0;
+	*/
 	/* }}} */
 	/************************************************************/
 	/* HALT mode                                            {{{ */
@@ -684,8 +686,8 @@
 	EMS1_B1.AR = Reset;
 	EMS1_B0.AR = Reset;
 	
-	EMS1_A1.CE = REG0 & REG_WRITE;
-	EMS1_A0.CE = REG0 & REG_WRITE;
+	EMS1_A1.CE = REG0 & REG_WRITE /* => */ & Rw;
+	EMS1_A0.CE = REG0 & REG_WRITE /* => */ & Rw;
 	
 	EMS1_B4.CE = REG0 & REG_WRITE;
 	EMS1_B3.CE = REG0 & REG_WRITE;
@@ -759,8 +761,8 @@
 	EMS2_B1.AR = Reset;
 	EMS2_B0.AP = Reset;
 	
-	EMS2_A1.CE = REG2 & REG_WRITE;
-	EMS2_A0.CE = REG2 & REG_WRITE;
+	EMS2_A1.CE = REG2 & REG_WRITE /* => */ & Rw;
+	EMS2_A0.CE = REG2 & REG_WRITE /* => */ & Rw;
 	
 	EMS2_B4.CE = REG2 & REG_WRITE;
 	EMS2_B3.CE = REG2 & REG_WRITE;
@@ -872,8 +874,9 @@
 	/* READ / WRITE                                         {{{ */
 	/************************************************************/
 	
-	Read  = E &  Rw;
-	Write = E & !Rw;
+	/* Read  = E &  Rw; */
+	Read  = Rw;
+	Write = E & !Rw & !addr_in_ROM_AREA;
 	
 	/* }}} */
 	
@@ -917,8 +920,8 @@
 	
 	RAM_Sel =
 		  in_HALT_mode & (
-			   !A_SHARE_SELECT & A_SHARE_REQUEST & A_SHARE_COOP
-			 # !B_SHARE_SELECT & B_SHARE_REQUEST & B_SHARE_COOP
+			   !A_SHARE_SELECT & A_SHARE_REQUEST & A_SHARE_GRANTED
+			 # !B_SHARE_SELECT & B_SHARE_REQUEST & B_SHARE_GRANTED
 			)                                   /* v HALT rezimu je SystemRAM vybrana na pozadani */
 		# !in_HALT_mode & (
 			  addr_in_NATIVE_RAM_LO                     /* normal SystemRAM */
@@ -966,7 +969,7 @@
 	/* ?_SHARE_COOP/?_SHARE_GRANTED                         {{{ */
 	/************************************************************/
 	/*
-	/* O Dirty+Wanted+BA: BA?1:if(SHARE_GRANTED){WANTS:1=CPU wants SharedRAM}else{DIRTY:1=CPU already got SharedRAM}; in_HALT_mode=  active cart  */
+	/* O Dirty+Wanted+BA: BA?1:if(SHARE_GRANTED){WANTS:1=CPU wants SharedRAM}else{DIRTY:1=CPU already got SharedRAM}; in_HALT_mode=  active card  */
 	/* in HALT state 1= writing SystemRAM is possible
 	 * if SHARE_GRANTED 1= CPU already wants SharedRAM (=please release it soon)
 	 * if !SHARE_GRANTED 1 = CPU already got SharedRAM (=and maybe modified it)
@@ -977,17 +980,19 @@
 	 * A_SHARE_COOP signals BA immediately. 
 	 * B_SHARE_COOP only signals BA if A_HALT is released (!A_HALT).
 	 */
-	A_SHARE_COOP =	  in_HALT_mode
-			# A_SHARE_GRANTED & ( EMS1_is_MHFA # EMS2_is_MHFA )
-			# !A_SHARE_GRANTED & CHIPA_Dm
-			;
-	B_SHARE_COOP =	  in_HALT_mode & !A_HALT /* write if MHF_A released it alredy */
-			# B_SHARE_GRANTED & ( EMS1_is_MHFB # EMS2_is_MHFB )
-			# !B_SHARE_GRANTED & CHIPB_Dm
-			;
-	A_SHARE_GRANTED =  in_HALT_mode & A_SHARE_COOP
+	A_SHARE_COOP =	!in_HALT_mode & (
+				 A_SHARE_GRANTED & ( EMS1_is_MHFA # EMS2_is_MHFA )
+				# !A_SHARE_GRANTED & CHIPA_Dm
+			);
+	A_SHARE_COOP.OE = !in_HALT_mode;
+	B_SHARE_COOP =	!in_HALT_mode & (
+				  B_SHARE_GRANTED & ( EMS1_is_MHFB # EMS2_is_MHFB )
+				# !B_SHARE_GRANTED & CHIPB_Dm
+			);
+	B_SHARE_COOP.OE = !in_HALT_mode;
+	A_SHARE_GRANTED =  in_HALT_mode & A_SHARE_REQUEST
 			# !in_HALT_mode & A_SHARE_REQUEST & CHIPA_A;
-	B_SHARE_GRANTED =  in_HALT_mode & B_SHARE_COOP
+	B_SHARE_GRANTED =  in_HALT_mode & B_SHARE_REQUEST & !A_SHARE_GRANTED
 			# !in_HALT_mode & B_SHARE_REQUEST & CHIPB_A;
 	
 	

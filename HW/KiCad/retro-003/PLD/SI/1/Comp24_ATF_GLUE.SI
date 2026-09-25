@@ -11,7 +11,7 @@
 	Device  f1508isptqfp100;
 
 MSG "### PSI macros, use PSI2SI.py Aa.PSI Aa.SI ###";
-MSG "### Generated 2026.09.07 23:44:18 ###";
+MSG "### Generated 2026.09.11 11:20:42 ###";
 
 
 MSG "### Pullups: Dev_Sel_7..1, ROM_Sel, RAM_Sel, A_S_16, B_S_16, A_HALT, B_HALT, Dev_FIRQ, Dev_IRQ, Dev_NMI, DMA_BREQ, MRDY, Reset";

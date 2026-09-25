@@ -1,0 +1,11 @@
+#!/bin/bash
+# vim: fileencoding=utf-8:nomodified:nowrap:textwidth=0:foldmethod=marker:foldcolumn=4:syntax=sh:filetype=sh:ruler:showcmd:lcs=tab\:|- list
+
+
+
+
+PSI2SI.py Comp24_ATF_GLUE.PSI Comp24_ATF_GLUE.SI; 
+cp Comp24_ATF_GLUE.SI ../../Comp24_ATF_GLUE.PLD /mnt/sdb/3/VirtualBox/WindowsXP/Windows\ XP/Shared/;
+read -n 1 -s -r -p "Stiskni klávesu..." ;
+SOview.py /mnt/sdb/3/VirtualBox/WindowsXP/Windows\ XP/Shared/Comp24_ATF_GLUE.so ;
+cp /mnt/sdb/3/VirtualBox/WindowsXP/Windows\ XP/Shared/Comp24_ATF_GLUE.so  /home/gilhad/GIT-ghub/HD6309/HW-001/PLD/SOviewer

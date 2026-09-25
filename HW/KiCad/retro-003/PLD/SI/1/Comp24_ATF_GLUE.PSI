@@ -392,8 +392,8 @@ $MSG "##########################################################################
 #msg A_HALT je pulldown dolu => HALT je aktivni => BA je aktivni, nez reset skonci
 #set A_HALT = 0 // HW set
 #set BA=1 // CPU set
-#msg BA aktivni => nastane in_HALT_mode => A_SHARE_COOP je aktivni (protoze mam A_HALT) a B_SHARE_COOP je NEaktivni (protoze mam A_HALT)
-#msg NOTE: jeste je na to moc brzo (Reset teprve zacina), ale jakmile MHF nabootuje a ma X_SHARE_COOP aktivni, tak je nejspis MHFA, nebo oproti nemu bootovalo velmi pomalu
+#msg DELETEME (chci uvolnit X_SHARE_COOP pro pristup k ROM, budu pouzivat jen X_SHARE_GRANTED) : BA aktivni => nastane in_HALT_mode => A_SHARE_COOP je aktivni (protoze mam A_HALT) a B_SHARE_COOP je NEaktivni (protoze mam A_HALT)
+#msg NOTE: jeste je na to moc brzo (Reset teprve zacina), ale jakmile MHF nabootuje a dokaze hned ziskat  X_SHARE_GRANTED, tak je nejspis MHFA, nebo oproti nemu bootovalo velmi pomalu
 #msg Rw je Read, protoze A_READ je pullup
 #set Rw = H
 #msg CADDR je HiZ, protoze je HALT
@@ -446,8 +446,8 @@ $MSG "##########################################################################
 #msg Should have A_SHARE_GRANTED=H (test it)
 #set A_SHARE_GRANTED=H
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-#msg mam A_HALT, dostal jsem A_SHARE_GRANTED=1 + A_SHARE_COOP=1 => muzu pouzivat SystemRAM
-#set A_SHARE_COOP=H
+#msg mam A_HALT, dostal jsem A_SHARE_GRANTED=1 => muzu pouzivat SystemRAM
+#set A_SHARE_COOP=*
 #msg ########################################
 #msg  nastavim A_READ=1 (=> ctu SystemRAM, to je pro ni OK, MHF dostava data, ale ATmega ma data=HiZ a SharedRAM.CS (A_S_SELECT) neni active), nastavim CADDR/GADDR, nastavim A_S_16 pro spravnou pulku
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -565,7 +565,7 @@ $MSG "##########################################################################
 #set B_SHARE_GRANTED=H
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg mam B_HALT, dostal jsem B_SHARE_GRANTED=1 + B_SHARE_COOP=1 => muzu pouzivat SystemRAM
-#set B_SHARE_COOP=H
+#set B_SHARE_COOP=*
 #msg ########################################
 #msg  nastavim B_READ=1 (=> ctu SystemRAM, to je pro ni OK, MHF dostava data, ale ATmega ma data=HiZ a SharedRAM.CS (B_S_SELECT) neni active), nastavim CADDR/GADDR, nastavim B_S_16 pro spravnou pulku
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------

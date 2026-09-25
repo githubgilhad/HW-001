@@ -1,0 +1,4 @@
+#!/bin/bash
+# vim: fileencoding=utf-8:nomodified:nowrap:textwidth=0:foldmethod=marker:foldcolumn=4:syntax=sh:filetype=sh:ruler:showcmd:lcs=tab\:|- list
+
+./SOviewer.py -o Comp24_ATF_GLUE.so -s retro-003-simul.kicad_sch -b w-2026-09-04_14\:53\:48_2492x1393.png
