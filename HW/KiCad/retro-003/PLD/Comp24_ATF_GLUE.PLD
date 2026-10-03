@@ -135,8 +135,8 @@
 	
 	Name     Comp24_ATF_GLUE;
 	PartNo   0003;
-	Date     2026-09-05;
-	Revision 0.5;
+	Date     2026-10-02;
+	Revision 0.6;
 	Designer Gilhad;
 	Company  None ;
 	Assembly None ;
@@ -269,7 +269,7 @@
 	/***** Input Only Block                  85..90  *** OK {{{ */
 	/************************************************************/
 	
-	PIN 85 = RomMapped;   /* I/O/GCLK3 */			 /* O 1 = ROM is mapped in */
+	PIN 85 = !RomMapped;   /* I/O/GCLK3 */			 /* O 1 = ROM is mapped in */ /* FIXME: docasne negovano na pinu, protoze je opacne zapojena LED */
 	PIN 87 = E;           /* INPUT/GCLK1 */
 	PIN 88 = BA;          /* INPUT/OE1 - 12V Vpp */		/* I  Bus Avaiable, 1= CPU released bus */
 	PIN 89 = !Reset;      /* INPUT/GCLR */
@@ -352,7 +352,8 @@
 	/************************************************************/
 	/* NODES                                                {{{ */
 	/************************************************************/
-	NODE in_HALT_mode;
+	PINNODE = in_HALT_mode;
+	PROPERTY ATMEL {Soft_Buffer=in_HALT_mode};
 	NODE [ROM_SIZE2..0];
 	PINNODE  = addr_in_REGS; /* 637 */
 /*	NODE addr_in_REGS; /* */
@@ -874,9 +875,14 @@
 	/* READ / WRITE                                         {{{ */
 	/************************************************************/
 	
-	/* Read  = E &  Rw; */
-	Read  = Rw;
-	Write = E & !Rw & !addr_in_ROM_AREA;
+	/* Read  = E &  Rw;*/
+	/* Read  = Rw; */
+	/* Write = E & !Rw & (!addr_in_ROM_AREA # in_HALT_mode); */ /* in_HALT_mode muze zapisovat do ROM/addr_in_ROM_AREA */
+
+	Read = in_HALT_mode & Rw
+		# !in_HALT_mode & E &  Rw;
+	Write = in_HALT_mode & !Rw 
+		# !in_HALT_mode & E & !Rw & !addr_in_ROM_AREA;
 	
 	/* }}} */
 	

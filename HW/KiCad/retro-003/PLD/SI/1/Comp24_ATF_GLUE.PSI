@@ -3,8 +3,8 @@
 
 	Name     Comp24_ATF_GLUE;
 	PartNo   0003;
-	Date     2026-09-05;
-	Revision 0.5;
+	Date     2026-10-02;
+	Revision 0.6;
 	Designer Gilhad;
 	Company  None ;
 	Assembly None ;
@@ -508,22 +508,25 @@ $MSG "##########################################################################
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #call clock(L,H) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg zapis do lokalni SharedRAM primo: vybrana je podle A_SHARE_REQUEST, A_READ nastavuje A_S_READ a A_S_WRITE
-#msg A_SHARE_REQUEST=0 vypnu A_S_SELECT
+#msg A_SHARE_REQUEST=0 vypnu A_S_SELECT a A_SHARE_GRANTED
 #set A_SHARE_REQUEST=0
 #set A_S_SELECT=H
+#set A_SHARE_GRANTED=L
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg ATmega2560 si nastavi si SharedAddressA0..15 a B_S_16 podle potreby, pak si zapne data
 #msg pak nastavi A_READ=0 , zatin se nic nedeje, neni A_S_SELECT
 #set A_READ=0
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-#msg ted nastavi A_SHARE_REQUEST=1 => A_S_SELECT se aktivuje a tim zapise spravnou hodnotu
+#msg ted nastavi A_SHARE_REQUEST=1 => A_S_SELECT se aktivuje a tim zapise spravnou hodnotu, A_SHARE_GRANTED se aktivuje
 #set A_SHARE_REQUEST=1
 #set A_S_SELECT=L
+#set A_SHARE_GRANTED=H
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg pocka jeden takt, shodi A_SHARE_REQUEST a dal muze menit A_READ, data a adresy po libosti 
 #msg A_SHARE_REQUEST=0 vypnu A_S_SELECT
 #set A_SHARE_REQUEST=0
 #set A_S_SELECT=H
+#set A_SHARE_GRANTED=L
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg ATmega2560 si da data HiZ a muze nastavit dalsi adresu a opakovat
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -626,9 +629,10 @@ $MSG "##########################################################################
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #call clock(L,H) //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg zapis do lokalni SharedRAM primo: vybrana je podle B_SHARE_REQUEST, B_READ nastavuje B_S_READ a B_S_WRITE
-#msg B_SHARE_REQUEST=0 vypnu B_S_SELECT
+#msg B_SHARE_REQUEST=0 vypnu B_S_SELECT a B_SHARE_GRANTED
 #set B_SHARE_REQUEST=0
 #set B_S_SELECT=H
+#set B_SHARE_GRANTED=L
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg ATmega2560 si nastavi si SharedAddressA0..15 a B_S_16 podle potreby, pak si zapne data
 #msg pak nastavi B_READ=0 , zatin se nic nedeje, neni B_S_SELECT
@@ -637,11 +641,13 @@ $MSG "##########################################################################
 #msg ted nastavi B_SHARE_REQUEST=1 => B_S_SELECT se aktivuje a tim zapise spravnou hodnotu
 #set B_SHARE_REQUEST=1
 #set B_S_SELECT=L
+#set B_SHARE_GRANTED=H
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg pocka jeden takt, shodi B_SHARE_REQUEST a dal muze menit B_READ, data a adresy po libosti 
 #msg B_SHARE_REQUEST=0 vypnu B_S_SELECT
 #set B_SHARE_REQUEST=0
 #set B_S_SELECT=H
+#set B_SHARE_GRANTED=L
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg ATmega2560 si da data HiZ a muze nastavit dalsi adresu a opakovat
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -649,6 +655,7 @@ $MSG "##########################################################################
 #set B_SHARE_REQUEST=0
 #set B_READ=1
 #set B_SHARE_SELECT=0
+#set B_SHARE_GRANTED=L
 #msg tady se jeste da vratit i k zapisu do SystemRAM a tocit se v kruhu
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #msg Prestanu sledovat nedostupnost RAM, je na CPU anby s ni zacal cvicit
