@@ -780,7 +780,7 @@ ZZZZZZZZ ZZZZZZZZZZZZZZZZ 00 1HH 1L LHLLL 11 1110 ZZZZZZ ** "*" HH HH 11 10 00 L
 #gen_vector
 #setm A_SHARE_REQUEST=0
 #gen_vector
-#setm CADDR='0'
+#setm CADDR="0"
 #gen_vector
 #setm A_SHARE_REQUEST=1
 #gen_vector
@@ -791,4 +791,34 @@ ZZZZZZZZ ZZZZZZZZZZZZZZZZ 00 1HH 1L LHLLL 11 1110 ZZZZZZ ** "*" HH HH 11 10 00 L
 #setm A_SHARE_GRANTED=L
 #gen_vector
 #msg ###### Write  ##################################################################
+#setm A_READ=1
+#gen_vector
+#setm A_S_16=1
+#gen_vector
+#setm CA=FFFF
+#gen_vector
+#setm A_READ=0
+#gen_vector
+#setm DATA="12"
+#gen_vector
+#setm A_SHARE_REQUEST=1
+#gen_vector
+#setm A_SHARE_REQUEST=0
+#gen_vector
+
+#setm A_READ=1
+#gen_vector
+#setm DATA="Z"
+#setm CADDR="Z"
+#gen_vector
+#msg ###### Read ####################################################################
+#setm A_READ=1
+#gen_vector
+#setm A_S_16=0
+#gen_vector
+#setm CADDR=1234
+#gen_vector
+#setm DATA="*"
+#msg DATA= ????
+#gen_vector
 
