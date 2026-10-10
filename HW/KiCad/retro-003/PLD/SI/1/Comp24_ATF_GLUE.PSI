@@ -350,6 +350,7 @@ VECTORS:
 /* DATA   CADDR           EQ Rw: R: G:       H:   C:     CS     Sg:   In:      Out:                Rs:       E1:      E2:      Ow:        T:                 */
 #msg #: ZZZZZZZZ 1111111111111111 01 Rw:1HH R:0L G:LHHHH ZZ H:11Z0 C:ZZZZZZ OE:** ******** Sg:HH HH In:ZZ ZZ ZZ Out:LL LL HH HH LL LL   Rs:LLL 0L LL E1:LL LHLLL E2:LL LHLLH Ow:LLLL LLLL  T:L LLLLLLLLLLLL LLLL
 ZZZZZZZZ 1111111111111111 01 1HH 0L LHHHH ZZ 11Z0 ZZZZZZ ** "*" HH HH ZZ ZZ ZZ LL LL HH HH LL LL   LLL 0L LL LL LHLLL LL LHLLH LLLL LLLL  L LLLLLLLLLLLL LLLL 
+#// #gen_vector
 #hide {{{
 #call Defaults() //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #set Reset=0
@@ -683,6 +684,7 @@ $MSG "##########################################################################
 #msg NOTE: MHF se prepnou do normalniho modu, ctou PS/2 a podobne
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #// }}}
+#// {{{  Normal boot for CPU
 #msg ########################################
 #msg ## Normal boot for CPU                  
 #msg ########################################
@@ -757,3 +759,36 @@ $MSG "##########################################################################
 #set A_SHARE_SELECT=0 
 #set A_S_SELECT=H // dusledek A_SHARE_SELECT 
 #gen_vector //  ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#// }}}
+#msg ################################################################################
+#msg ##### Test na zapis pomoci uploaderu ###########################################
+#msg ################################################################################
+ZZZZZZZZ ZZZZZZZZZZZZZZZZ 00 1HH 1L LHLLL 11 1110 ZZZZZZ ** "*" HH HH 11 10 00 LL HL LH HH LL LL   LLL 1H LL LL LHLLL LL LHLLH HLLL HLHL  L LLLLLLHHHHHH LLLL 
+#call Defaults()
+#gen_vector
+#setm A_HALT=0
+#setm Reset=0
+#msg a tudiz:
+#setm HALT=L
+#gen_vector
+#setm Reset=1
+#gen_vector
+#msg ###### Attach ##################################################################
+#setm A_READ=1
+#gen_vector
+#setm A_SHARE_SELECT=0
+#gen_vector
+#setm A_SHARE_REQUEST=0
+#gen_vector
+#setm CADDR='0'
+#gen_vector
+#setm A_SHARE_REQUEST=1
+#gen_vector
+#setm A_SHARE_GRANTED=H
+#gen_vector
+#setm A_SHARE_REQUEST=0
+#msg a tudiz:
+#setm A_SHARE_GRANTED=L
+#gen_vector
+#msg ###### Write  ##################################################################
+
